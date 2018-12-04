@@ -109,4 +109,8 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# Assets
+.Assets/o3n
+.Assets/UMA
+
 # End of https://www.gitignore.io/api/unity,rider
