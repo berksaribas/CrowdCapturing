@@ -6,7 +6,7 @@ namespace Simulation
 {
 	public class SequenceManager : MonoBehaviour
 	{
-		public SimulationController Simulation;
+		public SimulationManager Simulation;
 		private List<Sequence> Sequences;
 		private List<Sequence> ActiveSequences;
 

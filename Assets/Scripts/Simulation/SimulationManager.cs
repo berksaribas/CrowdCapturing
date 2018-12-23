@@ -3,7 +3,7 @@ using World;
 
 namespace Simulation
 {	
-	public class SimulationController : MonoBehaviour
+	public class SimulationManager : MonoBehaviour
 	{
 		public float WorldSpeed = 1.0f;
 		public float WorldTimeSeconds = 0;
