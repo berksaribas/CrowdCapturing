@@ -38,5 +38,10 @@ namespace World
 
 			return WeightedItem<Door>.Choose(doorList);
 		}
+
+		public Door GetRandomDoor()
+		{
+			return doors[Random.Range(0, doors.Length)];
+		}
 	}
 }
