@@ -7,22 +7,11 @@ namespace Simulation
 {
 	public class CrowdManager : MonoBehaviour {
 		public GameObject agentPrefab;
-
-		private static CrowdManager _instance;
-
-		public static CrowdManager Instance { get { return _instance; } }
-
+		
 		private List<Agent> agents;
 
 		private void Awake()
-		{
-			if (_instance != null && _instance != this)
-			{
-				Destroy(this.gameObject);
-			} else {
-				_instance = this;
-			}
-			
+		{			
 			agents = new List<Agent>();
 		}
 
@@ -34,6 +23,30 @@ namespace Simulation
 			
 			agentComponent.SetStartingPosition(startingDoor);
 			agentComponent.SetTarget(finishingDoor);
+			
+			agents.Add(agentComponent);
+		}
+
+		private void Update()
+		{
+			foreach (var agent in agents)
+			{
+				var navMeshAgent = agent.GetComponent<NavMeshAgent>();
+				if (!navMeshAgent.pathPending)
+				{
+					if (navMeshAgent.remainingDistance <= 1f)
+					{
+						agent.TargetReached = true;
+					}
+				}
+			}
+
+			var reachedAgents = agents.FindAll(item => item.TargetReached);
+			foreach (var reachedAgent in reachedAgents)
+			{
+				agents.Remove(reachedAgent);
+				Destroy(reachedAgent.gameObject);
+			}
 		}
 	}
 }

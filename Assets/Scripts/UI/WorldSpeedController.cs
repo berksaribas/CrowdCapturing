@@ -1,4 +1,3 @@
-using Simulation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +14,7 @@ namespace UI
 
 		private void SliderValueChange(float value)
 		{
-			SimulationManager.Instance.WorldSpeed = value;
+			SimulationController.Instance.SimulationManager.WorldSpeed = value;
 		}
 	}
 }

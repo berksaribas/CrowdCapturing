@@ -8,6 +8,7 @@ namespace Simulation
 	{
 		private NavMeshAgent agent;
 		private Door startingDoor, targetDoor;
+		public bool TargetReached = false;
 
 		private void Awake()
 		{
@@ -29,6 +30,8 @@ namespace Simulation
 			{
 				agent.SetDestination(closestHit.position);
 			}
+
+			TargetReached = false;
 		}
 
 		public void SetStartingPosition(Door door)

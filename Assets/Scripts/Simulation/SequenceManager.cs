@@ -1,19 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Util;
 
 namespace Simulation
 {
 	public class SequenceManager : MonoBehaviour
 	{
-		private SimulationManager Simulation;
 		private List<Sequence> Sequences;
 		private List<Sequence> ActiveSequences;
 
 		private void Awake()
 		{
-			Simulation = SimulationManager.Instance;
-			
 			Sequences = new List<Sequence>();
 			ActiveSequences = new List<Sequence>();
 			
@@ -33,12 +29,15 @@ namespace Simulation
 			{
 				var sequence = Sequences[i];
 
-				if (Simulation.WorldTimeSeconds >= sequence.StartTime)
+				if (SimulationController.Instance.SimulationManager.WorldTimeSeconds >= sequence.StartTime)
 				{
 					removedSequences.Add(sequence);
+					
+					if (SimulationController.Instance.SimulationManager.WorldTimeSeconds < sequence.StartTime + sequence.Duration)
+					{
+						ActiveSequences.Add(sequence);
+					}
 				}
-
-				ActiveSequences.Add(sequence);
 			}
 
 			foreach (var removedSequence in removedSequences)
@@ -54,14 +53,13 @@ namespace Simulation
 			for (var i = 0; i < ActiveSequences.Count; i++)
 			{
 				var sequence = ActiveSequences[i];
-				if (Simulation.WorldTimeSeconds > sequence.StartTime + sequence.Duration &&
-				    sequence.RemainingCrowdSize == 0)
+				if (SimulationController.Instance.SimulationManager.WorldTimeSeconds > sequence.StartTime + sequence.Duration)
 				{
 					removedSequences.Add(sequence);
 					continue;
 				}
 
-				Simulation.GenerateCrowds(sequence);
+				SimulationController.Instance.SimulationManager.GenerateCrowds(sequence);
 			}
 			
 			foreach (var removedSequence in removedSequences)
