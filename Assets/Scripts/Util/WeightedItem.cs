@@ -7,11 +7,11 @@ namespace Util
 	public class WeightedItem<T>
 	{
 		private T value;
-		private int weight;
-		private int cumulativeSum;
+		private float weight;
+		private float cumulativeSum;
 		private static Random rndInst = new Random();
 
-		public WeightedItem(T value, int weight)
+		public WeightedItem(T value, float weight)
 		{
 			this.value = value;
 			this.weight = weight;
@@ -19,7 +19,7 @@ namespace Util
 
 		public static T Choose(List<WeightedItem<T>> items)
 		{
-			int cumulSum = 0;
+			float cumulSum = 0;
 			int cnt = items.Count();
 
 			for (int slot = 0; slot < cnt; slot++)

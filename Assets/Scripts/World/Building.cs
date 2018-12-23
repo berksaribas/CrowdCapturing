@@ -7,41 +7,42 @@ namespace World
 	public class Building : MonoBehaviour
 	{
 		public Door[] doors;
-		private Dictionary<Building, List<Door>> buildingDoorPairs = new Dictionary<Building, List<Door>>();
+		public Vector3 averagePosition;
 
 		private void Awake()
 		{
 			foreach (var door in doors)
 			{
-				foreach (var targetBuilding in door.TargetBuildings)
-				{
-					if (!buildingDoorPairs.ContainsKey(targetBuilding))
-					{
-						buildingDoorPairs.Add(targetBuilding, new List<Door>());
-					}
-
-					buildingDoorPairs[targetBuilding].Add(door);
-				}
+				averagePosition += door.transform.position;
 			}
+
+			averagePosition /= doors.Length;
 		}
 
 		public Door GetDoorByTargetBuilding(Building building)
 		{
-			var possibleDoors = buildingDoorPairs[building];
 			List<WeightedItem<Door>> doorList = new List<WeightedItem<Door>>();
 
-			foreach (var possibleDoor in possibleDoors)
+			foreach (var possibleDoor in doors)
 			{
-				doorList.Add(new WeightedItem<Door>(possibleDoor,
-					(int)(possibleDoor.GetNormalizedUsagePercentage(building) * 100)));
+				var distance = Vector3.Distance(building.averagePosition, possibleDoor.transform.position);
+				doorList.Add(new WeightedItem<Door>(possibleDoor, 1 / distance));
 			}
 
 			return WeightedItem<Door>.Choose(doorList);
 		}
 
-		public Door GetRandomDoor()
+		public Door GetFinishingDoorByTargetBuilding(Door selectedDoor, Building building)
 		{
-			return doors[Random.Range(0, doors.Length)];
+			List<WeightedItem<Door>> doorList = new List<WeightedItem<Door>>();
+
+			foreach (var possibleDoor in building.doors)
+			{
+				var distance = Vector3.Distance(selectedDoor.transform.position, possibleDoor.transform.position);
+				doorList.Add(new WeightedItem<Door>(possibleDoor, Mathf.Pow(1 / distance, 10)));
+			}
+
+			return WeightedItem<Door>.Choose(doorList);
 		}
 	}
 }

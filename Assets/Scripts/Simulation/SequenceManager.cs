@@ -6,12 +6,14 @@ namespace Simulation
 {
 	public class SequenceManager : MonoBehaviour
 	{
-		public SimulationManager Simulation;
+		private SimulationManager Simulation;
 		private List<Sequence> Sequences;
 		private List<Sequence> ActiveSequences;
 
 		private void Awake()
 		{
+			Simulation = SimulationManager.Instance;
+			
 			Sequences = new List<Sequence>();
 			ActiveSequences = new List<Sequence>();
 			
@@ -51,7 +53,7 @@ namespace Simulation
 
 			for (var i = 0; i < ActiveSequences.Count; i++)
 			{
-				var sequence = Sequences[i];
+				var sequence = ActiveSequences[i];
 				if (Simulation.WorldTimeSeconds > sequence.StartTime + sequence.Duration &&
 				    sequence.RemainingCrowdSize == 0)
 				{

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using World;
 
 namespace Simulation
@@ -28,10 +29,11 @@ namespace Simulation
 		public void CreateAgent(Door startingDoor, Door finishingDoor)
 		{
 			var agent = Instantiate(agentPrefab);
+			agent.GetComponent<NavMeshAgent>().enabled = false;
 			var agentComponent = agent.AddComponent<Agent>();
 			
 			agentComponent.SetStartingPosition(startingDoor);
-			agentComponent.SetStartingPosition(finishingDoor);
+			agentComponent.SetTarget(finishingDoor);
 		}
 	}
 }
