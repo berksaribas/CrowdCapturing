@@ -1,52 +1,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using World;
 
 namespace Simulation
 {
-	public class CrowdManager : MonoBehaviour {
-		public GameObject agentPrefab;
-		
-		private List<Agent> agents;
+    public class CrowdManager : MonoBehaviour
+    {
+        public GameObject AgentPrefab;
 
-		private void Awake()
-		{			
-			agents = new List<Agent>();
-		}
+        private List<Agent> agents;
 
-		public void CreateAgent(Door startingDoor, Door finishingDoor)
-		{
-			var agent = Instantiate(agentPrefab);
-			agent.GetComponent<NavMeshAgent>().enabled = false;
-			var agentComponent = agent.AddComponent<Agent>();
-			
-			agentComponent.SetStartingPosition(startingDoor);
-			agentComponent.SetTarget(finishingDoor);
-			
-			agents.Add(agentComponent);
-		}
+        private void Awake()
+        {
+            agents = new List<Agent>();
+        }
 
-		private void Update()
-		{
-			foreach (var agent in agents)
-			{
-				var navMeshAgent = agent.GetComponent<NavMeshAgent>();
-				if (!navMeshAgent.pathPending)
-				{
-					if (navMeshAgent.remainingDistance <= 1f)
-					{
-						agent.TargetReached = true;
-					}
-				}
-			}
+        public void CreateAgent(Door startingDoor, Door finishingDoor, MaterialPropertyBlock actorMaterialProperty)
+        {
+            var agent = Instantiate(AgentPrefab, transform);
+            agent.GetComponent<NavMeshAgent>().enabled = false;
+            var agentComponent = agent.AddComponent<Agent>();
 
-			var reachedAgents = agents.FindAll(item => item.TargetReached);
-			foreach (var reachedAgent in reachedAgents)
-			{
-				agents.Remove(reachedAgent);
-				Destroy(reachedAgent.gameObject);
-			}
-		}
-	}
+            agentComponent.SetStartingPosition(startingDoor);
+            agentComponent.SetTarget(finishingDoor);
+
+            agent.GetComponent<MeshRenderer>().SetPropertyBlock(actorMaterialProperty);
+
+            agents.Add(agentComponent);
+        }
+
+        private void Update()
+        {
+            foreach (var agent in agents)
+            {
+                var navMeshAgent = agent.GetComponent<NavMeshAgent>();
+                if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= 1f)
+                {
+                    agent.TargetReached = true;
+                }
+            }
+
+            var reachedAgents = agents.FindAll(item => item.TargetReached);
+            foreach (var reachedAgent in reachedAgents)
+            {
+                agents.Remove(reachedAgent);
+                Destroy(reachedAgent.gameObject);
+            }
+        }
+    }
 }

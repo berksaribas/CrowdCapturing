@@ -4,55 +4,55 @@ using World;
 
 namespace Simulation
 {
-	public class Agent : MonoBehaviour
-	{
-		private NavMeshAgent agent;
-		private Door startingDoor, targetDoor;
-		public bool TargetReached = false;
+    public class Agent : MonoBehaviour
+    {
+        private NavMeshAgent agent;
+        private Door startingDoor, targetDoor;
+        public bool TargetReached = false;
 
-		private void Awake()
-		{
-			agent = GetComponent<NavMeshAgent>();
-			agent.autoBraking = true;
-			agent.acceleration = 1000f;
-			agent.speed = Random.Range(6f, 11f);
-			agent.angularSpeed = 3600f;
-		}
+        private void Awake()
+        {
+            agent = GetComponent<NavMeshAgent>();
+            agent.autoBraking = true;
+            agent.acceleration = 1000f;
+            agent.speed = Random.Range(6f, 11f);
+            agent.angularSpeed = 3600f;
+        }
 
-		public void SetTarget(Door door)
-		{
-			GetComponent<NavMeshAgent>().enabled = true;
+        public void SetTarget(Door door)
+        {
+            GetComponent<NavMeshAgent>().enabled = true;
 
-			targetDoor = door;
-			
-			NavMeshHit closestHit;
-			if (NavMesh.SamplePosition(door.gameObject.transform.position, out closestHit, 100f, NavMesh.AllAreas))
-			{
-				agent.SetDestination(closestHit.position);
-			}
+            targetDoor = door;
 
-			TargetReached = false;
-		}
+            NavMeshHit closestHit;
+            if (NavMesh.SamplePosition(door.gameObject.transform.position, out closestHit, 100f, NavMesh.AllAreas))
+            {
+                agent.SetDestination(closestHit.position);
+            }
 
-		public void SetStartingPosition(Door door)
-		{
-			startingDoor = door;
-			
-			NavMeshHit closestHit;
-			if (NavMesh.SamplePosition(door.gameObject.transform.position, out closestHit, 100f, NavMesh.AllAreas))
-			{
-				transform.position = closestHit.position;
-			}
-		}
+            TargetReached = false;
+        }
 
-		public string GetStartingDoorName()
-		{
-			return startingDoor.gameObject.name;
-		}
-		
-		public string GetTargetDoorName()
-		{
-			return targetDoor.gameObject.name;
-		}
-	}
+        public void SetStartingPosition(Door door)
+        {
+            startingDoor = door;
+
+            NavMeshHit closestHit;
+            if (NavMesh.SamplePosition(door.gameObject.transform.position, out closestHit, 100f, NavMesh.AllAreas))
+            {
+                transform.position = closestHit.position;
+            }
+        }
+
+        public string GetStartingDoorName()
+        {
+            return startingDoor.gameObject.name;
+        }
+
+        public string GetTargetDoorName()
+        {
+            return targetDoor.gameObject.name;
+        }
+    }
 }

@@ -3,82 +3,79 @@ using UnityEngine;
 
 namespace Simulation
 {
-	public class SequenceManager : MonoBehaviour
-	{
-		private List<Sequence> Sequences;
-		private List<Sequence> ActiveSequences;
+    public class SequenceManager : MonoBehaviour
+    {
+        private List<Sequence> sequences;
+        private List<Sequence> activeSequences;
 
-		private void Awake()
-		{
-			Sequences = new List<Sequence>();
-			ActiveSequences = new List<Sequence>();
-			
-			InvokeRepeating("UpdateSequences", 1.0f, 1.0f);
-		}
+        private void Awake()
+        {
+            sequences = new List<Sequence>();
+            activeSequences = new List<Sequence>();
 
-		public void InsertSequence(Sequence sequence)
-		{
-			Sequences.Add(sequence);
-		}
+            InvokeRepeating("UpdateSequences", 1.0f, 1.0f);
+        }
 
-		public void ActivateSequences()
-		{
-			var removedSequences = new List<Sequence>();
+        public void InsertSequence(Sequence sequence)
+        {
+            sequences.Add(sequence);
+        }
 
-			for (var i = 0; i < Sequences.Count; i++)
-			{
-				var sequence = Sequences[i];
+        public void ActivateSequences()
+        {
+            var removedSequences = new List<Sequence>();
 
-				if (SimulationController.Instance.SimulationManager.WorldTimeSeconds >= sequence.StartTime)
-				{
-					removedSequences.Add(sequence);
-					
-					if (SimulationController.Instance.SimulationManager.WorldTimeSeconds < sequence.StartTime + sequence.Duration)
-					{
-						ActiveSequences.Add(sequence);
-					}
-				}
-			}
+            foreach (var sequence in sequences)
+            {
+                if (SimulationController.Instance.SimulationManager.WorldTimeSeconds >= sequence.StartTime)
+                {
+                    removedSequences.Add(sequence);
 
-			foreach (var removedSequence in removedSequences)
-			{
-				Sequences.Remove(removedSequence);
-			}
-		}
+                    if (SimulationController.Instance.SimulationManager.WorldTimeSeconds < sequence.StartTime + sequence.Duration)
+                    {
+                        activeSequences.Add(sequence);
+                    }
+                }
+            }
 
-		public void ProcessActiveSequences()
-		{
-			var removedSequences = new List<Sequence>();
+            foreach (var removedSequence in removedSequences)
+            {
+                sequences.Remove(removedSequence);
+            }
+        }
 
-			for (var i = 0; i < ActiveSequences.Count; i++)
-			{
-				var sequence = ActiveSequences[i];
-				if (SimulationController.Instance.SimulationManager.WorldTimeSeconds > sequence.StartTime + sequence.Duration)
-				{
-					removedSequences.Add(sequence);
-					continue;
-				}
+        public void ProcessActiveSequences()
+        {
+            var removedSequences = new List<Sequence>();
 
-				SimulationController.Instance.SimulationManager.GenerateCrowds(sequence);
-			}
-			
-			foreach (var removedSequence in removedSequences)
-			{
-				ActiveSequences.Remove(removedSequence);
-			}
-		}
+            foreach (var sequence in activeSequences)
+            {
+                if (SimulationController.Instance.SimulationManager.WorldTimeSeconds > sequence.StartTime + sequence.Duration)
+                {
+                    removedSequences.Add(sequence);
+                    continue;
+                }
 
-		private void UpdateSequences()
-		{
-			if (Sequences.Count != 0)
-			{
-				ActivateSequences();
-			}
-			
-			if (ActiveSequences.Count != 0)
-			{
-				ProcessActiveSequences();
-			}
-		}
-	}
+                SimulationController.Instance.SimulationManager.GenerateCrowds(sequence);
+            }
+
+            foreach (var removedSequence in removedSequences)
+            {
+                activeSequences.Remove(removedSequence);
+            }
+        }
+
+        private void UpdateSequences()
+        {
+            if (sequences.Count != 0)
+            {
+                ActivateSequences();
+            }
+
+            if (activeSequences.Count != 0)
+            {
+                ProcessActiveSequences();
+            }
+        }
+    }
 }

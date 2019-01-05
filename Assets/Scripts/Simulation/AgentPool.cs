@@ -1,7 +1,7 @@
 namespace Simulation
 {
-	public class AgentPool
-	{
-		
-	}
+    public class AgentPool
+    {
+        
+    }
 }
