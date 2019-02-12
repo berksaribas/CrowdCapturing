@@ -54,5 +54,15 @@ namespace Simulation
         {
             return targetDoor.gameObject.name;
         }
+
+        public Door GetStartingDoor()
+        {
+            return startingDoor;
+        }
+        
+        public Door GetTargetDoor()
+        {
+            return targetDoor;
+        }
     }
 }
