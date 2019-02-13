@@ -6,26 +6,26 @@ namespace World
 {
 	public class Building : MonoBehaviour
 	{
-		public Door[] doors;
-		public Vector3 averagePosition;
+		public Door[] Doors;
+		[HideInInspector] public Vector3 AveragePosition;
 
 		private void Awake()
 		{
-			foreach (var door in doors)
+			foreach (var door in Doors)
 			{
-				averagePosition += door.transform.position;
+				AveragePosition += door.transform.position;
 			}
 
-			averagePosition /= doors.Length;
+			AveragePosition /= Doors.Length;
 		}
 
 		public Door GetDoorByTargetBuilding(Building building)
 		{
 			List<WeightedItem<Door>> doorList = new List<WeightedItem<Door>>();
 
-			foreach (var possibleDoor in doors)
+			foreach (var possibleDoor in Doors)
 			{
-				var distance = Vector3.Distance(building.averagePosition, possibleDoor.transform.position);
+				var distance = Vector3.Distance(building.AveragePosition, possibleDoor.transform.position);
 				doorList.Add(new WeightedItem<Door>(possibleDoor, 1 / distance));
 			}
 
@@ -36,7 +36,7 @@ namespace World
 		{
 			List<WeightedItem<Door>> doorList = new List<WeightedItem<Door>>();
 
-			foreach (var possibleDoor in building.doors)
+			foreach (var possibleDoor in building.Doors)
 			{
 				var distance = Vector3.Distance(selectedDoor.transform.position, possibleDoor.transform.position);
 				doorList.Add(new WeightedItem<Door>(possibleDoor, Mathf.Pow(1 / distance, 10)));
