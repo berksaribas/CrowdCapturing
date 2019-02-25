@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4213012297661220}
   - component: {fileID: 33342511830591648}
   - component: {fileID: 23563820652646866}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: PathHighligher
   m_TagString: Untagged
   m_Icon: {fileID: 0}

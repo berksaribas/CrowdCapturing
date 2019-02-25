@@ -9,8 +9,8 @@ namespace Control
         private bool isCursorLocked;
 
         void Start()
-        {
-            isCursorLocked = false;
+        {    
+            isCursorLocked = true;
             ToggleCursorMode();
         }
 

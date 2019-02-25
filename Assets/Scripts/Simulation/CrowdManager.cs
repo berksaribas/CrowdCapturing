@@ -14,6 +14,11 @@ namespace Simulation
         private List<Agent> agents;
         private Dictionary<Door, Queue<AgentData>> doorAgentQueue;
 
+        public List<Agent> GetAgents()
+        {
+            return agents;
+        }
+
         private void Awake()
         {
             agents = new List<Agent>();
