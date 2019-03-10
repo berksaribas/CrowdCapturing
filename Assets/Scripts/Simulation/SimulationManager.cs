@@ -5,7 +5,7 @@ namespace Simulation
 {
     public class SimulationManager : MonoBehaviour
     {
-        public float WorldSpeed = 1.0f;
+        public float WorldSpeed = 10f;
         public float WorldTimeSeconds = 0;
 
         private float lastRecordedTime = 0f;

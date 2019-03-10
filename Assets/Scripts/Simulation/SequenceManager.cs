@@ -25,16 +25,17 @@ namespace Simulation
         {
             var removedSequences = new List<Sequence>();
 
+            Debug.Log(sequences.Count);
             foreach (var sequence in sequences)
             {
                 if (SimulationController.Instance.SimulationManager.WorldTimeSeconds >= sequence.StartTime)
                 {
                     removedSequences.Add(sequence);
 
-                    if (SimulationController.Instance.SimulationManager.WorldTimeSeconds < sequence.StartTime + sequence.Duration)
-                    {
+//                    if (SimulationController.Instance.SimulationManager.WorldTimeSeconds < sequence.StartTime + sequence.Duration)
+//                    {
                         activeSequences.Add(sequence);
-                    }
+//                    }
                 }
             }
 
@@ -50,18 +51,24 @@ namespace Simulation
 
             foreach (var sequence in activeSequences)
             {
-                if (SimulationController.Instance.SimulationManager.WorldTimeSeconds > sequence.StartTime + sequence.Duration)
-                {
+//                if (SimulationController.Instance.SimulationManager.WorldTimeSeconds > sequence.StartTime + sequence.Duration)
+//                {
                     removedSequences.Add(sequence);
-                    continue;
-                }
+//                    continue;
+//                }
 
-                SimulationController.Instance.SimulationManager.GenerateCrowds(sequence);
+                var startingDoor = sequence.StartingBuilding.GetDoorByTargetBuilding(sequence.TargetBuilding);
+                var finishingDoor = sequence.StartingBuilding.GetFinishingDoorByTargetBuilding(startingDoor, sequence.TargetBuilding);
+
+                SimulationController.Instance.CrowdManager.CreateAgent(startingDoor, finishingDoor, sequence.ActorMaterialProperty);
+                Debug.Log("45060 Creating Agent");
+//                SimulationController.Instance.SimulationManager.GenerateCrowds(sequence);
             }
 
             foreach (var removedSequence in removedSequences)
             {
                 activeSequences.Remove(removedSequence);
+                Debug.Log("45060 Removing the sequnece");
             }
         }
 
