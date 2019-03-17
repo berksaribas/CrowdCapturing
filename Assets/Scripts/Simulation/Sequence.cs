@@ -21,7 +21,7 @@ namespace Simulation
             StartTime = startTime;
 
             ActorMaterialProperty = new MaterialPropertyBlock();
-            var randomColor = Color.HSVToRGB(Random.Range(0.0f, 1.0f), 0.8f, 1.0f);
+            var randomColor = SequenceColorHelper.GetColor(startingBuilding, targetBuilding);
             ActorMaterialProperty.SetColor("_Color", randomColor);
         }
 

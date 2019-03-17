@@ -94,6 +94,11 @@ namespace Simulation
             GetComponent<NavMeshAgent>().enabled= false;
         }
 
+        public int GetAgentId()
+        {
+            return agentId;
+        }
+        
         public string GetStartingDoorName()
         {
             return startingDoor.gameObject.name;

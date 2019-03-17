@@ -12,6 +12,7 @@ namespace EditorScripts
         
 			EditorGUILayout.LabelField("Agent Starting Door: ", agent.GetStartingDoorName());
 			EditorGUILayout.LabelField("Agent Target Door: ", agent.GetTargetDoorName());
+			EditorGUILayout.LabelField("Agent ID: ", $"{agent.GetAgentId()}");
 		}	
 	}
 }
