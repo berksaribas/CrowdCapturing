@@ -8,24 +8,17 @@ namespace Simulation
 {
     public class Sequence : IComparable<Sequence>
     {
+        public readonly int AgentId;
         public readonly Building StartingBuilding, TargetBuilding;
-        public int TotalOutput;
-        public readonly int StartTime, Duration, CrowdSize;
-        public readonly EasingFunction.Ease Ease;
-        public float ProcessedTime = 0f;
-
-        public float OutputCrowd;
-
+        public readonly int StartTime;
         public readonly MaterialPropertyBlock ActorMaterialProperty;
 
-        public Sequence(Building startingBuilding, Building targetBuilding, int crowdSize, int startTime, int duration, EasingFunction.Ease ease = EasingFunction.Ease.Linear)
+        public Sequence(int agentId, Building startingBuilding, Building targetBuilding, int startTime)
         {
+            AgentId = agentId;
             StartingBuilding = startingBuilding;
             TargetBuilding = targetBuilding;
-            CrowdSize = crowdSize;
             StartTime = startTime;
-            Duration = duration;
-            Ease = ease;
 
             ActorMaterialProperty = new MaterialPropertyBlock();
             var randomColor = Color.HSVToRGB(Random.Range(0.0f, 1.0f), 0.8f, 1.0f);
@@ -35,6 +28,27 @@ namespace Simulation
         public int CompareTo(Sequence other)
         {
             return StartTime.CompareTo(other.StartTime);
+        }
+
+        protected bool Equals(Sequence other)
+        {
+            return AgentId == other.AgentId && StartTime == other.StartTime;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Sequence) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (AgentId * 397) ^ StartTime;
+            }
         }
     }
 }
