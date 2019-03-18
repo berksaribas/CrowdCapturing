@@ -75,8 +75,8 @@ public class SimulationController : MonoBehaviour
 					startTimeSeconds);
 				SequenceManager.InsertSequence(sequence);
 				sequences.Add(sequence);
-				Debug.Log(
-					$"Inserting a sequence for the agent {agent.deviceId} with {startingBuilding} at time {startTimeSeconds}");
+//				Debug.Log(
+//					$"Inserting a sequence for the agent {agent.deviceId} with {startingBuilding} at time {startTimeSeconds}");
 			}
 		}
 

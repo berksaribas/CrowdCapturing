@@ -36,18 +36,25 @@ namespace Simulation
 
 		public void GenerateAgents(Dictionary<int, List<Sequence>> agents)
 		{
+			int i = 0;
 			foreach (var keyValuePair in agents)
 			{
-				var agent = Instantiate(AgentPrefab, transform);
-				agent.GetComponent<NavMeshAgent>().enabled = false;
-				var agentComponent = agent.AddComponent<Agent>();
-				agentComponent.SetAgentId(keyValuePair.Key);
-				agentComponent.SetSequences(keyValuePair.Value);
-				agentIdMap.Add(keyValuePair.Key, agentComponent);
-				this.agents.Add(agentComponent);
+				if (keyValuePair.Value.Count > 0)
+				{
+					i++;
 				
-				agent.SetActive(false);
+					var agent = Instantiate(AgentPrefab, transform);
+					agent.GetComponent<NavMeshAgent>().enabled = false;
+					var agentComponent = agent.AddComponent<Agent>();
+					agentComponent.SetAgentId(keyValuePair.Key);
+					agentComponent.SetSequences(keyValuePair.Value);
+					agentIdMap.Add(keyValuePair.Key, agentComponent);
+					this.agents.Add(agentComponent);
+					
+					agent.SetActive(false);
+				}
 			}
+			Debug.Log($"Created agents: {i}");
 		}
 
 		public void ActivateAgent(int agentId, MaterialPropertyBlock actorMaterialProperty)

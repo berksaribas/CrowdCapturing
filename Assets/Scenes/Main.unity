@@ -586,7 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WorldSpeed: 10
-  WorldTimeSeconds: 32400
+  WorldTimeSeconds: 45000
 --- !u!4 &576324946
 Transform:
   m_ObjectHideFlags: 0

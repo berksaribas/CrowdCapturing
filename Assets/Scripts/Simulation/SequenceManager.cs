@@ -32,6 +32,9 @@ namespace Simulation
 				if (SimulationController.Instance.SimulationManager.WorldTimeSeconds - 2f>= sequence.StartTime)
 				{
 					removedSequences.Add(sequence);
+					var agent = SimulationController.Instance.CrowdManager.GetAgentById(sequence.AgentId);
+					sequence.StartingBuilding.UnregisterAgent(agent);
+					agent.EndSequence();
 				}
 				else if (SimulationController.Instance.SimulationManager.WorldTimeSeconds >= sequence.StartTime)
 				{
