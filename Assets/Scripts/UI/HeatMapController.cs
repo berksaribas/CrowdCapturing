@@ -11,7 +11,7 @@ namespace UI
         public Vector3 TopLeft, BottomRight;
         private const int HeatMapGranularity = 32;
         private Vector3 poolDimensions;
-        private readonly float[] agentHeatMap = new float[HeatMapGranularity * HeatMapGranularity - 1];
+        private readonly float[] agentHeatMap = new float[HeatMapGranularity * HeatMapGranularity];
 
         private void Awake()
         {

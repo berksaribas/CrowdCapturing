@@ -18,11 +18,12 @@ public class SimulationController : MonoBehaviour
 
 	private Dictionary<string, int> buildingIndexMap = new Dictionary<string, int>()
 	{
-		{"UM", 1},
+		{"UM", 0},
+		{"Yurt", 1},
 		{"FENS", 2},
 		{"FASS", 3},
 		{"FMAN", 4},
-		{"Yurt", 6},
+		{"K\u00c3\u00bct\u00c3\u00bcphane", 5},
 	};
 
 	private void Awake()

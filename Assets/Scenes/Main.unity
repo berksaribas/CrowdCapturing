@@ -739,7 +739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7638ec6ecabd45a1aac0cab4a6f3bf1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WorldSpeed: 1
+  WorldSpeed: 10
   WorldTimeSeconds: 44990
 --- !u!4 &576324946
 Transform:
