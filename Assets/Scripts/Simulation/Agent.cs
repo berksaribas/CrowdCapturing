@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using World;
@@ -6,9 +8,12 @@ namespace Simulation
 {
     public class Agent : MonoBehaviour
     {
+        public bool TargetReached = false;
+        
         private NavMeshAgent agent;
         private Door startingDoor, targetDoor;
-        public bool TargetReached = false;
+        private Queue<Sequence> sequences;
+        private int agentId;
 
         private void Awake()
         {
@@ -17,6 +22,29 @@ namespace Simulation
             agent.acceleration = 1000f;
             agent.speed = Random.Range(6f, 11f);
             agent.angularSpeed = 3600f;
+        }
+
+        public void SetSequences(List<Sequence> sequences)
+        {
+            if (this.sequences == null)
+            {
+                this.sequences = new Queue<Sequence>();
+            }
+            
+            foreach (var sequence in sequences)
+            {
+                this.sequences.Enqueue(sequence);
+            }
+            
+            if(sequences.Count > 0)
+            {
+                sequences[0].StartingBuilding.RegisterAgent(this);
+            }
+        }
+
+        public void SetAgentId(int agentId)
+        {
+            this.agentId = agentId;
         }
 
         public void SetTarget(Door door)
@@ -30,8 +58,6 @@ namespace Simulation
             {
                 agent.SetDestination(closestHit.position);
             }
-
-            TargetReached = false;
         }
 
         public void SetStartingPosition(Door door)
@@ -45,6 +71,34 @@ namespace Simulation
             }
         }
 
+        public Sequence GetNextSequence()
+        {
+            return sequences.Any() ? sequences.Peek() : null;
+        }
+
+        public void StartSequence()
+        {
+            var sequence = GetNextSequence();
+            
+            sequence.StartingBuilding.UnregisterAgent(this);
+            GetComponent<Renderer>().enabled = true;
+            TargetReached = false;
+        }
+
+        public void EndSequence()
+        {
+            var sequence = sequences.Dequeue();
+            
+            sequence.TargetBuilding.RegisterAgent(this);
+            GetComponent<Renderer>().enabled = false;
+            GetComponent<NavMeshAgent>().enabled= false;
+        }
+
+        public int GetAgentId()
+        {
+            return agentId;
+        }
+        
         public string GetStartingDoorName()
         {
             return startingDoor.gameObject.name;

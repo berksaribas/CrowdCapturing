@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using Simulation;
 using UnityEngine;
 using Util;
 
@@ -6,11 +9,17 @@ namespace World
 {
 	public class Building : MonoBehaviour
 	{
+		private List<Agent> agents;
 		public Door[] Doors;
 		[HideInInspector] public Vector3 AveragePosition;
 
+		[Util.ReadOnly]
+		public int AgentCount;
+
 		private void Awake()
 		{
+			agents = new List<Agent>();
+			
 			foreach (var door in Doors)
 			{
 				AveragePosition += door.transform.position;
@@ -43,6 +52,18 @@ namespace World
 			}
 
 			return WeightedItem<Door>.Choose(doorList);
+		}
+
+		public void RegisterAgent(Agent agent)
+		{
+			agents.Add(agent);
+			AgentCount = agents.Count;
+		}
+
+		public void UnregisterAgent(Agent agent)
+		{
+			agents.Remove(agent);
+			AgentCount = agents.Count;
 		}
 	}
 }

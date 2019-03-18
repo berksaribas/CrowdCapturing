@@ -5,24 +5,22 @@ namespace Simulation
 {
 	public class AgentData
 	{
-		public Door StartingDoor;
-		public Door TargetDoor;
 		public MaterialPropertyBlock MaterialPropertyBlock;
 		public bool IsCreateData;
-
-		public Agent agent;
+		public Agent Agent;
+		public Door StartingDoor;
 		
-		public AgentData(Door startingDoor, Door targetDoor, MaterialPropertyBlock materialPropertyBlock)
+		public AgentData(Agent agent, MaterialPropertyBlock materialPropertyBlock, Door startingDoor)
 		{
-			StartingDoor = startingDoor;
-			TargetDoor = targetDoor;
 			MaterialPropertyBlock = materialPropertyBlock;
 			IsCreateData = true;
+			Agent = agent;
+			StartingDoor = startingDoor;
 		}
 
 		public AgentData(Agent agent)
 		{
-			this.agent = agent;
+			Agent = agent;
 			IsCreateData = false;
 		}
 	}
