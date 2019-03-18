@@ -8,13 +8,15 @@ namespace Control
 {
     public class AgentSelector : MonoBehaviour
     {
-        [CanBeNull] [NonSerialized] public static GameObject FocusedAgent = null;
+        [CanBeNull] [NonSerialized] public GameObject FocusedAgent = null;
+        
         public GameObject ActorHighlighterPrefab;
         private GameObject agentHighlighter;
+        
         public GameObject PathHighlighterPrefab;
         private readonly List<GameObject> pathHighlighter = new List<GameObject>();
 
-        private void Start()
+        private void Awake()
         {
             agentHighlighter = Instantiate(ActorHighlighterPrefab);
         }
