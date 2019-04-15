@@ -66,11 +66,19 @@ namespace Control
         private void SetCanvas()
         {
             canvas.GetChild(0).GetComponent<Text>().alignment = TextAnchor.UpperLeft;
-            canvas.GetChild(0).GetComponent<Text>().text = FocusedBuilding.gameObject.name;
         }
 
         private void UpdateCanvas()
         {
+            canvas.GetChild(0).GetComponent<Text>().text = String.Join(
+                "\n",
+                new[]
+                {
+                    $"{FocusedBuilding.gameObject.name}",
+                    "",
+                    $"Has {FocusedBuilding.AgentCount.ToString()} agents inside.",
+                }
+            );
         }
     }
 }

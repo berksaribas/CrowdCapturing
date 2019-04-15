@@ -5,6 +5,7 @@ using Simulation;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Util;
 
 namespace Control
 {
@@ -80,18 +81,11 @@ namespace Control
                 "\n",
                 new[]
                 {
-                    "Starting Door:",
-                    FocusedAgent.GetStartingDoorName(),
+                    "From:",
+                    $"{FocusedAgent.GetStartingDoorName()} @ {TimeHelper.ConvertSecondsToString(FocusedAgent.GetNextSequence().StartTime)}",
                     "",
-                    "Starting Time:",
-                    FocusedAgent.GetStartingDoorName(),
-                    "",
-                    "Target Door:",
-                    FocusedAgent.GetTargetDoorName(),
-                    "",
-                    "End Time:",
-                    FocusedAgent.GetTargetDoorName(),
-                    "",
+                    "To:",
+                    $"{FocusedAgent.GetTargetDoorName()}",
                 }
             );
         }

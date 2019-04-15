@@ -9,7 +9,7 @@ namespace World
 {
 	public class Building : MonoBehaviour
 	{
-		private List<Agent> agents;
+		private List<Agent> agents  = new List<Agent>();
 		public Door[] Doors;
 		[HideInInspector] public Vector3 AveragePosition;
 
@@ -17,9 +17,7 @@ namespace World
 		public int AgentCount;
 
 		private void Awake()
-		{
-			agents = new List<Agent>();
-			
+		{			
 			foreach (var door in Doors)
 			{
 				AveragePosition += door.transform.position;
