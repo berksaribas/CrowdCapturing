@@ -27,6 +27,20 @@ namespace Simulation
 		public void MarkAgentArrived()
 		{
 			arrivedAgents ++;
+
+			if (arrivedAgents == agents.Count)
+			{
+				MakeAgentsMoveTargetBuilding();
+			}
+		}
+
+		private void MakeAgentsMoveTargetBuilding()
+		{
+			foreach (var agent in agents)
+			{
+				agent.SetTarget(TargetDoor);
+				agent.State = AgentState.WalkingToTargetDoor;
+			}
 		}
 	}
 }

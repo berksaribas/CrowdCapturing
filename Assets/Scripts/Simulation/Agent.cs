@@ -11,6 +11,7 @@ namespace Simulation
         Idling,
         WaitingEnteringDoor,
         WaitingLeavingDoor,
+        WaitingGroupMembers,
         WalkingToTargetDoor,
         WalkingToMeetingPosition
     }

@@ -198,6 +198,7 @@ namespace Simulation
 					}
 					else if (agent.State == AgentState.WalkingToMeetingPosition)
 					{
+						agent.State = AgentState.WaitingGroupMembers;
 						SimulationController.Instance.GroupManager.GetActiveGroup(agent).MarkAgentArrived();
 					}
 				}
