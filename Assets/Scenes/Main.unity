@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -353,6 +353,7 @@ Transform:
   - {fileID: 1907102562}
   - {fileID: 1906141854}
   - {fileID: 576324946}
+  - {fileID: 869900717}
   - {fileID: 389237783}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -448,11 +449,6 @@ Prefab:
 --- !u!4 &220447387 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4213012297661220, guid: b0499935137af1b4e87db370f375a315,
-    type: 2}
-  m_PrefabInternal: {fileID: 220447386}
---- !u!1 &220447388 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1537969213025516, guid: b0499935137af1b4e87db370f375a315,
     type: 2}
   m_PrefabInternal: {fileID: 220447386}
 --- !u!1 &263727340
@@ -674,7 +670,7 @@ Transform:
   - {fileID: 220447387}
   - {fileID: 46332049}
   m_Father: {fileID: 139849683}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &389237784
 MonoBehaviour:
@@ -687,8 +683,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5eafab0209fd2942994d366952b48cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanvasObject: {fileID: 117301444}
-  AgentHighlighter: {fileID: 220447388}
+  CanvasObject: {fileID: 0}
+  AgentHighlighter: {fileID: 0}
   PathHighlighterPrefab: {fileID: 1537969213025516, guid: 15d66485cd4ff134cb31fc341e14a5e8,
     type: 2}
 --- !u!114 &389237785
@@ -1779,6 +1775,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ToggleKey: 9
+--- !u!1 &869900716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 869900717}
+  - component: {fileID: 869900718}
+  m_Layer: 0
+  m_Name: GroupManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &869900717
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 869900716}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 139849683}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &869900718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 869900716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af55c1d18fe4e9989e48a955ecc11f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &874506025
 GameObject:
   m_ObjectHideFlags: 0
@@ -4416,6 +4452,7 @@ MonoBehaviour:
   SequenceManager: {fileID: 1906141853}
   CrowdManager: {fileID: 1907102561}
   SimulationManager: {fileID: 576324945}
+  GroupManager: {fileID: 869900718}
   Buildings:
   - {fileID: 128057021}
   - {fileID: 1706150428}
