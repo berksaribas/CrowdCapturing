@@ -23,6 +23,11 @@ namespace Simulation
 		{
 			agents.Add(agent);
 		}
+		
+		public void RemoveAgent(Agent agent)
+		{
+			agents.Remove(agent);
+		}
 
 		public void MarkAgentArrived()
 		{

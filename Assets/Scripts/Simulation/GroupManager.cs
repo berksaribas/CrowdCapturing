@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using World;
 
 namespace Simulation
 {
@@ -51,14 +52,47 @@ namespace Simulation
 			return null;
 		}
 
-		public GroupSequence CreateGroup(Agent agent, Sequence sequence)
+		public GroupSequence CreateGroup(Agent agent, Sequence sequence, Door startingDoor)
 		{
-			//TODO: Find a target door
-			//TODO: Find a meeting position
-			//TODO: Create a GroupSequence
-			//TODO: Add that GroupSequence to all included agents in the dictionary
+			Door targetDoor = sequence.StartingBuilding.GetFinishingDoorByTargetBuilding(startingDoor,
+				sequence.TargetBuilding);
 
-			return null;
+			List<Agent> availableAgents = new List<Agent>();
+			foreach (var sequenceGroupingAgent in sequence.GroupingAgents)
+			{
+				if (!activeGroups.ContainsKey(sequenceGroupingAgent))
+				{
+					availableAgents.Add(SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent));
+				}
+			}
+			var totalPosition = Vector3.zero;
+			totalPosition += startingDoor.transform.position;
+			totalPosition += targetDoor.transform.position;
+			
+			foreach (var availableAgent in availableAgents)
+			{
+				totalPosition += availableAgent.transform.position;
+			}
+
+			var meetingPosition = totalPosition / (2 + availableAgents.Count);
+			
+			var groupSequence = new GroupSequence(meetingPosition, targetDoor);
+			groupSequence.AddAgent(agent);
+			activeGroups[agent.GetAgentId()] = groupSequence;
+			
+			foreach (var availableAgent in availableAgents)
+			{
+				groupSequence.AddAgent(availableAgent);
+				activeGroups[availableAgent.GetAgentId()] = groupSequence;
+			}
+
+			return groupSequence;
+		}
+
+		public void RemoveFromGroup(Agent agent)
+		{
+			activeGroups[agent.GetAgentId()].RemoveAgent(agent);
+			activeGroups[agent.GetAgentId()] = null;
 		}
 	}
 }

@@ -148,7 +148,7 @@ namespace Simulation
 			}
 			else if(SimulationController.Instance.GroupManager.CanCreateAGroup(agent, agent.GetNextSequence()))
 			{
-				groupSequence = SimulationController.Instance.GroupManager.CreateGroup(agent, agent.GetNextSequence());
+				groupSequence = SimulationController.Instance.GroupManager.CreateGroup(agent, agent.GetNextSequence(), agentData.StartingDoor);
 			}
 			else
 			{
@@ -170,6 +170,11 @@ namespace Simulation
 		private void ProcessFinishSequenceAgent(AgentData agentData)
 		{
 			var agent = agentData.Agent;
+
+			if (SimulationController.Instance.GroupManager.IsMemberOfAGroup(agent))
+			{
+				SimulationController.Instance.GroupManager.RemoveFromGroup(agent);
+			}
 
 			agent.EndSequence();
 			agent.gameObject.SetActive(false);
