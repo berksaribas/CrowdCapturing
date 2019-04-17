@@ -105,9 +105,6 @@ namespace Simulation
 						case AgentData.DataType.GroupMoveBeforeMeet:
 							ProcessGroupMoveBeforeMeet(agentData);
 							break;
-						case AgentData.DataType.GroupMoveAfterMeet:
-							
-							break;
 						case AgentData.DataType.FinishSequence:
 							ProcessFinishSequenceAgent(agentData);
 							activeAgents.Remove(agent);

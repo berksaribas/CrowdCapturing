@@ -9,7 +9,6 @@ namespace Simulation
 		{
 			IndividualMove,
 			GroupMoveBeforeMeet,
-			GroupMoveAfterMeet,
 			FinishSequence
 		}
 		
