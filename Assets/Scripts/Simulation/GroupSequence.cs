@@ -13,8 +13,8 @@ namespace Simulation
 
 		public GroupSequence(Vector3 meetingPoint, Door targetDoor)
 		{
-			this.MeetingPoint = meetingPoint;
-			this.TargetDoor = targetDoor;
+			MeetingPoint = meetingPoint;
+			TargetDoor = targetDoor;
 			
 			agents = new List<Agent>();
 		}

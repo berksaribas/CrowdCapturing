@@ -12,11 +12,11 @@ namespace Simulation
 			activeGroups = new Dictionary<int, GroupSequence>();
 		}
 
-		public void AssembleGroup(Agent agent, Sequence sequence)
+		public bool CanCreateAGroup(Agent agent, Sequence sequence)
 		{
-			if (activeGroups.ContainsKey(agent.GetAgentId()))
+			if (IsMemberOfAGroup(agent))
 			{
-				return;
+				return false;
 			}
 
 			int includedAgents = 0;
@@ -30,14 +30,35 @@ namespace Simulation
 
 			if (includedAgents == 0)
 			{
-				return;
+				return false;
 			}
-			
-			
+
+			return true;
+		}
+
+		public bool IsMemberOfAGroup(Agent agent)
+		{
+			return activeGroups.ContainsKey(agent.GetAgentId());
+		}
+
+		public GroupSequence GetActiveGroup(Agent agent)
+		{
+			if (activeGroups.ContainsKey(agent.GetAgentId()))
+			{
+				return activeGroups[agent.GetAgentId()];
+			}
+
+			return null;
+		}
+
+		public GroupSequence CreateAGroup(Agent agent, Sequence sequence)
+		{
 			//TODO: Find a target door
 			//TODO: Find a meeting position
 			//TODO: Create a GroupSequence
 			//TODO: Add that GroupSequence to all included agents in the dictionary
+
+			return null;
 		}
 	}
 }

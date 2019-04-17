@@ -14,6 +14,7 @@ public class SimulationController : MonoBehaviour
 	public SequenceManager SequenceManager;
 	public CrowdManager CrowdManager;
 	public SimulationManager SimulationManager;
+	public GroupManager GroupManager;
 	public Building[] Buildings;
 
 	private Dictionary<string, int> buildingIndexMap = new Dictionary<string, int>()
@@ -80,8 +81,6 @@ public class SimulationController : MonoBehaviour
 				}
 				SequenceManager.InsertSequence(sequence);
 				sequences.Add(sequence);
-//				Debug.Log(
-//					$"Inserting a sequence for the agent {agent.deviceId} with {startingBuilding} at time {startTimeSeconds}");
 			}
 		}
 

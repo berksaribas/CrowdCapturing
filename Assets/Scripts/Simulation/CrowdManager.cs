@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
@@ -70,7 +71,18 @@ namespace Simulation
 				doorAgentQueue.Add(startingDoor, new Queue<AgentData>());
 			}
 
-			doorAgentQueue[startingDoor].Enqueue(new AgentData(agent, actorMaterialProperty, startingDoor));
+			if (SimulationController.Instance.GroupManager.CanCreateAGroup(agent, sequence) ||
+			    SimulationController.Instance.GroupManager.IsMemberOfAGroup(agent))
+			{
+				doorAgentQueue[startingDoor].Enqueue(new AgentData(agent, actorMaterialProperty, startingDoor,
+					AgentData.DataType.IndividualMove));
+			}
+			else
+			{
+				doorAgentQueue[startingDoor].Enqueue(new AgentData(agent, actorMaterialProperty, startingDoor,
+					AgentData.DataType.GroupMoveBeforeMeet));
+			}
+			
 		}
 
 		private void ProcessAgentCreateQueue()
@@ -82,37 +94,86 @@ namespace Simulation
 					var agentData = keyValuePair.Value.Dequeue();
 					var agent = agentData.Agent;
 
-					if (agentData.IsCreateData)
+					switch (agentData.Type)
 					{
-						agent.gameObject.SetActive(true);
-						var sequence = agent.GetNextSequence();
-
-						agent.gameObject.GetComponent<NavMeshAgent>().enabled = false;
-
-						var startingDoor = agentData.StartingDoor;
-						
-						var targetDoor =
-							sequence.StartingBuilding.GetFinishingDoorByTargetBuilding(startingDoor,
-								sequence.TargetBuilding);
-
-						agent.SetStartingPosition(startingDoor);
-						agent.SetTarget(targetDoor);
-
-						agent.gameObject.GetComponent<MeshRenderer>().SetPropertyBlock(agentData.MaterialPropertyBlock);
-
-						agent.StartSequence();
-
-						activeAgents.Add(agent);
-					}
-					else
-					{
-						agent.EndSequence();
-						agent.gameObject.SetActive(false);
-
-						activeAgents.Remove(agent);
+						case AgentData.DataType.IndividualMove:
+							ProcessIndividualMoveAgent(agentData);
+							activeAgents.Add(agent);
+							break;
+						case AgentData.DataType.GroupMoveBeforeMeet:
+							ProcessGroupMoveBeforeMeet(agentData);
+							break;
+						case AgentData.DataType.GroupMoveAfterMeet:
+							
+							break;
+						case AgentData.DataType.FinishSequence:
+							ProcessFinishSequenceAgent(agentData);
+							activeAgents.Remove(agent);
+							break;
 					}
 				}
 			}
+		}
+
+		private void ProcessIndividualMoveAgent(AgentData agentData)
+		{
+			var agent = agentData.Agent;
+			
+			agent.gameObject.SetActive(true);
+			var sequence = agent.GetNextSequence();
+
+			agent.gameObject.GetComponent<NavMeshAgent>().enabled = false;
+
+			var startingDoor = agentData.StartingDoor;
+						
+			var targetDoor =
+				sequence.StartingBuilding.GetFinishingDoorByTargetBuilding(startingDoor,
+					sequence.TargetBuilding);
+
+			agent.SetStartingPosition(startingDoor);
+			agent.SetTarget(targetDoor);
+
+			agent.gameObject.GetComponent<MeshRenderer>().SetPropertyBlock(agentData.MaterialPropertyBlock);
+
+			agent.StartSequence();
+		}
+		
+		private void ProcessGroupMoveBeforeMeet(AgentData agentData)
+		{
+			var agent = agentData.Agent;
+			GroupSequence groupSequence = null;
+
+			if (SimulationController.Instance.GroupManager.IsMemberOfAGroup(agent))
+			{
+				groupSequence = SimulationController.Instance.GroupManager.GetActiveGroup(agent);
+			}
+			else if(SimulationController.Instance.GroupManager.CanCreateAGroup(agent, agent.GetNextSequence()))
+			{
+				groupSequence = SimulationController.Instance.GroupManager.CreateAGroup(agent, agent.GetNextSequence());
+			}
+			else
+			{
+				ProcessIndividualMoveAgent(agentData);
+				return;
+			}
+			
+			agent.gameObject.SetActive(true);
+			agent.gameObject.GetComponent<NavMeshAgent>().enabled = false;
+
+			agent.SetStartingPosition(agentData.StartingDoor);
+			agent.SetTarget(groupSequence.MeetingPoint);
+
+			agent.gameObject.GetComponent<MeshRenderer>().SetPropertyBlock(agentData.MaterialPropertyBlock);
+
+			agent.StartSequence();
+		}
+
+		private void ProcessFinishSequenceAgent(AgentData agentData)
+		{
+			var agent = agentData.Agent;
+
+			agent.EndSequence();
+			agent.gameObject.SetActive(false);
 		}
 
 		private void Update()

@@ -60,6 +60,17 @@ namespace Simulation
             }
         }
 
+        public void SetTarget(Vector3 targetPosition)
+        {
+            GetComponent<NavMeshAgent>().enabled = true;
+
+            NavMeshHit closestHit;
+            if (NavMesh.SamplePosition(targetPosition, out closestHit, 100f, NavMesh.AllAreas))
+            {
+                agent.SetDestination(closestHit.position);
+            }
+        }
+
         public void SetStartingPosition(Door door)
         {
             startingDoor = door;
