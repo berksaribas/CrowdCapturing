@@ -104,6 +104,7 @@ namespace Simulation
 							break;
 						case AgentData.DataType.GroupMoveBeforeMeet:
 							ProcessGroupMoveBeforeMeet(agentData);
+							activeAgents.Add(agent);
 							break;
 						case AgentData.DataType.FinishSequence:
 							ProcessFinishSequenceAgent(agentData);

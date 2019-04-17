@@ -8,7 +8,9 @@ namespace Simulation
 	{
 		public Vector3 MeetingPoint;
 		public Door TargetDoor;
-		private List<Agent> agents;
+		public int ArrivedAgents => arrivedAgents;
+
+		public readonly List<Agent> agents;
 		private int arrivedAgents;
 
 		public GroupSequence(Vector3 meetingPoint, Door targetDoor)
