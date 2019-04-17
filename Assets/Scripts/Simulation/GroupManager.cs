@@ -51,7 +51,7 @@ namespace Simulation
 			return null;
 		}
 
-		public GroupSequence CreateAGroup(Agent agent, Sequence sequence)
+		public GroupSequence CreateGroup(Agent agent, Sequence sequence)
 		{
 			//TODO: Find a target door
 			//TODO: Find a meeting position

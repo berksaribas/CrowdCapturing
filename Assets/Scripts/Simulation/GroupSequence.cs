@@ -23,5 +23,10 @@ namespace Simulation
 		{
 			agents.Add(agent);
 		}
+
+		public void MarkAgentArrived()
+		{
+			arrivedAgents ++;
+		}
 	}
 }

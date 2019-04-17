@@ -71,6 +71,8 @@ namespace Simulation
 				doorAgentQueue.Add(startingDoor, new Queue<AgentData>());
 			}
 
+			agent.State = AgentState.WaitingLeavingDoor;
+
 			if (SimulationController.Instance.GroupManager.CanCreateAGroup(agent, sequence) ||
 			    SimulationController.Instance.GroupManager.IsMemberOfAGroup(agent))
 			{
@@ -135,7 +137,7 @@ namespace Simulation
 
 			agent.gameObject.GetComponent<MeshRenderer>().SetPropertyBlock(agentData.MaterialPropertyBlock);
 
-			agent.StartSequence();
+			agent.StartSequence(AgentState.WalkingToTargetDoor);
 		}
 		
 		private void ProcessGroupMoveBeforeMeet(AgentData agentData)
@@ -149,7 +151,7 @@ namespace Simulation
 			}
 			else if(SimulationController.Instance.GroupManager.CanCreateAGroup(agent, agent.GetNextSequence()))
 			{
-				groupSequence = SimulationController.Instance.GroupManager.CreateAGroup(agent, agent.GetNextSequence());
+				groupSequence = SimulationController.Instance.GroupManager.CreateGroup(agent, agent.GetNextSequence());
 			}
 			else
 			{
@@ -165,7 +167,7 @@ namespace Simulation
 
 			agent.gameObject.GetComponent<MeshRenderer>().SetPropertyBlock(agentData.MaterialPropertyBlock);
 
-			agent.StartSequence();
+			agent.StartSequence(AgentState.WalkingToMeetingPosition);
 		}
 
 		private void ProcessFinishSequenceAgent(AgentData agentData)
@@ -181,16 +183,23 @@ namespace Simulation
 			foreach (var agent in activeAgents)
 			{
 				var navMeshAgent = agent.GetComponent<NavMeshAgent>();
-				if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= 1f && !agent.TargetReached)
+				if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= 1f)
 				{
-					agent.TargetReached = true;
-
-					if (!doorAgentQueue.ContainsKey(agent.GetTargetDoor()))
+					if(agent.State == AgentState.WalkingToTargetDoor)
 					{
-						doorAgentQueue.Add(agent.GetTargetDoor(), new Queue<AgentData>());
-					}
+						agent.State = AgentState.WaitingEnteringDoor;
 
-					doorAgentQueue[agent.GetTargetDoor()].Enqueue(new AgentData(agent));
+						if (!doorAgentQueue.ContainsKey(agent.GetTargetDoor()))
+						{
+							doorAgentQueue.Add(agent.GetTargetDoor(), new Queue<AgentData>());
+						}
+
+						doorAgentQueue[agent.GetTargetDoor()].Enqueue(new AgentData(agent));
+					}
+					else if (agent.State == AgentState.WalkingToMeetingPosition)
+					{
+						SimulationController.Instance.GroupManager.GetActiveGroup(agent).MarkAgentArrived();
+					}
 				}
 			}
 

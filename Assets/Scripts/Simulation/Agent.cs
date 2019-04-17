@@ -6,10 +6,19 @@ using World;
 
 namespace Simulation
 {
+    public enum AgentState
+    {
+        Idling,
+        WaitingEnteringDoor,
+        WaitingLeavingDoor,
+        WalkingToTargetDoor,
+        WalkingToMeetingPosition
+    }
+    
     public class Agent : MonoBehaviour
     {
-        public bool TargetReached = false;
-        
+        public AgentState State;
+
         private NavMeshAgent agent;
         private Door startingDoor, targetDoor;
         private Queue<Sequence> sequences;
@@ -22,6 +31,7 @@ namespace Simulation
             agent.acceleration = 1000f;
             agent.speed = Random.Range(6f, 11f);
             agent.angularSpeed = 3600f;
+            State = AgentState.Idling;
         }
 
         public void SetSequences(List<Sequence> sequences)
@@ -87,13 +97,13 @@ namespace Simulation
             return sequences.Any() ? sequences.Peek() : null;
         }
 
-        public void StartSequence()
+        public void StartSequence(AgentState state)
         {
             var sequence = GetNextSequence();
             
             sequence.StartingBuilding.UnregisterAgent(this);
             GetComponent<Renderer>().enabled = true;
-            TargetReached = false;
+            State = state;
         }
 
         public void EndSequence()
@@ -103,6 +113,7 @@ namespace Simulation
             sequence.TargetBuilding.RegisterAgent(this);
             GetComponent<Renderer>().enabled = false;
             GetComponent<NavMeshAgent>().enabled= false;
+            State = AgentState.Idling;
         }
 
         public int GetAgentId()
