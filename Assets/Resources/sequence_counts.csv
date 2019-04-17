@@ -1,0 +1,271 @@
+"from","to","count"
+"UM","Yurt",178578
+"Yurt","UM",145593
+"FENS","UM",96660
+"UM","FENS",96169
+"FASS","FENS",84487
+"FENS","FASS",82774
+"Yurt","FENS",67387
+"FENS","Yurt",66875
+"UM","FMAN",58568
+"FMAN","UM",58484
+"UM","FASS",48058
+"Kütüphane","FASS",44011
+"FASS","UM",43979
+"Yurt","FASS",41719
+"FASS","Kütüphane",41025
+"FASS","Yurt",38373
+"FMAN","Yurt",34034
+"Yurt","FMAN",31076
+"FENS","FMAN",26305
+"UM","Kütüphane",25046
+"FMAN","FENS",24817
+"Main","Yurt",23233
+"CP","Main",22794
+"FENS","Kütüphane",21005
+"FENS","CP",18936
+"Kütüphane","UM",18850
+"FASS","Main",18809
+"Kütüphane","FENS",18587
+"SM","Yurt",18195
+"FASS","CP",17474
+"CP","FASS",17419
+"FMAN","FASS",17358
+"Kütüphane","Yurt",16579
+"Yurt","Main",16346
+"FASS","FMAN",16136
+"Yurt","SM",15493
+"Yurt","CP",15419
+"Yurt","Tören",14939
+"Yurt","President House",13498
+"Yurt","Kütüphane",13470
+"Tören","Yurt",12829
+"Sport Center","Yurt",12706
+"UM","CP",12357
+"CP","Yurt",12310
+"President House","Yurt",11730
+"FENS","Main",9951
+"Tören","FMAN",9089
+"FMAN","Tören",8988
+"UM","Main",8807
+"Yurt","Sport Center",8732
+"Main","UM",8179
+"FENS","SUNUM",8124
+"Main","FASS",7408
+"SUNUM","FENS",7305
+"Kütüphane","CP",7263
+"UM","Tören",7067
+"FMAN","Kütüphane",6889
+"CP","UM",6670
+"UM","Rektörlük",6619
+"CP","FENS",6399
+"Main","FENS",6228
+"Kütüphane","FMAN",5770
+"Kütüphane","Main",5710
+"UM","SM",5241
+"Tören","UM",5233
+"FMAN","Main",4866
+"Main","CP",4761
+"Lake","Yurt",4742
+"SM","UM",4671
+"Rektörlük","UM",4577
+"Main","FMAN",4211
+"FMAN","CP",4021
+"SM","FASS",3842
+"Sport Center","UM",3768
+"FASS","SM",3690
+"UM","Sport Center",3682
+"CP","Kütüphane",3419
+"UM","SUNUM",3327
+"Yurt","Lake",3176
+"Main","Kütüphane",3088
+"SUNUM","UM",3081
+"Rektörlük","FASS",3071
+"SGM","Yurt",3024
+"Tören","Sport Center",2938
+"Tören","Main",2472
+"UM","Lake",2370
+"Lake","UM",2354
+"FASS","Rektörlük",2265
+"Yurt","SGM",2167
+"Lake","FASS",2063
+"FASS","Lake",2046
+"FENS","Tören",1982
+"FMAN","Sport Center",1949
+"FENS","Lake",1906
+"Tören","FENS",1842
+"UM","SGM",1825
+"CP","FMAN",1781
+"FENS","SM",1645
+"Tören","FASS",1643
+"Sport Center","FMAN",1641
+"Lake","Main",1599
+"SM","Main",1585
+"FMAN","Rektörlük",1569
+"President House","UM",1540
+"Lake","Kütüphane",1529
+"SUNUM","CP",1528
+"SM","FENS",1524
+"FASS","Sport Center",1501
+"SGM","Sport Center",1480
+"Lake","FENS",1429
+"SM","CP",1401
+"Main","SM",1370
+"SGM","UM",1360
+"Rektörlük","Sport Center",1348
+"FENS","Rektörlük",1322
+"Yurt","Rektörlük",1320
+"SUNUM","Yurt",1315
+"FASS","Tören",1282
+"Main","Tören",1278
+"Kütüphane","Lake",1241
+"Yurt","SUNUM",1230
+"Rektörlük","Kütüphane",1224
+"Sport Center","Tören",1210
+"Rektörlük","FMAN",1188
+"Rektörlük","Yurt",1171
+"UM","President House",1170
+"Sport Center","SGM",1155
+"Sport Center","FASS",1138
+"FENS","Sport Center",1127
+"Tören","Lake",1125
+"FMAN","Lake",1112
+"SUNUM","FASS",1111
+"CP","SM",1079
+"President House","Main",1072
+"Tören","CP",1033
+"Sport Center","Main",1032
+"President House","FENS",1018
+"Lake","FMAN",1014
+"President House","FASS",1011
+"Main","Rektörlük",992
+"CP","Lake",972
+"SM","President House",963
+"Rektörlük","Main",962
+"Kütüphane","Rektörlük",917
+"Sport Center","Lake",908
+"FASS","SUNUM",904
+"Rektörlük","FENS",897
+"Main","Lake",886
+"CP","SUNUM",878
+"FMAN","SM",876
+"admin","Rektörlük",767
+"Sport Center","FENS",765
+"SM","FMAN",754
+"FMAN","SGM",733
+"Rektörlük","admin",718
+"Rektörlük","SGM",686
+"Tören","Kütüphane",684
+"Lake","Sport Center",680
+"Lake","Tören",651
+"CP","Tören",648
+"Sport Center","CP",639
+"Tören","SGM",638
+"Lake","CP",636
+"SUNUM","Main",629
+"President House","SM",622
+"President House","CP",612
+"SGM","Main",609
+"Kütüphane","Sport Center",601
+"FASS","SGM",589
+"Main","SUNUM",572
+"FENS","President House",564
+"Main","President House",563
+"Sport Center","Kütüphane",558
+"Rektörlük","CP",553
+"FASS","President House",531
+"CP","Sport Center",528
+"Main","Sport Center",503
+"SUNUM","Kütüphane",498
+"SM","Kütüphane",489
+"SGM","FMAN",483
+"President House","FMAN",459
+"Kütüphane","Tören",456
+"SGM","FASS",452
+"FENS","SGM",452
+"Kütüphane","SUNUM",434
+"Lake","SGM",420
+"FMAN","SUNUM",402
+"Rektörlük","Lake",399
+"CP","Rektörlük",393
+"President House","Kütüphane",390
+"CP","President House",389
+"Kütüphane","SM",387
+"SGM","CP",374
+"Main","SGM",361
+"Tören","SM",357
+"President House","Sport Center",351
+"Sport Center","Rektörlük",351
+"SGM","Lake",329
+"SGM","FENS",329
+"SUNUM","FMAN",328
+"SGM","Kütüphane",304
+"Tören","Rektörlük",300
+"President House","Tören",290
+"SGM","Tören",287
+"FMAN","President House",286
+"Kütüphane","President House",265
+"SGM","Rektörlük",253
+"CP","SGM",252
+"SM","Tören",252
+"Kütüphane","SGM",250
+"Rektörlük","Tören",209
+"President House","Lake",188
+"Tören","President House",170
+"SM","Rektörlük",165
+"Sport Center","SM",160
+"SM","Lake",152
+"Lake","SM",143
+"SM","Sport Center",141
+"Rektörlük","SM",133
+"Lake","Rektörlük",128
+"Sport Center","President House",126
+"Tören","SUNUM",106
+"SM","SUNUM",101
+"Lake","President House",93
+"SUNUM","SM",91
+"SGM","SM",86
+"President House","SGM",77
+"SM","SGM",73
+"admin","UM",69
+"UM","admin",67
+"SUNUM","Tören",53
+"President House","Rektörlük",51
+"Rektörlük","SUNUM",48
+"SUNUM","Rektörlük",47
+"SGM","President House",36
+"admin","FASS",35
+"Rektörlük","President House",35
+"SUNUM","Lake",35
+"FASS","admin",33
+"President House","SUNUM",33
+"SUNUM","SGM",31
+"SUNUM","Sport Center",29
+"SGM","SUNUM",29
+"Lake","SUNUM",28
+"Sport Center","SUNUM",24
+"FMAN","admin",19
+"admin","FMAN",18
+"admin","Kütüphane",15
+"Yurt","admin",15
+"SUNUM","President House",15
+"Kütüphane","admin",13
+"admin","FENS",11
+"admin","Main",11
+"FENS","admin",10
+"admin","Yurt",10
+"admin","CP",8
+"Main","admin",8
+"admin","Tören",7
+"admin","SGM",7
+"Tören","admin",5
+"CP","admin",5
+"admin","SM",5
+"admin","Sport Center",4
+"Lake","admin",4
+"SM","admin",4
+"admin","Lake",3
+"SGM","admin",3
+"President House","admin",1
+"admin","SUNUM",1
+"SUNUM","admin",1

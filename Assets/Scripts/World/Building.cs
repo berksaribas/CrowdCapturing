@@ -9,6 +9,7 @@ namespace World
 {
 	public class Building : MonoBehaviour
 	{
+		public string DataAlias;
 		private List<Agent> agents  = new List<Agent>();
 		public Door[] Doors;
 		[HideInInspector] public Vector3 AveragePosition;

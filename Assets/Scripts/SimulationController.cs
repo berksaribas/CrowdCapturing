@@ -23,7 +23,7 @@ public class SimulationController : MonoBehaviour
 		{"FENS", 2},
 		{"FASS", 3},
 		{"FMAN", 4},
-		{"K\u00c3\u00bct\u00c3\u00bcphane", 5},
+		{"IC", 5},
 	};
 
 	private void Awake()
