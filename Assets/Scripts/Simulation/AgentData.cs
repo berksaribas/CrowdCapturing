@@ -5,15 +5,22 @@ namespace Simulation
 {
 	public class AgentData
 	{
-		public MaterialPropertyBlock MaterialPropertyBlock;
-		public bool IsCreateData;
-		public Agent Agent;
-		public Door StartingDoor;
+		public enum DataType
+		{
+			IndividualMove,
+			GroupMoveBeforeMeet,
+			FinishSequence
+		}
 		
-		public AgentData(Agent agent, MaterialPropertyBlock materialPropertyBlock, Door startingDoor)
+		public readonly MaterialPropertyBlock MaterialPropertyBlock;
+		public readonly Agent Agent;
+		public readonly Door StartingDoor;
+		public readonly DataType Type;
+		
+		public AgentData(Agent agent, MaterialPropertyBlock materialPropertyBlock, Door startingDoor, DataType type)
 		{
 			MaterialPropertyBlock = materialPropertyBlock;
-			IsCreateData = true;
+			Type = type;
 			Agent = agent;
 			StartingDoor = startingDoor;
 		}
@@ -21,7 +28,7 @@ namespace Simulation
 		public AgentData(Agent agent)
 		{
 			Agent = agent;
-			IsCreateData = false;
+			Type = DataType.FinishSequence;
 		}
 	}
 }

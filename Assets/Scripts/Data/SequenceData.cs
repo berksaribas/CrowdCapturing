@@ -11,6 +11,8 @@ namespace DefaultNamespace
         public string startDate;
         [JsonProperty("end_date")]
         public string endDate;
+        [JsonProperty("groups_with")]
+        public int[] groupsWith;
         
         public int CompareTo(SequenceData other)
         {

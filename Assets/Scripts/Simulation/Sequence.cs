@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Util;
 using World;
@@ -12,6 +13,7 @@ namespace Simulation
         public readonly Building StartingBuilding, TargetBuilding;
         public readonly int StartTime;
         public readonly MaterialPropertyBlock ActorMaterialProperty;
+        public readonly List<int> GroupingAgents;
 
         public Sequence(int agentId, Building startingBuilding, Building targetBuilding, int startTime)
         {
@@ -23,8 +25,15 @@ namespace Simulation
             ActorMaterialProperty = new MaterialPropertyBlock();
             var randomColor = SequenceColorHelper.GetColor(startingBuilding, targetBuilding);
             ActorMaterialProperty.SetColor("_Color", randomColor);
+            
+            GroupingAgents = new List<int>();
         }
 
+        public void AddGroupingAgent(int id)
+        {
+            GroupingAgents.Add(id);
+        }
+        
         public int CompareTo(Sequence other)
         {
             return StartTime.CompareTo(other.StartTime);

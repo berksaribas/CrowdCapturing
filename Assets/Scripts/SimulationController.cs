@@ -14,6 +14,7 @@ public class SimulationController : MonoBehaviour
 	public SequenceManager SequenceManager;
 	public CrowdManager CrowdManager;
 	public SimulationManager SimulationManager;
+	public GroupManager GroupManager;
 	public Building[] Buildings;
 
 	private Dictionary<string, int> buildingIndexMap = new Dictionary<string, int>()
@@ -37,13 +38,13 @@ public class SimulationController : MonoBehaviour
 			Instance = this;
 		}
 
-		TextAsset mytxtData = (TextAsset) Resources.Load("json");
+		TextAsset mytxtData = (TextAsset) Resources.Load("json2");
 		string txt = mytxtData.text;
 
 		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(txt);
 
 		var agentsAndSequences = new Dictionary<int, List<Sequence>>();
-		for (var i = 1; i < agents.Length; i++)
+		for (var i = 0; i < agents.Length; i++)
 		{
 			ConvertAgentDataToSequence(agents[i], agentsAndSequences);
 		}
@@ -74,10 +75,12 @@ public class SimulationController : MonoBehaviour
 
 				var sequence = new Sequence(int.Parse(agent.deviceId), startingBuilding, targetBuilding,
 					startTimeSeconds);
+				foreach (var id in nextAgentSequence.groupsWith)
+				{
+					sequence.AddGroupingAgent(id);
+				}
 				SequenceManager.InsertSequence(sequence);
 				sequences.Add(sequence);
-//				Debug.Log(
-//					$"Inserting a sequence for the agent {agent.deviceId} with {startingBuilding} at time {startTimeSeconds}");
 			}
 		}
 

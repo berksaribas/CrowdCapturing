@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using Simulation;
 using UnityEngine;
 using Util;
@@ -9,8 +7,8 @@ namespace World
 {
 	public class Building : MonoBehaviour
 	{
+		private List<Agent> agents = new List<Agent>();
 		public string DataAlias;
-		private List<Agent> agents  = new List<Agent>();
 		public Door[] Doors;
 		[HideInInspector] public Vector3 AveragePosition;
 
