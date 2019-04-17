@@ -33,6 +33,8 @@ namespace Simulation
 		{
 			arrivedAgents ++;
 
+			Debug.Log("A group member has arrived to the meeting point!");
+			
 			if (arrivedAgents == agents.Count)
 			{
 				MakeAgentsMoveTargetBuilding();
@@ -41,6 +43,8 @@ namespace Simulation
 
 		private void MakeAgentsMoveTargetBuilding()
 		{
+			Debug.Log("Group members are going to the target building together!");
+
 			foreach (var agent in agents)
 			{
 				agent.SetTarget(TargetDoor);

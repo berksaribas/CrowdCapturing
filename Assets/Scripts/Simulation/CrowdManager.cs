@@ -77,12 +77,12 @@ namespace Simulation
 			    SimulationController.Instance.GroupManager.IsMemberOfAGroup(agent))
 			{
 				doorAgentQueue[startingDoor].Enqueue(new AgentData(agent, actorMaterialProperty, startingDoor,
-					AgentData.DataType.IndividualMove));
+					AgentData.DataType.GroupMoveBeforeMeet));
 			}
 			else
 			{
 				doorAgentQueue[startingDoor].Enqueue(new AgentData(agent, actorMaterialProperty, startingDoor,
-					AgentData.DataType.GroupMoveBeforeMeet));
+					AgentData.DataType.IndividualMove));
 			}
 			
 		}
@@ -144,14 +144,17 @@ namespace Simulation
 
 			if (SimulationController.Instance.GroupManager.IsMemberOfAGroup(agent))
 			{
+				Debug.Log("Already a member of a group!");
 				groupSequence = SimulationController.Instance.GroupManager.GetActiveGroup(agent);
 			}
 			else if(SimulationController.Instance.GroupManager.CanCreateAGroup(agent, agent.GetNextSequence()))
 			{
+				Debug.Log("Creating a group!");
 				groupSequence = SimulationController.Instance.GroupManager.CreateGroup(agent, agent.GetNextSequence(), agentData.StartingDoor);
 			}
 			else
 			{
+				Debug.Log("Act as individual");
 				ProcessIndividualMoveAgent(agentData);
 				return;
 			}

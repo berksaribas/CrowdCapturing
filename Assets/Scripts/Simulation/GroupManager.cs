@@ -86,6 +86,8 @@ namespace Simulation
 				activeGroups[availableAgent.GetAgentId()] = groupSequence;
 			}
 
+			Debug.Log("A group is created!");
+			
 			return groupSequence;
 		}
 
