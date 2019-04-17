@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using DefaultNamespace;
 using Newtonsoft.Json;
-using NUnit.Framework.Constraints;
 using Simulation;
 using UnityEngine;
-using Util;
 using World;
 
 public class SimulationController : MonoBehaviour
@@ -37,18 +35,21 @@ public class SimulationController : MonoBehaviour
 		{
 			Instance = this;
 		}
+	}
 
-		TextAsset mytxtData = (TextAsset) Resources.Load("json2");
-		string txt = mytxtData.text;
+	private void Start()
+	{
+		var mytxtData = (TextAsset) Resources.Load("json2");
+		var txt = mytxtData.text;
 
 		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(txt);
 
 		var agentsAndSequences = new Dictionary<int, List<Sequence>>();
-		for (var i = 0; i < agents.Length; i++)
+		foreach (var agent in agents)
 		{
-			ConvertAgentDataToSequence(agents[i], agentsAndSequences);
+			ConvertAgentDataToSequence(agent, agentsAndSequences);
 		}
-
+		
 		CrowdManager.GenerateAgents(agentsAndSequences);
 	}
 

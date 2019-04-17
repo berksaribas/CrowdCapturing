@@ -5,12 +5,7 @@ namespace Simulation
 {
 	public class SequenceManager : MonoBehaviour
 	{
-		private List<Sequence> sequences;
-
-		private void Awake()
-		{
-			sequences = new List<Sequence>();
-		}
+		private List<Sequence> sequences = new List<Sequence>();
 
 		public void InsertSequence(Sequence sequence)
 		{

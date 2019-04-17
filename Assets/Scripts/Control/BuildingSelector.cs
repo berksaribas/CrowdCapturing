@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
-using Newtonsoft.Json.Utilities;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -68,7 +67,7 @@ namespace Control
                 buildingInfos.Add(new BuildingInfo
                 {
                     Building = building,
-                    OrderInData = buildingAliases.IndexOf(building.DataAlias)
+                    OrderInData = Array.IndexOf(buildingAliases, building.DataAlias)
                 });
             }
         }
