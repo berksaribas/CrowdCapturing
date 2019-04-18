@@ -69,6 +69,8 @@ namespace Simulation
             {
                 agent.SetDestination(closestHit.position);
             }
+
+            agent.isStopped = false;
         }
 
         public void SetTarget(Vector3 targetPosition)
@@ -80,6 +82,8 @@ namespace Simulation
             {
                 agent.SetDestination(closestHit.position);
             }
+            
+            agent.isStopped = false;
         }
 
         public void SetStartingPosition(Door door)
@@ -115,6 +119,16 @@ namespace Simulation
             GetComponent<Renderer>().enabled = false;
             GetComponent<NavMeshAgent>().enabled= false;
             State = AgentState.Idling;
+        }
+        
+        public float GetSpeed()
+        {
+            return agent.speed;
+        }
+
+        public void SetSpeed(float speed)
+        {
+            agent.speed = speed;
         }
 
         public int GetAgentId()
