@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using JetBrains.Annotations;
 using Simulation;
 using UI;
@@ -14,20 +15,17 @@ namespace Control
     {
         [CanBeNull] [NonSerialized] public Agent FocusedAgent = null;
 
-        public GameObject CanvasObject;
-        private RectTransform canvas;
+        public GroupManager GroupManager;
 
-        public GameObject AgentHighlighter;
-        private MeshRenderer agentHighlighter;
+        public Text IdleText, StaticText, DynamicText;
+
+        public MeshRenderer AgentHighlighter;
 
         public GameObject PathHighlighterPrefab;
         private readonly List<GameObject> pathHighlighter = new List<GameObject>();
 
         private void Awake()
         {
-            agentHighlighter = AgentHighlighter.GetComponent<MeshRenderer>();
-            canvas = CanvasObject.GetComponent<RectTransform>();
-
             ResetCanvas();
         }
 
@@ -42,10 +40,9 @@ namespace Control
             if (!Input.GetMouseButtonDown(0))
                 return;
 
-            RaycastHit hit;
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask(new string[] {"Agents"})))
+            if (Physics.Raycast(ray, out var hit, float.MaxValue, LayerMask.GetMask("Agents")))
             {
                 if (FocusedAgent != null)
                 {
@@ -54,7 +51,7 @@ namespace Control
 
                 FocusedAgent = hit.transform.gameObject.GetComponent<Agent>();
 
-                agentHighlighter.enabled = true;
+                AgentHighlighter.enabled = true;
                 ConfigurePathHighlighterTo(FocusedAgent);
 
                 SetCanvas();
@@ -62,7 +59,7 @@ namespace Control
             else
             {
                 FocusedAgent = null;
-                agentHighlighter.enabled = false;
+                AgentHighlighter.enabled = false;
                 ClearPathHighlighter();
 
                 ResetCanvas();
@@ -71,28 +68,56 @@ namespace Control
 
         private void ResetCanvas()
         {
-            canvas.GetChild(0).GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
-            canvas.GetChild(0).GetComponent<Text>().text = "Select An Agent";
+            IdleText.enabled = true;
+            StaticText.enabled = false;
+            DynamicText.enabled = false;
         }
 
         private void SetCanvas()
         {
-            canvas.GetChild(0).GetComponent<Text>().alignment = TextAnchor.UpperLeft;
-            canvas.GetChild(0).GetComponent<Text>().text = String.Join(
-                "\n",
-                new[]
-                {
-                    "From:",
-                    $"{FocusedAgent.GetStartingDoorName()} @ {TimeHelper.ConvertSecondsToString(FocusedAgent.GetNextSequence().StartTime)}",
-                    "",
-                    "To:",
-                    $"{FocusedAgent.GetTargetDoorName()}",
-                }
-            );
+            IdleText.enabled = false;
+            StaticText.enabled = true;
+            DynamicText.enabled = true;
+
+            var text = new StringBuilder();
+
+            StaticText.text = text.ToString();
         }
 
         private void UpdateCanvas()
         {
+            var text = new StringBuilder();
+
+            text.Append($"From: {FocusedAgent.GetStartingDoorName()}");
+            text.Append($" @ {TimeHelper.ConvertSecondsToString(FocusedAgent.GetNextSequence().StartTime)}\n\n");
+
+            if (GroupManager.IsMemberOfAGroup(FocusedAgent))
+            {
+                switch (FocusedAgent.State)
+                {
+                    case AgentState.WalkingToMeetingPosition:
+                        text.Append("Walking to meeting position.\n");
+                        break;
+
+                    case AgentState.WaitingGroupMembers:
+                        text.Append("Waiting for other group members.\n");
+                        break;
+
+                    case AgentState.WalkingToTargetDoor:
+                        text.Append($"Walking to the door '{FocusedAgent.GetTargetDoorName()}' with a group.\n");
+                        break;
+
+                    default:
+                        text.Append($"MISSING STATE STATUS! STATUS = {FocusedAgent.State}\n");
+                        break;
+                }
+            }
+            else
+            {
+                text.Append($"Walking to the door '{FocusedAgent.GetTargetDoorName()}'.\n");
+            }
+
+            DynamicText.text = text.ToString();
         }
 
         private void ClearPathHighlighter()

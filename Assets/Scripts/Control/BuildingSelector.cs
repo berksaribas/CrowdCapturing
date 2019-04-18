@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using JetBrains.Annotations;
 using UI;
 using UnityEngine;
@@ -18,15 +19,11 @@ namespace Control
             public int OrderInData;
         }
 
-        public Building[] Buildings;
-
         [CanBeNull] [NonSerialized] public Building FocusedBuilding = null;
 
-        public GameObject CanvasObject;
-        private RectTransform canvas;
+        public Text IdleText, StaticText, DynamicText;
 
-        public GameObject HighlighterObject;
-        private MeshRenderer highlightBox;
+        public MeshRenderer BuildingHighlighter;
 
         public List<GameObject> WeightHighlighters = new List<GameObject>();
 
@@ -36,9 +33,6 @@ namespace Control
 
         private void Awake()
         {
-            canvas = CanvasObject.GetComponent<RectTransform>();
-            highlightBox = HighlighterObject.GetComponent<MeshRenderer>();
-
             ResetCanvas();
 
             ReadSequenceCounts();
@@ -61,8 +55,11 @@ namespace Control
                     .ToArray();
                 sequenceWeights[buildingAliases[i - 1]] = weights;
             }
+        }
 
-            foreach (var building in Buildings)
+        void Start()
+        {
+            foreach (var building in SimulationController.Instance.Buildings)
             {
                 buildingInfos.Add(new BuildingInfo
                 {
@@ -85,21 +82,21 @@ namespace Control
             RaycastHit hit;
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask(new string[] {"Buildings"})))
+            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Buildings")))
             {
                 FocusedBuilding = hit.transform.gameObject.GetComponent<Building>();
 
-                highlightBox.enabled = true;
-                highlightBox.transform.position = FocusedBuilding.transform.position;
-                highlightBox.transform.rotation = FocusedBuilding.transform.rotation;
-                highlightBox.transform.localScale = FocusedBuilding.GetComponent<BoxCollider>().size;
+                BuildingHighlighter.enabled = true;
+                BuildingHighlighter.transform.position = FocusedBuilding.transform.position;
+                BuildingHighlighter.transform.rotation = FocusedBuilding.transform.rotation;
+                BuildingHighlighter.transform.localScale = FocusedBuilding.GetComponent<BoxCollider>().size;
 
                 WeightHighlighters.ForEach(Destroy);
                 WeightHighlighters.Clear();
-                
+
                 var weights = sequenceWeights[FocusedBuilding.DataAlias];
 
-                foreach (var buildingInfo in buildingInfos)
+                foreach (var buildingInfo in buildingInfos.Where(info => info.Building.name != FocusedBuilding.name))
                 {
                     WeightHighlighters.Add(
                         HighlightLine.CreateNew(
@@ -116,7 +113,7 @@ namespace Control
             else
             {
                 FocusedBuilding = null;
-                highlightBox.enabled = false;
+                BuildingHighlighter.enabled = false;
 
                 ResetCanvas();
 
@@ -127,25 +124,37 @@ namespace Control
 
         private void ResetCanvas()
         {
-            canvas.GetChild(0).GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
-            canvas.GetChild(0).GetComponent<Text>().text = "Select A Building";
+            IdleText.enabled = true;
+            StaticText.enabled = false;
+            DynamicText.enabled = false;
         }
 
         private void SetCanvas()
         {
-            canvas.GetChild(0).GetComponent<Text>().alignment = TextAnchor.UpperLeft;
+            IdleText.enabled = false;
+            StaticText.enabled = true;
+            DynamicText.enabled = true;
+            
+            var text = new StringBuilder();
+
+            text.Append($"{FocusedBuilding.name} [{FocusedBuilding.DataAlias}]\n\n");
+            text.Append($"Weights with other buildings:\n");
+
+            var weights = sequenceWeights[FocusedBuilding.DataAlias];
+
+            foreach (var info in buildingInfos.Where(info => info.Building.name != FocusedBuilding.name))
+            {
+                text.Append($"{info.Building.name} [{info.Building.DataAlias}]: \t{weights[info.OrderInData]}\n");
+            }
+
+            StaticText.text = text.ToString();
         }
 
         private void UpdateCanvas()
         {
-            canvas.GetChild(0).GetComponent<Text>().text = String.Join(
+            DynamicText.text = String.Join(
                 "\n",
-                new[]
-                {
-                    $"{FocusedBuilding.name} [{FocusedBuilding.DataAlias}]",
-                    "",
-                    $"Has {FocusedBuilding.AgentCount.ToString()} agents inside.",
-                }
+                $"Has {FocusedBuilding.AgentCount} agents inside."
             );
         }
     }
