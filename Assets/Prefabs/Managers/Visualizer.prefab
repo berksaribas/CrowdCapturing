@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4504184349075496600}
   - component: {fileID: 4504184349075496599}
+  - component: {fileID: 8224092929602871171}
   - component: {fileID: 4504184349075496598}
+  - component: {fileID: 2995113322257477809}
   m_Layer: 0
   m_Name: Visualizer
   m_TagString: Untagged
@@ -48,11 +50,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5eafab0209fd2942994d366952b48cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroupManager: {fileID: 0}
-  IdleText: {fileID: 0}
-  StaticText: {fileID: 0}
-  DynamicText: {fileID: 0}
-  AgentHighlighter: {fileID: 4505681051855256825}
+  FocusedAgent: {fileID: 0}
+--- !u!114 &8224092929602871171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4504184349075496601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29ef606973296fb47a1b6f97f2a1e3a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentSelectorObject: {fileID: 4504184349075496599}
+  HighlighterObject: {fileID: 4526580411389247943}
   PathHighlighterPrefab: {fileID: 1537969213025516, guid: 15d66485cd4ff134cb31fc341e14a5e8,
     type: 3}
 --- !u!114 &4504184349075496598
@@ -67,11 +79,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d36b7dc2234fc19f76f31878173175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IdleText: {fileID: 0}
-  StaticText: {fileID: 0}
-  DynamicText: {fileID: 0}
-  BuildingHighlighter: {fileID: 4528141706602880795}
-  WeightHighlighters: []
+  FocusedBuilding: {fileID: 0}
+--- !u!114 &2995113322257477809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4504184349075496601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d2615e4bd524b898a8382ced63a30d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BuildingSelectorObject: {fileID: 4504184349075496598}
+  HighlighterObject: {fileID: 4528141706602880795}
 --- !u!1001 &322558004278321776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -195,22 +217,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 23563820652646866, guid: b0499935137af1b4e87db370f375a315,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0499935137af1b4e87db370f375a315, type: 3}
---- !u!1 &4505681051855256825 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1537969213025516, guid: b0499935137af1b4e87db370f375a315,
-    type: 3}
-  m_PrefabInstance: {fileID: 4504184349512716309}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4507228545750919985 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4213012297661220, guid: b0499935137af1b4e87db370f375a315,
+    type: 3}
+  m_PrefabInstance: {fileID: 4504184349512716309}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4526580411389247943 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 23563820652646866, guid: b0499935137af1b4e87db370f375a315,
     type: 3}
   m_PrefabInstance: {fileID: 4504184349512716309}
   m_PrefabAsset: {fileID: 0}

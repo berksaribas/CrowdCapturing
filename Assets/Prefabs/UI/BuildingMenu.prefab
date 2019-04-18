@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 224963860284187288}
   - component: {fileID: 222251348460022540}
   - component: {fileID: 114864179664925490}
+  - component: {fileID: 6255998609039710468}
   m_Layer: 5
   m_Name: BuildingMenu
   m_TagString: Untagged
@@ -75,6 +76,22 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &6255998609039710468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791350988845172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91dfff9a089410fadd7c90ffb28ee06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BuildingSelectorObject: {fileID: 0}
+  IdleText: {fileID: 6492449209945958971}
+  StaticText: {fileID: 7105900951090143416}
+  DynamicText: {fileID: 624763578938508120}
 --- !u!1 &4513293283050004871
 GameObject:
   m_ObjectHideFlags: 0

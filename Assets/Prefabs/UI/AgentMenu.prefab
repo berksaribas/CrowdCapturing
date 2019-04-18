@@ -167,6 +167,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e7a31725a4dcf4eacf0577a82d680d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GroupManager: {fileID: 0}
+  AgentSelectorObject: {fileID: 0}
+  IdleText: {fileID: 1591428080793533586}
+  StaticText: {fileID: 114463842152088694}
+  DynamicText: {fileID: 436274314973124855}
 --- !u!1 &5833165360956640521
 GameObject:
   m_ObjectHideFlags: 0

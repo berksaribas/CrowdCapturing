@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using DefaultNamespace;
 using Newtonsoft.Json;
 using Simulation;
 using UnityEngine;
 using World;
+using Random = UnityEngine.Random;
 
 public class SimulationController : MonoBehaviour
 {
@@ -14,17 +18,19 @@ public class SimulationController : MonoBehaviour
 	public SimulationManager SimulationManager;
 	public GroupManager GroupManager;
 	public Building[] Buildings;
-
-	private Dictionary<string, int> buildingIndexMap = new Dictionary<string, int>();
+	
+	public struct BuildingInfo
+	{
+		public Building Building;
+		public int OrderInData;
+		public float[] Weights;
+	}
+	
+	[HideInInspector]
+	public Dictionary<string, BuildingInfo> BuildingInfoMap;
 	
 	private void Awake()
 	{
-		for (var index = 0; index < Buildings.Length; index++)
-		{
-			var building = Buildings[index];
-			buildingIndexMap.Add(building.DataAlias, index);
-		}
-
 		if (Instance != null && Instance != this)
 		{
 			Destroy(this.gameObject);
@@ -33,16 +39,17 @@ public class SimulationController : MonoBehaviour
 		{
 			Instance = this;
 		}
+		
+		ReadSequenceCounts();
 	}
 
 	private void Start()
 	{
 		var mytxtData = (TextAsset) Resources.Load("json2");
-		var txt = mytxtData.text;
 
-		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(txt);
+		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(mytxtData.text);
 
-		var agentsAndSequences = new Dictionary<int, List<Sequence>>();
+		var agentsAndSequences = new Dictionary<int, List<Sequence>>(agents.Length);
 		foreach (var agent in agents)
 		{
 			ConvertAgentDataToSequence(agent, agentsAndSequences);
@@ -51,6 +58,40 @@ public class SimulationController : MonoBehaviour
 		CrowdManager.GenerateAgents(agentsAndSequences);
 	}
 
+	private void ReadSequenceCounts()
+	{
+		var csv = (TextAsset) Resources.Load("sequence_counts_matrix");
+
+		var lines = csv.text.Trim().Split('\n');
+
+		var buildingAliases = lines[0].Trim().Split(',')
+			.Select(alias => alias.Trim('"'))
+			.ToArray();
+
+		var sequenceWeights = new Dictionary<string, float[]>(buildingAliases.Length);
+		
+		for (var i = 1; i < lines.Length; i++)
+		{
+			sequenceWeights[buildingAliases[i - 1]] = lines[i]
+				.Trim()
+				.Split(',')
+				.Select(weight => float.Parse(weight, CultureInfo.InvariantCulture))
+				.ToArray();
+		}
+		
+		BuildingInfoMap = new Dictionary<string, BuildingInfo>(Buildings.Length);
+		
+		foreach (var building in Buildings)
+		{
+			BuildingInfoMap.Add(building.DataAlias, new BuildingInfo
+			{
+				Building = building,
+				OrderInData = Array.IndexOf(buildingAliases, building.DataAlias),
+				Weights = sequenceWeights[building.DataAlias]
+			});
+		}
+	}
+	
 	private void ConvertAgentDataToSequence(AgentJSONData agent, Dictionary<int, List<Sequence>> agentsAndSequences)
 	{
 		var sequences = new List<Sequence>();
@@ -67,17 +108,23 @@ public class SimulationController : MonoBehaviour
 			var startBuildingAlias = agentSequence.alias;
 			var targetBuildingAlias = nextAgentSequence.alias;
 
-			if (buildingIndexMap.ContainsKey(startBuildingAlias) && buildingIndexMap.ContainsKey(targetBuildingAlias))
+			if (BuildingInfoMap.ContainsKey(startBuildingAlias) && BuildingInfoMap.ContainsKey(targetBuildingAlias))
 			{
-				var startingBuilding = Buildings[buildingIndexMap[startBuildingAlias]];
-				var targetBuilding = Buildings[buildingIndexMap[targetBuildingAlias]];
+				var startingBuilding = BuildingInfoMap[startBuildingAlias].Building;
+				var targetBuilding = BuildingInfoMap[targetBuildingAlias].Building;
 
-				var sequence = new Sequence(int.Parse(agent.deviceId), startingBuilding, targetBuilding,
-					startTimeSeconds);
+				var sequence = new Sequence(
+					int.Parse(agent.deviceId),
+					startingBuilding,
+					targetBuilding,
+					startTimeSeconds
+				);
+				
 				foreach (var id in nextAgentSequence.groupsWith)
 				{
 					sequence.AddGroupingAgent(id);
 				}
+				
 				SequenceManager.InsertSequence(sequence);
 				sequences.Add(sequence);
 			}
