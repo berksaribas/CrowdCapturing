@@ -39,7 +39,7 @@ namespace Simulation
 
 		public bool IsMemberOfAGroup(Agent agent)
 		{
-			return activeGroups.ContainsKey(agent.GetAgentId());
+			return activeGroups.ContainsKey(agent.GetAgentId()) && activeGroups[agent.GetAgentId()] != null;
 		}
 
 		public GroupSequence GetActiveGroup(Agent agent)

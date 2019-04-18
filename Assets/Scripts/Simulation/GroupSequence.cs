@@ -47,10 +47,12 @@ namespace Simulation
 		{
 			Debug.Log("Group members are going to the target building together!");
 
-			foreach (var agent in agents)
+			for (var index = 0; index < agents.Count; index++)
 			{
+				var agent = agents[index];
 				agent.SetTarget(TargetDoor);
 				agent.State = AgentState.WalkingToTargetDoor;
+				agent.SetSpeed(agents[0].GetSpeed());
 			}
 		}
 	}

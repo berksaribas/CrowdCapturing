@@ -189,21 +189,28 @@ namespace Simulation
 			foreach (var agent in activeAgents)
 			{
 				var navMeshAgent = agent.GetComponent<NavMeshAgent>();
-				if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= 1f)
+				if(agent.State == AgentState.WalkingToTargetDoor)
 				{
-					if(agent.State == AgentState.WalkingToTargetDoor)
+					if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= 1f)
 					{
-						agent.State = AgentState.WaitingEnteringDoor;
-
-						if (!doorAgentQueue.ContainsKey(agent.GetTargetDoor()))
+						if (agent.State == AgentState.WalkingToTargetDoor)
 						{
-							doorAgentQueue.Add(agent.GetTargetDoor(), new Queue<AgentData>());
-						}
+							agent.State = AgentState.WaitingEnteringDoor;
 
-						doorAgentQueue[agent.GetTargetDoor()].Enqueue(new AgentData(agent));
+							if (!doorAgentQueue.ContainsKey(agent.GetTargetDoor()))
+							{
+								doorAgentQueue.Add(agent.GetTargetDoor(), new Queue<AgentData>());
+							}
+
+							doorAgentQueue[agent.GetTargetDoor()].Enqueue(new AgentData(agent));
+						}
 					}
-					else if (agent.State == AgentState.WalkingToMeetingPosition)
+				}
+				else if (agent.State == AgentState.WalkingToMeetingPosition)
+				{
+					if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= Random.Range(1f, 2.5f))
 					{
+						navMeshAgent.isStopped = true;
 						agent.State = AgentState.WaitingGroupMembers;
 						SimulationController.Instance.GroupManager.GetActiveGroup(agent).MarkAgentArrived();
 					}
