@@ -15,18 +15,16 @@ public class SimulationController : MonoBehaviour
 	public GroupManager GroupManager;
 	public Building[] Buildings;
 
-	private Dictionary<string, int> buildingIndexMap = new Dictionary<string, int>()
-	{
-		{"UM", 0},
-		{"Yurt", 1},
-		{"FENS", 2},
-		{"FASS", 3},
-		{"FMAN", 4},
-		{"Kütüphane", 5},
-	};
-
+	private Dictionary<string, int> buildingIndexMap = new Dictionary<string, int>();
+	
 	private void Awake()
 	{
+		for (var index = 0; index < Buildings.Length; index++)
+		{
+			var building = Buildings[index];
+			buildingIndexMap.Add(building.DataAlias, index);
+		}
+
 		if (Instance != null && Instance != this)
 		{
 			Destroy(this.gameObject);
