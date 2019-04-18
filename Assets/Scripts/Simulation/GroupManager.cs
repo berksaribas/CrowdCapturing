@@ -6,6 +6,7 @@ namespace Simulation
 {
 	public class GroupManager : MonoBehaviour
 	{
+		public int MaxWaitTimeForGroupMembers = 600;
 		private Dictionary<int, GroupSequence> activeGroups;
 
 		private void Awake()
@@ -23,7 +24,10 @@ namespace Simulation
 			int includedAgents = 0;
 			foreach (var sequenceGroupingAgent in sequence.GroupingAgents)
 			{
-				if (!activeGroups.ContainsKey(sequenceGroupingAgent))
+				var otherAgent = SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent);
+				if (!activeGroups.ContainsKey(sequenceGroupingAgent) &&
+				    otherAgent.GetNextSequence().GroupingAgents.Contains(agent.GetAgentId()) &&
+				    otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers)
 				{
 					includedAgents++;
 				}
@@ -60,7 +64,11 @@ namespace Simulation
 			List<Agent> availableAgents = new List<Agent>();
 			foreach (var sequenceGroupingAgent in sequence.GroupingAgents)
 			{
-				if (!activeGroups.ContainsKey(sequenceGroupingAgent))
+				var otherAgent = SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent);
+
+				if (!activeGroups.ContainsKey(sequenceGroupingAgent) &&
+				    otherAgent.GetNextSequence().GroupingAgents.Contains(agent.GetAgentId()) &&
+				    otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers)
 				{
 					availableAgents.Add(SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent));
 				}
@@ -95,6 +103,7 @@ namespace Simulation
 		{
 			activeGroups[agent.GetAgentId()].RemoveAgent(agent);
 			activeGroups[agent.GetAgentId()] = null;
+			activeGroups.Remove(agent.GetAgentId());
 		}
 	}
 }
