@@ -155,5 +155,15 @@ namespace Simulation
         {
             return targetDoor;
         }
+
+        public bool HasPath()
+        {
+            return agent.hasPath;
+        }
+        
+        public Vector3[] GetPathCorners()
+        {
+            return agent.path.corners;
+        }
     }
 }

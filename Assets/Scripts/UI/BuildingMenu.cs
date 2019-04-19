@@ -11,7 +11,7 @@ namespace UI
 {
     public class BuildingMenu : MonoBehaviour
     {
-        public BuildingSelector BuildingSelectorObject;
+        public BuildingSelector BuildingSelector;
         private Building focusedBuilding;
 
         public Text IdleText, StaticText, DynamicText;
@@ -23,7 +23,7 @@ namespace UI
         
         void Start()
         {
-            BuildingSelectorObject.Observe(newFocus =>
+            BuildingSelector.Observe(newFocus =>
             {
                 if((focusedBuilding = newFocus) != null)
                 {

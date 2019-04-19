@@ -1,68 +1,44 @@
-﻿using System.Collections.Generic;
-using Control;
+﻿using Control;
 using Simulation;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace UI
 {
     public class AgentHighlighter : MonoBehaviour
     {
-        public AgentSelector AgentSelectorObject;
+        public AgentSelector AgentSelector;
         private Agent focusedAgent;
 
         public MeshRenderer HighlighterObject;
 
-        public GameObject PathHighlighterPrefab;
-        private readonly List<GameObject> pathHighlighter = new List<GameObject>();
+        private readonly PathHighlighter highlighter = new PathHighlighter();
     
-        // Start is called before the first frame update
         void Start()
         {
-            AgentSelectorObject.Observe(newFocus =>
+            AgentSelector.Observe(newFocus =>
             {
+                highlighter.Disable();
+
                 if ((focusedAgent = newFocus) != null)
                 {
+                    highlighter.Initialize(focusedAgent, transform);
+                    
                     HighlighterObject.enabled = true;
-                    ClearPathHighlighter();
-                    ConfigurePathHighlighterTo(focusedAgent);
+                    HighlighterObject.transform.SetParent(focusedAgent.transform, false);
                 }
                 else
                 {
                     HighlighterObject.enabled = false;
-                    ClearPathHighlighter();
+                    HighlighterObject.transform.SetParent(transform, false);
                 }
             });
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (focusedAgent != null)
             {
-                HighlighterObject.transform.position = focusedAgent.transform.position;
-            }
-        }
-    
-        private void ClearPathHighlighter()
-        {
-            pathHighlighter.ForEach(Destroy);
-            pathHighlighter.Clear();
-        }
-
-        private void ConfigurePathHighlighterTo(Agent agent)
-        {
-            var path = agent.GetComponent<NavMeshAgent>().path.corners;
-
-            for (var i = 1; i < path.Length; i++)
-            {
-                pathHighlighter.Add(
-                    HighlightLine.CreateNew(
-                        path[i - 1],
-                        path[i],
-                        transform
-                    )
-                );
+                highlighter.Update();
             }
         }
     }
