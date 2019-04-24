@@ -8,7 +8,7 @@ namespace UI
 {
     public class BuildingHighlighter : MonoBehaviour
     {
-        public BuildingSelector BuildingSelectorObject;
+        public BuildingSelector BuildingSelector;
         private Building focusedBuilding;
 
         public MeshRenderer HighlighterObject;
@@ -17,17 +17,16 @@ namespace UI
 
         void Start()
         {
-            BuildingSelectorObject.Observe(newFocus =>
+            BuildingSelector.Observe(newFocus =>
             {
+                ClearHighlighters();
+                
                 if ((focusedBuilding = newFocus) != null)
                 {
                     HighlighterObject.enabled = true;
                     HighlighterObject.transform.position = focusedBuilding.transform.position;
                     HighlighterObject.transform.rotation = focusedBuilding.transform.rotation;
                     HighlighterObject.transform.localScale = focusedBuilding.GetComponent<BoxCollider>().size;
-
-                    highlighters.ForEach(Destroy);
-                    highlighters.Clear();
 
                     var weights = SimulationController.Instance.BuildingInfoMap[focusedBuilding.DataAlias].Weights;
                     var otherBuildingInfos = SimulationController.Instance.BuildingInfoMap.Values.Where(
@@ -37,7 +36,7 @@ namespace UI
                     foreach (var buildingInfo in otherBuildingInfos)
                     {
                         highlighters.Add(
-                            HighlightLine.CreateNew(
+                            HighlightLine.CreateLine(
                                 focusedBuilding.transform.position,
                                 buildingInfo.Building.transform.position,
                                 transform,
@@ -49,11 +48,14 @@ namespace UI
                 else
                 {
                     HighlighterObject.enabled = false;
-
-                    highlighters.ForEach(Destroy);
-                    highlighters.Clear();
                 }
             });
+        }
+
+        private void ClearHighlighters()
+        {
+            highlighters.ForEach(Destroy);
+            highlighters.Clear();
         }
     }
 }

@@ -6,38 +6,45 @@ namespace Control
     {
         [SerializeField] public KeyCode ToggleKey = KeyCode.Tab;
 
+        public CameraHandler CameraHandler;
+
         private bool isCursorLocked;
 
         void Start()
-        {    
+        {
+            CameraHandler.Observe(activeCamera =>
+            {
+                SetMode();
+            });
+
             isCursorLocked = true;
-            ToggleCursorMode();
+            SetMode();
         }
 
         void Update()
         {
             if (Input.GetKeyDown(ToggleKey))
             {
-                ToggleCursorMode();
+                isCursorLocked = !isCursorLocked;
+
+                SetMode();
             }
         }
 
-        private void ToggleCursorMode()
+        private void SetMode()
         {
             if (isCursorLocked)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                gameObject.GetComponent<CameraMovement>().enabled = false;
+                CameraHandler.ActiveCamera.GetComponent<CameraMovement>().enabled = false;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                gameObject.GetComponent<CameraMovement>().enabled = true;
+                CameraHandler.ActiveCamera.GetComponent<CameraMovement>().enabled = true;
             }
-
-            isCursorLocked = !isCursorLocked;
         }
     }
 }

@@ -1,89 +1,38 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Control
 {
-    public class CameraMovement : MonoBehaviour
+    public abstract class CameraMovement : MonoBehaviour
     {
-        [SerializeField]
-        private float speed = 100.0f;
+        public float Speed = 100.0f;
+        public float MouseSensitivity = 0.6f;
+        public float VerticalAngle, HorizontalAngle;
 
-        [SerializeField]
-        private float mouseSensitivity = 0.6f;
-
-        [SerializeField]
-        private float verticalAngleLimit = 75.0f;
-
-        private float verticalAngle, horizontalAngle;
-
-
-        void Start()
+        protected void Start()
         {
-            verticalAngle = transform.eulerAngles.x % 360.0f;
-            horizontalAngle = transform.eulerAngles.y % 360.0f;
+            VerticalAngle = transform.eulerAngles.x % 360.0f;
+            HorizontalAngle = transform.eulerAngles.y % 360.0f;
         }
 
-        void Update()
+        protected void Update()
         {
-            var mouseDelta = GetMouseDelta() * mouseSensitivity;
-            horizontalAngle += mouseDelta.x;
-            verticalAngle = Mathf.Clamp(verticalAngle + mouseDelta.y, -verticalAngleLimit, verticalAngleLimit);
-
-            transform.rotation = Quaternion.Euler(verticalAngle, horizontalAngle, 0.0f);
-
-            transform.Translate(GetLocalDirectionFromKeys() * speed * Time.deltaTime);
-            transform.Translate(GetGlobalDirectionFromKeys() * speed * Time.deltaTime, Space.World);
+            transform.rotation = Quaternion.Euler(GetEulerRotation());
+            transform.Translate(GetLocalDirection() * Speed * Time.deltaTime);
+            transform.Translate(GetGlobalDirection() * Speed * Time.deltaTime, Space.World);
         }
 
-        private static Vector2 GetMouseDelta()
+        protected Vector2 GetMouseDelta()
         {
             return new Vector2(
-                Input.GetAxis("Mouse X"),
-                -Input.GetAxis("Mouse Y") // Axis Y is inverted for some reason
+                Input.GetAxis("Mouse X") * MouseSensitivity,
+                -Input.GetAxis("Mouse Y") * MouseSensitivity // Axis Y is inverted for some reason
             );
         }
 
-        private static Vector3 GetLocalDirectionFromKeys()
-        {
-            var direction = Vector3.zero;
+        protected abstract Vector3 GetEulerRotation();
 
-            if (Input.GetKey(KeyCode.W))
-            {
-                direction += Vector3.forward;
-            }
+        protected abstract Vector3 GetLocalDirection();
 
-            if (Input.GetKey(KeyCode.S))
-            {
-                direction += Vector3.back;
-            }
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                direction += Vector3.left;
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                direction += Vector3.right;
-            }
-
-            return direction.normalized;
-        }
-    
-        private static Vector3 GetGlobalDirectionFromKeys()
-        {
-            var direction = Vector3.zero;
-
-            if (Input.GetKey(KeyCode.Q))
-            {
-                direction += Vector3.up;
-            }
-
-            if (Input.GetKey(KeyCode.E))
-            {
-                direction += Vector3.down;
-            }
-
-            return direction.normalized;
-        }
+        protected abstract Vector3 GetGlobalDirection();
     }
 }

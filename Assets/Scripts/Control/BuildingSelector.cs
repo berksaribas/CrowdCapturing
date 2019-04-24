@@ -11,6 +11,8 @@ namespace Control
 {
     public class BuildingSelector : MonoBehaviour
     {
+        public CameraHandler CameraHandler;
+        
         private readonly List<Action<Building>> listeners = new List<Action<Building>>();
 
         [CanBeNull]
@@ -39,10 +41,9 @@ namespace Control
             if (!Input.GetMouseButtonDown(0))
                 return;
 
-            RaycastHit hit;
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var ray = CameraHandler.ActiveCamera.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Buildings")))
+            if (Physics.Raycast(ray, out var hit, float.MaxValue, LayerMask.GetMask("Buildings")))
             {
                 FocusedBuilding = hit.transform.gameObject.GetComponent<Building>();
             }
