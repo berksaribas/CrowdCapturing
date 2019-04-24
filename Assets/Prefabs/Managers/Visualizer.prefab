@@ -9,13 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4504184349075496600}
-  - component: {fileID: 4504184349075496599}
   - component: {fileID: 8224092929602871171}
-  - component: {fileID: 4504184349075496598}
   - component: {fileID: 2995113322257477809}
-  - component: {fileID: 592007137327366588}
   - component: {fileID: 161803788857072559}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Visualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,18 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4504184349075496599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4504184349075496601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5eafab0209fd2942994d366952b48cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8224092929602871171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,20 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29ef606973296fb47a1b6f97f2a1e3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AgentSelector: {fileID: 4504184349075496599}
+  AgentSelector: {fileID: 0}
   HighlighterObject: {fileID: 4526580411389247943}
---- !u!114 &4504184349075496598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4504184349075496601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00d36b7dc2234fc19f76f31878173175, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2995113322257477809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,22 +62,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2615e4bd524b898a8382ced63a30d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildingSelector: {fileID: 4504184349075496598}
+  BuildingSelector: {fileID: 0}
   HighlighterObject: {fileID: 4528141706602880795}
---- !u!114 &592007137327366588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4504184349075496601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ffac2c8cb2e4ea992a64b783a9d882c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GroupManager: {fileID: 0}
-  AgentSelector: {fileID: 4504184349075496599}
 --- !u!114 &161803788857072559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,8 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c480a5b65c415cbdd8457da21c93b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AgentSelector: {fileID: 4504184349075496599}
-  GroupSelector: {fileID: 592007137327366588}
+  AgentSelector: {fileID: 0}
+  GroupSelector: {fileID: 0}
   HighlighterObject: {fileID: 4922667402246381846}
 --- !u!1001 &4504184349512716309
 PrefabInstance:
