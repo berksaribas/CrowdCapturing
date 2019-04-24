@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Control;
 using Simulation;
 using UnityEngine;
@@ -12,13 +9,8 @@ namespace UI
 {
     public class AgentMenu : MonoBehaviour
     {
-        public GroupManager GroupManager;
-        
-        public AgentSelector AgentSelector;
+        public AgentAndGroupSelector AgentAndGroupSelector;
         private Agent focusedAgent;
-        
-        public GroupSelector GroupSelector;
-        private GroupSequence focusedGroup;
         
         public Text IdleText, StaticText, DynamicText;
 
@@ -29,7 +21,7 @@ namespace UI
 
         void Start()
         {
-            AgentSelector.Observe(newFocus =>
+            AgentAndGroupSelector.ObserveAgent(newFocus =>
             {
                 if ((focusedAgent = newFocus) != null)
                 {
@@ -38,14 +30,6 @@ namespace UI
                 else
                 {
                     ResetCanvas();
-                }
-            });
-            
-            GroupSelector.Observe(newFocus =>
-            {
-                if ((focusedGroup = newFocus) != null && focusedAgent != null)
-                {
-                    SetCanvas();
                 }
             });
         }
@@ -77,16 +61,6 @@ namespace UI
             text.AppendLine();
             text.Append($"Exited from '{focusedAgent.GetStartingDoorName()}'");
             text.AppendLine($" at {TimeHelper.ConvertSecondsToString(focusedAgent.GetNextSequence().StartTime)}\n");
-            text.AppendLine();
-
-            if (focusedGroup != null)
-            {
-                text.AppendLine($"Agent has a group with {focusedGroup.agents.Count} members.");
-            }
-            else
-            {
-                text.AppendLine("Agent is alone.");
-            }
 
             StaticText.text = text.ToString();
         }
@@ -94,70 +68,32 @@ namespace UI
         private void UpdateCanvas()
         {
             var text = new StringBuilder();
-
-            if (focusedGroup != null)
+            
+            switch (focusedAgent.State)
             {
-                switch (focusedAgent.State)
-                {
-                    case AgentState.WalkingToMeetingPosition:
-                        text.AppendLine("Walking to the meeting point.");
-                        AdGroupStatus(text, true);
-                        break;
+                case AgentState.WalkingToMeetingPosition:
+                    text.AppendLine("Walking to the meeting point.");
+                    break;
 
-                    case AgentState.WaitingGroupMembers:
-                        text.AppendLine("Waiting for other group members.");
-                        AdGroupStatus(text, true);
-                        break;
+                case AgentState.WaitingGroupMembers:
+                    text.AppendLine("Waiting for other group members.");
+                    break;
 
-                    case AgentState.WalkingToTargetDoor:
-                        text.AppendLine($"Walking to the door '{focusedAgent.GetTargetDoorName()}' with a group.");
-                        AdGroupStatus(text, false);
-                        break;
+                case AgentState.WalkingToTargetDoor:
+                    text.AppendLine($"Walking to the door '{focusedAgent.GetTargetDoorName()}'.");
+                    break;
 
-                    case AgentState.WaitingLeavingDoor:
-                    case AgentState.WaitingEnteringDoor:
-                        text.AppendLine("Passing through a door.");
-                        AdGroupStatus(text, false);
-                        break;
-                    
-                    case AgentState.Idling:
-                        text.AppendLine("Agent reached the target.");
-                        AdGroupStatus(text, true);
-                        break;
-                }
+                case AgentState.WaitingLeavingDoor:
+                case AgentState.WaitingEnteringDoor:
+                    text.AppendLine("Passing through a door.");
+                    break;
+                
+                case AgentState.Idling:
+                    text.AppendLine($"Agent is inside {focusedAgent.GetNextSequence().StartingBuilding.name}.");
+                    break;
             }
-            else
-            {
-                text.AppendLine($"Walking to the door '{focusedAgent.GetTargetDoorName()}'.");
-            }
-
+            
             DynamicText.text = text.ToString();
-        }
-
-        private void AdGroupStatus(StringBuilder text, bool includeMemberStatus)
-        {
-            text.AppendLine();
-            text.AppendLine("Group Members:");
-
-            foreach (var agent in focusedGroup.agents.Where(a => a != focusedAgent))
-            {
-                text.Append($"Agent {agent.GetAgentId()}");
-
-                if (includeMemberStatus)
-                {
-                    text.Append(": ");
-                    text.AppendLine(
-                        agent.State == AgentState.WaitingGroupMembers ?
-                            "<color=lime>Waiting</color>"
-                            :
-                            "<color=red>Walking</color>"
-                        );
-                }
-                else
-                {
-                    text.AppendLine();
-                }
-            }
         }
     }
 }

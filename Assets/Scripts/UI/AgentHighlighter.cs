@@ -6,7 +6,7 @@ namespace UI
 {
     public class AgentHighlighter : MonoBehaviour
     {
-        public AgentSelector AgentSelector;
+        public AgentAndGroupSelector AgentAndGroupSelector;
         private Agent focusedAgent;
 
         public MeshRenderer HighlighterObject;
@@ -15,7 +15,7 @@ namespace UI
     
         void Start()
         {
-            AgentSelector.Observe(newFocus =>
+            AgentAndGroupSelector.ObserveAgent(newFocus =>
             {
                 highlighter.Disable();
 

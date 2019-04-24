@@ -38,7 +38,7 @@ namespace Control
 
         private void Update()
         {
-            if (!Input.GetMouseButtonDown(0))
+            if (!Input.GetMouseButtonDown(1))
                 return;
 
             var ray = CameraHandler.ActiveCamera.ScreenPointToRay(Input.mousePosition);

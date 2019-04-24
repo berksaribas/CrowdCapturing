@@ -1,0 +1,104 @@
+using System.Text;
+using Control;
+using Simulation;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace UI
+{
+    public class GroupMenu : MonoBehaviour
+    {
+        public AgentAndGroupSelector AgentAndGroupSelector;
+        private GroupSequence focusedGroup;
+        
+        public Text IdleText, StaticText, DynamicText;
+
+        private void Awake()
+        {
+            ResetCanvas();
+        }
+
+        void Start()
+        {
+            AgentAndGroupSelector.ObserveGroup(newFocus =>
+            {
+                if ((focusedGroup = newFocus) != null)
+                {
+                    SetCanvas();
+                }
+                else
+                {
+                    ResetCanvas();
+                }
+            });
+        }
+
+        void Update()
+        {
+            if (focusedGroup != null)
+            {
+                UpdateCanvas();
+            }
+        }
+
+        private void ResetCanvas()
+        {
+            IdleText.enabled = true;
+            StaticText.enabled = false;
+            DynamicText.enabled = false;
+        }
+
+        private void SetCanvas()
+        {
+            IdleText.enabled = false;
+            StaticText.enabled = true;
+            DynamicText.enabled = true;
+
+            var text = new StringBuilder();
+
+            text.AppendLine($"Group with {focusedGroup.agents.Count} members.");
+            text.AppendLine();
+            text.AppendLine($"Group target is '{focusedGroup.TargetDoor.name}'.");
+
+            StaticText.text = text.ToString();
+        }
+
+        private void UpdateCanvas()
+        {
+            var text = new StringBuilder();
+
+            text.AppendLine();
+            text.AppendLine("Group Members:");
+
+            foreach (var agent in focusedGroup.agents)
+            {
+                text.Append($"Agent {agent.GetAgentId()}: ");
+
+                switch (agent.State)
+                {
+                    case AgentState.Idling:
+                        text.AppendLine($"<color=olive>Inside {agent.GetNextSequence().StartingBuilding.name}</color>");
+                        break;
+                    
+                    case AgentState.WaitingGroupMembers:
+                        text.AppendLine($"<color=lime>Waiting</color>");
+                        break;
+                    
+                    case AgentState.WalkingToMeetingPosition:
+                        text.AppendLine($"<color=red>Walking to meeting</color>");
+                        break;
+                        
+                    case AgentState.WalkingToTargetDoor:
+                        text.AppendLine($"<color=lightblue>Walking to target door</color>");
+                        break;
+                    
+                    default:
+                        text.AppendLine(agent.State.ToString());
+                        break;
+                }
+            }
+                
+            DynamicText.text = text.ToString();
+        }
+    }
+}
