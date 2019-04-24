@@ -27,7 +27,8 @@ namespace Simulation
 				var otherAgent = SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent);
 				if (!activeGroups.ContainsKey(sequenceGroupingAgent) &&
 				    otherAgent.GetNextSequence().GroupingAgents.Contains(agent.GetAgentId()) &&
-				    otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers)
+				    otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers &&
+				    otherAgent.GetNextSequence().TargetBuilding == sequence.TargetBuilding)
 				{
 					includedAgents++;
 				}
@@ -68,7 +69,8 @@ namespace Simulation
 
 				if (!activeGroups.ContainsKey(sequenceGroupingAgent) &&
 				    otherAgent.GetNextSequence().GroupingAgents.Contains(agent.GetAgentId()) &&
-				    otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers)
+				    otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers &&
+				    otherAgent.GetNextSequence().TargetBuilding == sequence.TargetBuilding)
 				{
 					availableAgents.Add(SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent));
 				}
