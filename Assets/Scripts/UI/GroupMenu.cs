@@ -56,7 +56,9 @@ namespace UI
 
             var text = new StringBuilder();
 
-            text.AppendLine($"Group with {focusedGroup.agents.Count} members.");
+            text.AppendLine($"Group with current {focusedGroup.agents.Count} members.");
+            text.AppendLine($"Group with a total of {focusedGroup.agentCount} members.");
+            text.AppendLine($"Debug text: {focusedGroup.debugText}");
             text.AppendLine();
             text.AppendLine($"Group target is '{focusedGroup.TargetDoor.name}'.");
 

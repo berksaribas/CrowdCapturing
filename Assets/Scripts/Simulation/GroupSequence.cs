@@ -10,16 +10,27 @@ namespace Simulation
 		public Vector3 MeetingPoint;
 		public Vector3 TargetPoint;
 		public int ArrivedAgents => arrivedAgents;
+		public int agentCount = 0;
 
 		public readonly List<Agent> agents;
 		private int arrivedAgents;
 		private GroupSequence parentGroupSequence;
+
+		public bool LeaveDoorTogether = false;
+
+		public string debugText = "";
 
 		public GroupSequence(Vector3 meetingPoint, Vector3 targetPoint, Door targetDoor)
 		{
 			MeetingPoint = meetingPoint;
 			TargetPoint = targetPoint;
 			TargetDoor = targetDoor;
+			agents = new List<Agent>();
+		}
+
+		public GroupSequence()
+		{
+			LeaveDoorTogether = true;
 			agents = new List<Agent>();
 		}
 
@@ -40,11 +51,15 @@ namespace Simulation
 
 		public void MarkAgentArrived()
 		{
+			if (LeaveDoorTogether)
+			{
+				Debug.Log("Leave together marked by");
+			}
 			arrivedAgents ++;
 
 			Debug.Log("A group member has arrived to the meeting point!");
 			
-			if (arrivedAgents == agents.Count)
+			if (arrivedAgents == agentCount)
 			{
 				MakeAgentsMoveToTarget();
 			}
@@ -52,24 +67,31 @@ namespace Simulation
 
 		private void MakeAgentsMoveToTarget()
 		{
-			//TODO: If parentGroupSequence is null, run the code on bottom
-			//TODO: otherwise call GroupManager.RemoveFromGroup
-			//TODO: call GroupManager.ActivateGroup
-			//TODO: set state to WalkingToMeetingPosition
-			Debug.Log("Group members are going to the target building together!");
+			var parentGroupExists = parentGroupSequence != null;
+			Debug.Log("Group members are going to the target together!");
 
 			for (var index = 0; index < agents.Count; index++)
 			{
 				var agent = agents[index];
-//				agent.SetTarget(TargetPoint);
-				agent.SetTarget(TargetDoor);
-				agent.State = AgentState.WalkingToTargetDoor;
 				agent.SetSpeed(agents[0].GetSpeed());
 
-				var groupAgentTimer = agent.gameObject.GetComponent<GroupAgentTimer>();
-				if (groupAgentTimer != null)
+				if (parentGroupExists)
 				{
-					groupAgentTimer.EndWaitingTime = SimulationController.Instance.SimulationManager.WorldTimeSeconds;
+					Debug.Log("Same building group setting their targets");
+					if (LeaveDoorTogether)
+					{
+						agent.SetTarget(parentGroupSequence.MeetingPoint);
+					} else
+					{
+						agent.SetTarget(TargetPoint);
+					}
+					agent.State = AgentState.WalkingToMeetingPosition;
+					SimulationController.Instance.GroupManager.AddToGroup(agent, parentGroupSequence);
+				}
+				else
+				{
+					agent.SetTarget(TargetDoor);
+					agent.State = AgentState.WalkingToTargetDoor;
 				}
 			}
 		}

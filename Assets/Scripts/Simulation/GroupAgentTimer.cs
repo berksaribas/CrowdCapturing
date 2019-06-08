@@ -1,8 +1,6 @@
-using UnityEngine;
-
 namespace Simulation
 {
-	public class GroupAgentTimer : MonoBehaviour
+	public class GroupAgentTimer
 	{
 		public float StartedWalkingTime = 0f;
 		public float WaitingSinceTime = 0f;

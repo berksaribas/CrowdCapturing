@@ -23,6 +23,7 @@ namespace Simulation
         private NavMeshAgent agent;
         private Door startingDoor, targetDoor;
         private Queue<Sequence> sequences;
+        private Sequence currentSequence;
         private int agentId;
 
         public float originalSpeed = 0f;
@@ -106,6 +107,16 @@ namespace Simulation
             }
         }
 
+        public Sequence GetCurrentSequence()
+        {
+            if(currentSequence != null)
+            {
+                return currentSequence;
+            }
+            
+            return sequences.Any() ? sequences.Peek() : null;
+        }
+        
         public Sequence GetNextSequence()
         {
             return sequences.Any() ? sequences.Peek() : null;
@@ -113,7 +124,7 @@ namespace Simulation
 
         public void StartSequence(AgentState state)
         {
-            var sequence = GetNextSequence();
+            var sequence = sequences.Dequeue();
             
             sequence.StartingBuilding.UnregisterAgent(this);
             GetComponent<Renderer>().enabled = true;
@@ -121,10 +132,8 @@ namespace Simulation
         }
 
         public void EndSequence()
-        {
-            var sequence = sequences.Dequeue();
-            
-            sequence.TargetBuilding.RegisterAgent(this);
+        {            
+            GetCurrentSequence().TargetBuilding.RegisterAgent(this);
             GetComponent<Renderer>().enabled = false;
             GetComponent<NavMeshAgent>().enabled= false;
             State = AgentState.Idling;
