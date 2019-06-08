@@ -25,14 +25,23 @@ namespace Simulation
         private Queue<Sequence> sequences;
         private int agentId;
 
+        public float originalSpeed = 0f;
+        
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
             agent.autoBraking = true;
             agent.acceleration = 1000f;
-            agent.speed = Random.Range(6f, 11f);
-            agent.angularSpeed = 3600f;
+            originalSpeed = Random.Range(6f, 11f);
+            agent.speed = originalSpeed / 10f * SimulationController.Instance.SimulationManager.WorldSpeed;
+            agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationManager.WorldSpeed;
             State = AgentState.Idling;
+        }
+
+        private void Update()
+        {
+            agent.speed = originalSpeed / 10f  * SimulationController.Instance.SimulationManager.WorldSpeed;
+            agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationManager.WorldSpeed;
         }
 
         public void SetSequences(List<Sequence> sequences)
@@ -123,12 +132,12 @@ namespace Simulation
         
         public float GetSpeed()
         {
-            return agent.speed;
+            return originalSpeed;
         }
 
         public void SetSpeed(float speed)
         {
-            agent.speed = speed;
+            originalSpeed = speed;
         }
 
         public int GetAgentId()

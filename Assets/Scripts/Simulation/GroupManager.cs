@@ -6,6 +6,7 @@ namespace Simulation
 {
 	public class GroupManager : MonoBehaviour
 	{
+		public float MeetAtDoorThreshold = 80f;
 		public int MaxWaitTimeForGroupMembers = 600;
 		private Dictionary<int, GroupSequence> activeGroups;
 
@@ -26,6 +27,7 @@ namespace Simulation
 			{
 				var otherAgent = SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent);
 				if (!activeGroups.ContainsKey(sequenceGroupingAgent) &&
+				    otherAgent.GetNextSequence() != null &&
 				    otherAgent.GetNextSequence().GroupingAgents.Contains(agent.GetAgentId()) &&
 				    otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers &&
 				    otherAgent.GetNextSequence().TargetBuilding == sequence.TargetBuilding)
@@ -68,6 +70,7 @@ namespace Simulation
 				var otherAgent = SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent);
 
 				if (!activeGroups.ContainsKey(sequenceGroupingAgent) &&
+				    otherAgent.GetNextSequence() != null &&
 				    otherAgent.GetNextSequence().GroupingAgents.Contains(agent.GetAgentId()) &&
 				    otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers &&
 				    otherAgent.GetNextSequence().TargetBuilding == sequence.TargetBuilding)
@@ -75,18 +78,10 @@ namespace Simulation
 					availableAgents.Add(SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent));
 				}
 			}
-			var totalPosition = Vector3.zero;
-			totalPosition += startingDoor.transform.position;
-			totalPosition += targetDoor.transform.position;
-			
-			foreach (var availableAgent in availableAgents)
-			{
-				totalPosition += availableAgent.transform.position;
-			}
 
-			var meetingPosition = totalPosition / (2 + availableAgents.Count);
+			var meetingPosition = CalculateMeetingPosition(startingDoor, targetDoor, availableAgents);
 			
-			var groupSequence = new GroupSequence(meetingPosition, targetDoor);
+			var groupSequence = new GroupSequence(meetingPosition, targetDoor.transform.position, targetDoor);
 			groupSequence.AddAgent(agent);
 			activeGroups[agent.GetAgentId()] = groupSequence;
 			
@@ -106,6 +101,28 @@ namespace Simulation
 			activeGroups[agent.GetAgentId()].RemoveAgent(agent);
 			activeGroups[agent.GetAgentId()] = null;
 			activeGroups.Remove(agent.GetAgentId());
+		}
+
+		private Vector3 CalculateMeetingPosition(Door startingDoor, Door targetDoor, List<Agent> availableAgents)
+		{
+			var totalPosition = Vector3.zero;
+			totalPosition += startingDoor.transform.position;
+			totalPosition += targetDoor.transform.position;
+			
+			foreach (var availableAgent in availableAgents)
+			{
+				totalPosition += availableAgent.GetNextSequence().StartingBuilding.AveragePosition;
+			}
+
+			var meetingPosition = totalPosition / (2 + availableAgents.Count);
+
+			Debug.Log("For filtering: " + Vector3.Distance(meetingPosition, targetDoor.transform.position));
+			if (Vector3.Distance(meetingPosition, targetDoor.transform.position) < MeetAtDoorThreshold)
+			{
+				meetingPosition = targetDoor.transform.position;
+			}
+
+			return meetingPosition;
 		}
 	}
 }

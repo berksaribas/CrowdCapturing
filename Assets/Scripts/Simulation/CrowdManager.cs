@@ -169,6 +169,8 @@ namespace Simulation
 			agent.gameObject.GetComponent<MeshRenderer>().SetPropertyBlock(agentData.MaterialPropertyBlock);
 
 			agent.StartSequence(AgentState.WalkingToMeetingPosition);
+			var groupAgentTimer = agent.gameObject.AddComponent<GroupAgentTimer>();
+			groupAgentTimer.StartedWalkingTime = SimulationController.Instance.SimulationManager.WorldTimeSeconds;
 		}
 
 		private void ProcessFinishSequenceAgent(AgentData agentData)
@@ -212,6 +214,12 @@ namespace Simulation
 					{
 						navMeshAgent.isStopped = true;
 						agent.State = AgentState.WaitingGroupMembers;
+						var agentWaitTimer = agent.gameObject.GetComponent<GroupAgentTimer>();
+						if(agentWaitTimer != null)
+						{
+							agentWaitTimer.WaitingSinceTime =
+								SimulationController.Instance.SimulationManager.WorldTimeSeconds;
+						}
 						SimulationController.Instance.GroupManager.GetActiveGroup(agent).MarkAgentArrived();
 					}
 				}

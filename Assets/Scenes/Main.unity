@@ -1100,6 +1100,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIStateController
       objectReference: {fileID: 0}
+    - target: {fileID: 1692343557163925114, guid: e46d7afa38a7b1144899e7a0a20272d9,
+        type: 3}
+      propertyPath: GroupManager
+      value: 
+      objectReference: {fileID: 1613077669}
     - target: {fileID: 4551645149903196590, guid: e46d7afa38a7b1144899e7a0a20272d9,
         type: 3}
       propertyPath: m_RootOrder
@@ -1120,11 +1125,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1692343557163925114, guid: e46d7afa38a7b1144899e7a0a20272d9,
-        type: 3}
-      propertyPath: GroupManager
-      value: 
-      objectReference: {fileID: 1613077669}
     - target: {fileID: 2538276818708619682, guid: e46d7afa38a7b1144899e7a0a20272d9,
         type: 3}
       propertyPath: GroupManager
@@ -1320,6 +1320,11 @@ PrefabInstance:
       propertyPath: AgentAndGroupSelector
       value: 
       objectReference: {fileID: 1692343557163925114}
+    - target: {fileID: 5739271281721310836, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
+        type: 3}
+      propertyPath: m_MaxValue
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf, type: 3}
 --- !u!114 &6369236199193344336 stripped

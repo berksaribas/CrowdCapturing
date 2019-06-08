@@ -45,7 +45,7 @@ public class SimulationController : MonoBehaviour
 
 	private void Start()
 	{
-		var mytxtData = (TextAsset) Resources.Load("json2");
+		var mytxtData = (TextAsset) Resources.Load("29092016");
 
 		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(mytxtData.text);
 
