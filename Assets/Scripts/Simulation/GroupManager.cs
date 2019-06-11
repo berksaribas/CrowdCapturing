@@ -81,6 +81,8 @@ namespace Simulation
 			var meetingPosition = CalculateMeetingPosition(startingDoor, targetDoor, availableAgents);
 			var groupSequence = new GroupSequence(meetingPosition, targetDoor.transform.position, targetDoor);
 
+			var subgroupList = new List<int>();
+			
 			//Find agents that will leave the building at the same time, create a subgroup for them
 			for (int i = 0; i < availableAgents.Count; i++)
 			{
@@ -107,6 +109,7 @@ namespace Simulation
 				}
 				if(sameBuildingStarters.Count > 1)
 				{
+					subgroupList.Add(sameBuildingStarters.Count);
 					Debug.Log("Same building group!");
 					tempSet.Add(i);
 					var leaveTogetherGroup = new GroupSequence();
@@ -129,15 +132,17 @@ namespace Simulation
 
 				if(!tempSet.Contains(index))
 				{
-					groupSequence.AddAgent(availableAgent);
 					activeGroups[availableAgent.GetAgentId()] = groupSequence;
+					subgroupList.Add(1);
 				}
+				groupSequence.AddAgent(availableAgent);
 
 				groupSequence.debugText += " - " + availableAgent.GetAgentId() + " - ";
 			}
 			groupSequence.agentCount = availableAgents.Count;
 			
 			OverallData.Instance.AddParentGroup(groupSequence.agentCount);
+			OverallData.Instance.AddSubgroupSize(groupSequence.agentCount, subgroupList);
 			Debug.Log("A group is created!");
 		}
 
@@ -151,7 +156,6 @@ namespace Simulation
 		public void AddToGroup(Agent agent, GroupSequence groupSequence)
 		{
 			activeGroups[agent.GetAgentId()] = groupSequence;
-			groupSequence.AddAgent(agent);
 		}
 
 		private Vector3 CalculateMeetingPosition(Door startingDoor, Door targetDoor, List<Agent> availableAgents)

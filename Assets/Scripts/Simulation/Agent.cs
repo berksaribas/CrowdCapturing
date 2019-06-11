@@ -23,7 +23,6 @@ namespace Simulation
         private NavMeshAgent agent;
         private Door startingDoor, targetDoor;
         private Queue<Sequence> sequences;
-        private Sequence currentSequence;
         private int agentId;
 
         public float originalSpeed = 0f;
@@ -31,11 +30,12 @@ namespace Simulation
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
-            agent.autoBraking = true;
-            agent.acceleration = 1000f;
+            agent.acceleration = 150000f;
             originalSpeed = Random.Range(6f, 11f);
             agent.speed = originalSpeed / 10f * SimulationController.Instance.SimulationManager.WorldSpeed;
             agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationManager.WorldSpeed;
+            agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+            agent.autoBraking = true;
             State = AgentState.Idling;
         }
 
@@ -106,16 +106,6 @@ namespace Simulation
                 transform.position = closestHit.position;
             }
         }
-
-        public Sequence GetCurrentSequence()
-        {
-            if(currentSequence != null)
-            {
-                return currentSequence;
-            }
-            
-            return sequences.Any() ? sequences.Peek() : null;
-        }
         
         public Sequence GetNextSequence()
         {
@@ -124,8 +114,8 @@ namespace Simulation
 
         public void StartSequence(AgentState state)
         {
-            var sequence = sequences.Dequeue();
-            
+            var sequence = GetNextSequence();
+
             sequence.StartingBuilding.UnregisterAgent(this);
             GetComponent<Renderer>().enabled = true;
             State = state;
@@ -133,7 +123,9 @@ namespace Simulation
 
         public void EndSequence()
         {            
-            GetCurrentSequence().TargetBuilding.RegisterAgent(this);
+            var sequence = sequences.Dequeue();
+
+            sequence.TargetBuilding.RegisterAgent(this);
             GetComponent<Renderer>().enabled = false;
             GetComponent<NavMeshAgent>().enabled= false;
             State = AgentState.Idling;

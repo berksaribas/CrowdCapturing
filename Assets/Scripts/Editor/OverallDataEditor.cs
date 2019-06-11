@@ -1,4 +1,5 @@
 using DefaultNamespace;
+using Simulation;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +11,9 @@ namespace EditorScripts
 		public override void OnInspectorGUI()
 		{
 			var data = (OverallData) target;
-
+			
+			EditorGUILayout.LabelField($"Active agents: {GameObject.FindObjectsOfType<Agent>().Length}");
+			EditorGUILayout.TextArea("",GUI.skin.horizontalSlider);
 			EditorGUILayout.LabelField("People leaving building together:");
 			foreach (var keyValuePair in data.PeopleLeavingBuilding)
 			{

@@ -21,10 +21,14 @@ namespace Simulation
 		private void ActivateSequences()
 		{
 			var removedSequences = new List<Sequence>();
-
+			
 			foreach (var sequence in sequences)
 			{
-				if (SimulationController.Instance.SimulationManager.WorldTimeSeconds - 2f>= sequence.StartTime)
+				if (sequence.disabled)
+				{
+					removedSequences.Add(sequence);
+				}
+				else if (SimulationController.Instance.SimulationManager.WorldTimeSeconds - 0.2f * SimulationController.Instance.SimulationManager.WorldSpeed>= sequence.StartTime)
 				{
 					removedSequences.Add(sequence);
 					var agent = SimulationController.Instance.CrowdManager.GetAgentById(sequence.AgentId);

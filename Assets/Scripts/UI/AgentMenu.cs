@@ -60,7 +60,7 @@ namespace UI
             text.AppendLine($"Agent ID: {focusedAgent.GetAgentId()}");
             text.AppendLine();
             text.Append($"Exited from '{focusedAgent.GetStartingDoorName()}'");
-            text.AppendLine($" at {TimeHelper.ConvertSecondsToString(focusedAgent.GetCurrentSequence().StartTime)}\n");
+            text.AppendLine($" at {TimeHelper.ConvertSecondsToString(focusedAgent.GetNextSequence().StartTime)}\n");
 
             StaticText.text = text.ToString();
         }

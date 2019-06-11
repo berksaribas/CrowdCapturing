@@ -14,6 +14,7 @@ namespace Simulation
         public readonly int StartTime;
         public readonly MaterialPropertyBlock ActorMaterialProperty;
         public readonly List<int> GroupingAgents;
+        public bool disabled = false;
 
         public Sequence(int agentId, Building startingBuilding, Building targetBuilding, int startTime)
         {

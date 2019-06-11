@@ -101,11 +101,17 @@ namespace Simulation
 					{
 						case AgentData.DataType.IndividualMove:
 							ProcessIndividualMoveAgent(agentData);
-							activeAgents.Add(agent);
+							if (!activeAgents.Contains(agent))
+							{
+								activeAgents.Add(agent);
+							}
 							break;
 						case AgentData.DataType.GroupMoveBeforeMeet:
 							ProcessGroupMoveBeforeMeet(agentData);
-							activeAgents.Add(agent);
+							if (!activeAgents.Contains(agent))
+							{
+								activeAgents.Add(agent);
+							}
 							break;
 						case AgentData.DataType.FinishSequence:
 							ProcessFinishSequenceAgent(agentData);
@@ -178,6 +184,7 @@ namespace Simulation
 					groupSequenceAgent.gameObject.GetComponent<MeshRenderer>()
 						.SetPropertyBlock(agentData.MaterialPropertyBlock);
 					groupSequenceAgent.StartSequence(AgentState.WalkingToMeetingPosition);
+					groupSequenceAgent.GetNextSequence().disabled = true;
 					groupSequence.MarkAgentArrived();
 					if (!activeAgents.Contains(groupSequenceAgent))
 					{

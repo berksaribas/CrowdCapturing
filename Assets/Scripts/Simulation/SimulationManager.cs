@@ -10,6 +10,11 @@ namespace Simulation
 
         private float lastRecordedTime = 0f;
 
+        private void Start()
+        {
+            lastRecordedTime = Time.realtimeSinceStartup;
+        }
+
         private void Update()
         {
             WorldTimeSeconds += (Time.realtimeSinceStartup - lastRecordedTime) * WorldSpeed;

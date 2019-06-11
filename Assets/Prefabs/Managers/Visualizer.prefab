@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29ef606973296fb47a1b6f97f2a1e3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AgentSelector: {fileID: 0}
+  AgentAndGroupSelector: {fileID: 0}
   HighlighterObject: {fileID: 4526580411389247943}
 --- !u!114 &2995113322257477809
 MonoBehaviour:
@@ -76,8 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c480a5b65c415cbdd8457da21c93b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AgentSelector: {fileID: 0}
-  GroupSelector: {fileID: 0}
+  AgentAndGroupSelector: {fileID: 0}
   HighlighterObject: {fileID: 4922667402246381846}
 --- !u!1001 &4504184349512716309
 PrefabInstance:

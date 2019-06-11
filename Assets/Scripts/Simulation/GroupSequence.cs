@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 using World;
 
@@ -13,6 +14,7 @@ namespace Simulation
 		public int agentCount = 0;
 
 		public readonly List<Agent> agents;
+		public readonly List<int> arrivalTimes;
 		private int arrivedAgents;
 		private GroupSequence parentGroupSequence;
 
@@ -26,12 +28,14 @@ namespace Simulation
 			TargetPoint = targetPoint;
 			TargetDoor = targetDoor;
 			agents = new List<Agent>();
+			arrivalTimes = new List<int>();
 		}
 
 		public GroupSequence()
 		{
 			LeaveDoorTogether = true;
 			agents = new List<Agent>();
+			arrivalTimes = new List<int>();
 		}
 
 		public void SetParentGroupSequence(GroupSequence groupSequence)
@@ -59,9 +63,14 @@ namespace Simulation
 
 			Debug.Log("A group member has arrived to the meeting point!");
 			
+			
 			if (arrivedAgents == agentCount)
 			{
 				MakeAgentsMoveToTarget();
+			}
+			else
+			{
+				arrivalTimes.Add((int)SimulationController.Instance.SimulationManager.WorldTimeSeconds);
 			}
 		}
 
@@ -92,6 +101,15 @@ namespace Simulation
 				{
 					agent.SetTarget(TargetDoor);
 					agent.State = AgentState.WalkingToTargetDoor;
+				}
+			}
+
+			if (!parentGroupExists)
+			{
+				foreach (var arrivalTime in arrivalTimes)
+				{
+					var time = (int) SimulationController.Instance.SimulationManager.WorldTimeSeconds;
+					OverallData.Instance.AddWaitTime(agentCount, time - arrivalTime);
 				}
 			}
 		}
