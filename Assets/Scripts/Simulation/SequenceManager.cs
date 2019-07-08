@@ -31,14 +31,17 @@ namespace Simulation
 				else if (SimulationController.Instance.SimulationManager.WorldTimeSeconds - 0.2f * SimulationController.Instance.SimulationManager.WorldSpeed>= sequence.StartTime)
 				{
 					removedSequences.Add(sequence);
-					var agent = SimulationController.Instance.CrowdManager.GetAgentById(sequence.AgentId);
-					sequence.StartingBuilding.UnregisterAgent(agent);
+					var agent = SimulationController.Instance.AgentManager.GetAgentById(sequence.AgentId);
+					SimulationController.Instance.BuildingManager.UnregisterAgent(
+						sequence.StartingBuildingId,
+						agent
+					);
 					agent.EndSequence();
 				}
 				else if (SimulationController.Instance.SimulationManager.WorldTimeSeconds >= sequence.StartTime)
 				{
 					removedSequences.Add(sequence);
-					SimulationController.Instance.CrowdManager.ActivateAgent(sequence.AgentId,
+					SimulationController.Instance.AgentManager.ActivateAgent(sequence.AgentId,
 						sequence.ActorMaterialProperty);
 				}
 				else

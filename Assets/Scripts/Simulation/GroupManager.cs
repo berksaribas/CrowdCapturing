@@ -63,15 +63,18 @@ namespace Simulation
 
 		public void CreateGroup(Agent agent, Sequence sequence, Door startingDoor)
 		{
-			Door targetDoor = sequence.StartingBuilding.GetFinishingDoorByTargetBuilding(startingDoor,
-				sequence.TargetBuilding);
+			Door targetDoor = SimulationController.Instance
+				.BuildingManager.GetFinishingDoorByTargetBuilding(
+					startingDoor,
+					sequence.TargetBuildingId
+				);
 
 			List<Agent> availableAgents = new List<Agent>();
 			foreach (var sequenceGroupingAgent in sequence.GroupingAgents)
 			{
 				if (IsAgentAvailableForGrouping(agent, sequence, sequenceGroupingAgent))
 				{
-					availableAgents.Add(SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent));
+					availableAgents.Add(SimulationController.Instance.AgentManager.GetAgentById(sequenceGroupingAgent));
 				}
 			}
 			availableAgents.Add(agent);
@@ -93,7 +96,7 @@ namespace Simulation
 						continue;
 					}
 					
-					if (availableAgents[i].GetNextSequence().StartingBuilding == availableAgents[j].GetNextSequence().StartingBuilding)
+					if (availableAgents[i].GetNextSequence().StartingBuildingId == availableAgents[j].GetNextSequence().StartingBuildingId)
 					{
 						tempSet.Add(j);
 						if(!sameBuildingStarters.Contains(availableAgents[i]))
@@ -137,7 +140,7 @@ namespace Simulation
 				}
 				groupSequence.AddAgent(availableAgent);
 
-				groupSequence.debugText += " - " + availableAgent.GetAgentId() + " - ";
+				groupSequence.debugText += $" - {availableAgent.GetAgentId()} - ";
 			}
 			groupSequence.agentCount = availableAgents.Count;
 			
@@ -166,7 +169,10 @@ namespace Simulation
 			
 			foreach (var availableAgent in availableAgents)
 			{
-				totalPosition += availableAgent.GetNextSequence().StartingBuilding.AveragePosition;
+				totalPosition += SimulationController.Instance.
+					BuildingManager.GetBuilding(
+						availableAgent.GetNextSequence().StartingBuildingId
+					).AveragePosition;
 			}
 
 			var meetingPosition = totalPosition / (2 + availableAgents.Count);
@@ -182,14 +188,14 @@ namespace Simulation
 
 		private bool IsAgentAvailableForGrouping(Agent agent, Sequence sequence, int sequenceGroupingAgent)
 		{
-			var otherAgent = SimulationController.Instance.CrowdManager.GetAgentById(sequenceGroupingAgent);
+			var otherAgent = SimulationController.Instance.AgentManager.GetAgentById(sequenceGroupingAgent);
 
 			return !activeGroups.ContainsKey(sequenceGroupingAgent) &&
 				otherAgent != null &&
 				otherAgent.GetNextSequence() != null &&
 				otherAgent.GetNextSequence().GroupingAgents.Contains(agent.GetAgentId()) &&
 				otherAgent.GetNextSequence().StartTime - sequence.StartTime <= MaxWaitTimeForGroupMembers &&
-				otherAgent.GetNextSequence().TargetBuilding == sequence.TargetBuilding;
+				otherAgent.GetNextSequence().TargetBuildingId == sequence.TargetBuildingId;
 		}
 	}
 }

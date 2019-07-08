@@ -89,7 +89,11 @@ namespace UI
                     break;
                 
                 case AgentState.Idling:
-                    text.AppendLine($"Agent is inside {focusedAgent.GetNextSequence().StartingBuilding.name}.");
+                    var buildingName = SimulationController.Instance
+                        .BuildingManager.GetBuilding(
+                            focusedAgent.GetNextSequence().StartingBuildingId)
+                        .name;
+                    text.AppendLine($"Agent is inside {buildingName}.");
                     break;
             }
             

@@ -79,7 +79,11 @@ namespace UI
                 switch (agent.State)
                 {
                     case AgentState.Idling:
-                        text.AppendLine($"<color=olive>Inside {agent.GetNextSequence().StartingBuilding.name}</color>");
+                        var building = SimulationController.Instance
+                            .BuildingManager.GetBuilding(
+                                agent.GetNextSequence().StartingBuildingId
+                            );
+                        text.AppendLine($"<color=olive>Inside {building.name}</color>");
                         break;
                     
                     case AgentState.WaitingGroupMembers:

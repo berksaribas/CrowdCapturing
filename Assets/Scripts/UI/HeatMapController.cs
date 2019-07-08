@@ -7,7 +7,7 @@ namespace UI
 {
     public class HeatMapController : MonoBehaviour
     {
-        public CrowdManager CrowdManager;
+        public AgentManager AgentManager;
         public Vector3 TopLeft, BottomRight;
         private const int HeatMapGranularity = 32;
         private Vector3 poolDimensions;
@@ -24,7 +24,7 @@ namespace UI
 
             Array.Clear(agentHeatMap, 0, agentHeatMap.Length);
             
-            CrowdManager.GetAgents().ForEach(agent =>
+            AgentManager.GetAgents().ForEach(agent =>
             {
                 Vector3 pos = agent.transform.position;
                 if (pos.x >= TopLeft.x && pos.x <= BottomRight.x && pos.z <= TopLeft.z && pos.z >= BottomRight.z)

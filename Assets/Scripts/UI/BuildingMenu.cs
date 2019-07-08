@@ -62,14 +62,18 @@ namespace UI
             text.Append($"{focusedBuilding.name} [{focusedBuilding.DataAlias}]\n\n");
             text.Append($"Weights with other buildings:\n");
 
-            var weights = SimulationController.Instance.BuildingInfoMap[focusedBuilding.DataAlias].Weights;
-            var otherBuildingInfos = SimulationController.Instance.BuildingInfoMap.Values.Where(
-                info => info.Building.name != focusedBuilding.name
-            );
+            var weights = SimulationController.Instance.BuildingManager.GetBuildingWeights(focusedBuilding.DataAlias);
+            var buildingInfos = SimulationController.Instance.BuildingManager.GetBuildingInfos();
 
-            foreach (var info in otherBuildingInfos)
+            for (var i = 0; i < buildingInfos.Length; i++)
             {
-                text.Append($"{info.Building.name} [{info.Building.DataAlias}]: \t{weights[info.OrderInData]}\n");
+                var buildingInfo = buildingInfos[i];
+                var building = buildingInfo.Building;
+
+                if (buildingInfo.Building != focusedBuilding)
+                {
+                    text.Append($"{building.name} [{building.DataAlias}]: \t{weights[buildingInfo.Id]}\n");
+                }
             }
 
             StaticText.text = text.ToString();
@@ -77,9 +81,14 @@ namespace UI
 
         private void UpdateCanvas()
         {
+            var agentCount = SimulationController.Instance
+                .BuildingManager.GetCountOfAgentsInBuilding(
+                    focusedBuilding.DataAlias
+                );
+            
             DynamicText.text = String.Join(
                 "\n",
-                $"Has {focusedBuilding.AgentCount} agents inside."
+                $"Has {agentCount} agents inside."
             );
         }
     }

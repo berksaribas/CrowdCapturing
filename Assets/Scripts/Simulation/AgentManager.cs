@@ -9,7 +9,7 @@ using World;
 
 namespace Simulation
 {
-	public class CrowdManager : MonoBehaviour
+	public class AgentManager : MonoBehaviour
 	{
 		public GameObject AgentPrefab;
 
@@ -64,8 +64,11 @@ namespace Simulation
 			var agent = GetAgentById(agentId);
 			var sequence = agent.GetNextSequence();
 
-			var startingDoor =
-				sequence.StartingBuilding.GetDoorByTargetBuilding(sequence.TargetBuilding);
+			var startingDoor = SimulationController.Instance
+				.BuildingManager.GetDoorByTargetBuilding(
+					sequence.StartingBuildingId,
+					sequence.TargetBuildingId
+				);
 
 			if (!doorAgentQueue.ContainsKey(startingDoor))
 			{
@@ -85,7 +88,6 @@ namespace Simulation
 				doorAgentQueue[startingDoor].Enqueue(new AgentData(agent, actorMaterialProperty, startingDoor,
 					AgentData.DataType.IndividualMove));
 			}
-			
 		}
 
 		private void ProcessAgentCreateQueue()
@@ -132,10 +134,12 @@ namespace Simulation
 			agent.gameObject.GetComponent<NavMeshAgent>().enabled = false;
 
 			var startingDoor = agentData.StartingDoor;
-						
-			var targetDoor =
-				sequence.StartingBuilding.GetFinishingDoorByTargetBuilding(startingDoor,
-					sequence.TargetBuilding);
+			
+			var targetDoor = SimulationController.Instance
+				.BuildingManager.GetFinishingDoorByTargetBuilding(
+					startingDoor,
+					sequence.TargetBuildingId
+				);
 
 			agent.SetStartingPosition(startingDoor);
 			agent.SetTarget(targetDoor);

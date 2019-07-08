@@ -6,23 +6,23 @@ namespace Util
 {
 	public static class SequenceColorHelper
 	{
-		private static Dictionary<Building, Dictionary<Building, Color>> sequenceColors =
-			new Dictionary<Building, Dictionary<Building, Color>>();
+		private static readonly Dictionary<int, Dictionary<int, Color>> SequenceColors =
+			new Dictionary<int, Dictionary<int, Color>>();
 
-		public static Color GetColor(Building startingBuilding, Building targetBuilding)
+		public static Color GetColor(int startingBuildingId, int targetBuildingId)
 		{
-			if (!sequenceColors.ContainsKey(startingBuilding))
+			if (!SequenceColors.ContainsKey(startingBuildingId))
 			{
-				sequenceColors.Add(startingBuilding, new Dictionary<Building, Color>());
+				SequenceColors.Add(startingBuildingId, new Dictionary<int, Color>());
 			}
 			
-			if (!sequenceColors[startingBuilding].ContainsKey(targetBuilding))
+			if (!SequenceColors[startingBuildingId].ContainsKey(targetBuildingId))
 			{
-				sequenceColors[startingBuilding]
-					.Add(targetBuilding, Color.HSVToRGB(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), 1.0f));
+				SequenceColors[startingBuildingId]
+					.Add(targetBuildingId, Color.HSVToRGB(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), 1.0f));
 			}
 				
-			return sequenceColors[startingBuilding][targetBuilding];
+			return SequenceColors[startingBuildingId][targetBuildingId];
 		}
  	}
 }

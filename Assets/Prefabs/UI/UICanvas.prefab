@@ -360,11 +360,6 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.46666667
       objectReference: {fileID: 0}
-    - target: {fileID: 7105900951090143416, guid: ff3b06a3cb189cc40b4aa16492153cd5,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff3b06a3cb189cc40b4aa16492153cd5, type: 3}
 --- !u!224 &5561900695586593949 stripped
@@ -876,15 +871,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 224225918133562538, guid: a67bec989dafdce499e6d790b032ad89,
+    - target: {fileID: 114015594925831668, guid: a67bec989dafdce499e6d790b032ad89,
         type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224137885771517528, guid: a67bec989dafdce499e6d790b032ad89,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
+      propertyPath: m_MaxValue
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a67bec989dafdce499e6d790b032ad89, type: 3}

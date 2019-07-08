@@ -10,21 +10,21 @@ namespace Simulation
     public class Sequence : IComparable<Sequence>
     {
         public readonly int AgentId;
-        public readonly Building StartingBuilding, TargetBuilding;
+        public readonly int StartingBuildingId, TargetBuildingId;
         public readonly int StartTime;
         public readonly MaterialPropertyBlock ActorMaterialProperty;
         public readonly List<int> GroupingAgents;
         public bool disabled = false;
 
-        public Sequence(int agentId, Building startingBuilding, Building targetBuilding, int startTime)
+        public Sequence(int agentId, int startingBuildingId, int targetBuildingId, int startTime)
         {
             AgentId = agentId;
-            StartingBuilding = startingBuilding;
-            TargetBuilding = targetBuilding;
+            StartingBuildingId = startingBuildingId;
+            TargetBuildingId = targetBuildingId;
             StartTime = startTime;
 
             ActorMaterialProperty = new MaterialPropertyBlock();
-            var randomColor = SequenceColorHelper.GetColor(startingBuilding, targetBuilding);
+            var randomColor = SequenceColorHelper.GetColor(startingBuildingId, targetBuildingId);
             ActorMaterialProperty.SetColor("_Color", randomColor);
             
             GroupingAgents = new List<int>();

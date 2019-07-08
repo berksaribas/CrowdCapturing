@@ -28,21 +28,24 @@ namespace UI
                     HighlighterObject.transform.rotation = focusedBuilding.transform.rotation;
                     HighlighterObject.transform.localScale = focusedBuilding.GetComponent<BoxCollider>().size;
 
-                    var weights = SimulationController.Instance.BuildingInfoMap[focusedBuilding.DataAlias].Weights;
-                    var otherBuildingInfos = SimulationController.Instance.BuildingInfoMap.Values.Where(
-                        info => info.Building.name != focusedBuilding.name
-                    );
+                    var weights = SimulationController.Instance.BuildingManager.GetBuildingWeights(focusedBuilding.DataAlias);
+                    var buildingInfos = SimulationController.Instance.BuildingManager.GetBuildingInfos();
 
-                    foreach (var buildingInfo in otherBuildingInfos)
+                    for (var i = 0; i < buildingInfos.Length; i++)
                     {
-                        highlighters.Add(
-                            HighlightLine.CreateLine(
-                                focusedBuilding.transform.position,
-                                buildingInfo.Building.transform.position,
-                                transform,
-                                weights[buildingInfo.OrderInData] * 10f
-                            )
-                        );
+                        var buildingInfo = buildingInfos[i];
+
+                        if (buildingInfo.Building != focusedBuilding)
+                        {
+                            highlighters.Add(
+                                HighlightLine.CreateLine(
+                                    focusedBuilding.transform.position,
+                                    buildingInfo.Building.transform.position,
+                                    transform,
+                                    weights[buildingInfo.Id] * 10f
+                                )
+                            );
+                        }
                     }
                 }
                 else

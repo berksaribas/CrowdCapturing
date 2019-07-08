@@ -14,21 +14,12 @@ public class SimulationController : MonoBehaviour
 	public static SimulationController Instance { get; private set; }
 
 	public SequenceManager SequenceManager;
-	public CrowdManager CrowdManager;
+	public AgentManager AgentManager;
 	public SimulationManager SimulationManager;
 	public GroupManager GroupManager;
-	public Building[] Buildings;
-	
-	public struct BuildingInfo
-	{
-		public Building Building;
-		public int OrderInData;
-		public float[] Weights;
-	}
-	
-	[HideInInspector]
-	public Dictionary<string, BuildingInfo> BuildingInfoMap;
-	
+	public BuildingManager BuildingManager;
+	public DoorManager DoorManager;
+
 	private void Awake()
 	{
 		if (Instance != null && Instance != this)
@@ -39,8 +30,6 @@ public class SimulationController : MonoBehaviour
 		{
 			Instance = this;
 		}
-		
-		ReadSequenceCounts();
 	}
 
 	private void Start()
@@ -55,41 +44,7 @@ public class SimulationController : MonoBehaviour
 			ConvertAgentDataToSequence(agent, agentsAndSequences);
 		}
 		
-		CrowdManager.GenerateAgents(agentsAndSequences);
-	}
-
-	private void ReadSequenceCounts()
-	{
-		var csv = (TextAsset) Resources.Load("sequence_counts_matrix");
-
-		var lines = csv.text.Trim().Split('\n');
-
-		var buildingAliases = lines[0].Trim().Split(',')
-			.Select(alias => alias.Trim('"'))
-			.ToArray();
-
-		var sequenceWeights = new Dictionary<string, float[]>(buildingAliases.Length);
-		
-		for (var i = 1; i < lines.Length; i++)
-		{
-			sequenceWeights[buildingAliases[i - 1]] = lines[i]
-				.Trim()
-				.Split(',')
-				.Select(weight => float.Parse(weight, CultureInfo.InvariantCulture))
-				.ToArray();
-		}
-		
-		BuildingInfoMap = new Dictionary<string, BuildingInfo>(Buildings.Length);
-		
-		foreach (var building in Buildings)
-		{
-			BuildingInfoMap.Add(building.DataAlias, new BuildingInfo
-			{
-				Building = building,
-				OrderInData = Array.IndexOf(buildingAliases, building.DataAlias),
-				Weights = sequenceWeights[building.DataAlias]
-			});
-		}
+		AgentManager.GenerateAgents(agentsAndSequences);
 	}
 	
 	private void ConvertAgentDataToSequence(AgentJSONData agent, Dictionary<int, List<Sequence>> agentsAndSequences)
@@ -108,15 +63,12 @@ public class SimulationController : MonoBehaviour
 			var startBuildingAlias = agentSequence.alias;
 			var targetBuildingAlias = nextAgentSequence.alias;
 
-			if (BuildingInfoMap.ContainsKey(startBuildingAlias) && BuildingInfoMap.ContainsKey(targetBuildingAlias))
+			if (BuildingManager.HasBuilding(startBuildingAlias) && BuildingManager.HasBuilding(targetBuildingAlias))
 			{
-				var startingBuilding = BuildingInfoMap[startBuildingAlias].Building;
-				var targetBuilding = BuildingInfoMap[targetBuildingAlias].Building;
-
 				var sequence = new Sequence(
 					int.Parse(agent.deviceId),
-					startingBuilding,
-					targetBuilding,
+					BuildingManager.GetBuildingId(startBuildingAlias),
+					BuildingManager.GetBuildingId(targetBuildingAlias),
 					startTimeSeconds
 				);
 				

@@ -59,7 +59,10 @@ namespace Simulation
             
             if(sequences.Count > 0)
             {
-                sequences[0].StartingBuilding.RegisterAgent(this);
+                SimulationController.Instance.BuildingManager.RegisterAgent(
+                    sequences[0].StartingBuildingId,
+                    this
+                );
             }
         }
 
@@ -114,18 +117,22 @@ namespace Simulation
 
         public void StartSequence(AgentState state)
         {
-            var sequence = GetNextSequence();
-
-            sequence.StartingBuilding.UnregisterAgent(this);
+            SimulationController.Instance.BuildingManager.UnregisterAgent(
+                GetNextSequence().StartingBuildingId,
+                this
+            );
+            
             GetComponent<Renderer>().enabled = true;
             State = state;
         }
 
         public void EndSequence()
         {            
-            var sequence = sequences.Dequeue();
-
-            sequence.TargetBuilding.RegisterAgent(this);
+            SimulationController.Instance.BuildingManager.RegisterAgent(
+                sequences.Dequeue().TargetBuildingId,
+                this
+            );
+            
             GetComponent<Renderer>().enabled = false;
             GetComponent<NavMeshAgent>().enabled= false;
             State = AgentState.Idling;
