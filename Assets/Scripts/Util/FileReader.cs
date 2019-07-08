@@ -8,19 +8,13 @@ namespace Util
     {
         public static String Load(string fileName)
         {
-            string result = "";
+            var result = new StringBuilder();
             try
             {
                 string line;
                 // Create a new StreamReader, tell it which file to read and what encoding the file
                 // was saved as
-                StreamReader theReader = new StreamReader(fileName, Encoding.Default);
-                // Immediately clean up the reader after this block of code is done.
-                // You generally use the "using" statement for potentially memory-intensive objects
-                // instead of relying on garbage collection.
-                // (Do not confuse this with the using directive for namespace at the 
-                // beginning of a class!)
-                using (theReader)
+                using (var theReader = new StreamReader(fileName, Encoding.Default))
                 {
                     // While there's lines left in the text file, do this:
                     do
@@ -29,12 +23,10 @@ namespace Util
                      
                         if (line != null)
                         {
-                            result += line;
+                            result.Append(line);
                         }
                     }
                     while (line != null);
-                    // Done reading, close the reader and return true to broadcast success    
-                    theReader.Close();
                 }
             }
             // If anything broke in the try block, we throw an exception with information
@@ -44,7 +36,7 @@ namespace Util
                 Console.WriteLine("{0}\n", e.Message);
             }
 
-            return result;
+            return result.ToString();
         }
     }
 }

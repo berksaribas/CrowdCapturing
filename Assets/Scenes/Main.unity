@@ -846,7 +846,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 1
   m_VoxelSize: 0.1
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 723dc6fc8a3eb1e41bffd1dfef889267, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 9f5a007dd03be994782c5bed0feb6597, type: 2}
 --- !u!4 &1180276474
 Transform:
   m_ObjectHideFlags: 0
@@ -1677,6 +1677,16 @@ PrefabInstance:
       propertyPath: Buildings.Array.data[11]
       value: 
       objectReference: {fileID: 2115609048}
+    - target: {fileID: 114010009182713138, guid: 809d868f127a55949b5849cb47b38036,
+        type: 3}
+      propertyPath: AgentsAndSequenceBaker.FileName
+      value: agents_and_sequences
+      objectReference: {fileID: 0}
+    - target: {fileID: 114010009182713138, guid: 809d868f127a55949b5849cb47b38036,
+        type: 3}
+      propertyPath: AgentsAndSequenceBaker.SaveTo
+      value: Resources
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 809d868f127a55949b5849cb47b38036, type: 3}
 --- !u!1 &1790942236
@@ -2394,7 +2404,7 @@ PrefabInstance:
     - target: {fileID: 5634262923117409824, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5634262923117409852, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
         type: 3}
@@ -2504,12 +2514,12 @@ PrefabInstance:
     - target: {fileID: 5560942846086260522, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5560996106360292824, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5739267409734908742, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
         type: 3}
