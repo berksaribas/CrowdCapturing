@@ -3,10 +3,10 @@ using Simulation;
 using UnityEditor;
 using UnityEngine;
 
-namespace EditorScripts
+namespace Editor
 {
 	[CustomEditor(typeof(OverallData))]
-	public class OverallDataEditor : Editor
+	public class OverallDataEditor : UnityEditor.Editor
 	{
 		public override void OnInspectorGUI()
 		{

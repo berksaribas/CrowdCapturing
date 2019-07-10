@@ -130,7 +130,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 526050720}
-  - component: {fileID: 526050719}
   m_Layer: 0
   m_Name: Midday
   m_TagString: Untagged
@@ -138,19 +137,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &526050719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 11423072, guid: 4ca8bdb225bca4346a92608b2689f146,
-    type: 2}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 526050718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae7b988b4d3b82a46974648163a0ab18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &526050720
 Transform:
   m_ObjectHideFlags: 0
@@ -1091,6 +1077,16 @@ PrefabInstance:
       propertyPath: AgentAndGroupSelector
       value: 
       objectReference: {fileID: 1692343557163925114}
+    - target: {fileID: 5561896462611078014, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5561896462611078014, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf, type: 3}
 --- !u!114 &6369236199193344336 stripped

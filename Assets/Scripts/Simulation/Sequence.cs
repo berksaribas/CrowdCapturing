@@ -7,12 +7,12 @@ using Random = UnityEngine.Random;
 
 namespace Simulation
 {
+    [Serializable]
     public class Sequence : IComparable<Sequence>
     {
         public readonly int AgentId;
         public readonly int StartingBuildingId, TargetBuildingId;
         public readonly int StartTime;
-        public readonly MaterialPropertyBlock ActorMaterialProperty;
         public readonly List<int> GroupingAgents;
         public bool disabled = false;
 
@@ -22,10 +22,6 @@ namespace Simulation
             StartingBuildingId = startingBuildingId;
             TargetBuildingId = targetBuildingId;
             StartTime = startTime;
-
-            ActorMaterialProperty = new MaterialPropertyBlock();
-            var randomColor = SequenceColorHelper.GetColor(startingBuildingId, targetBuildingId);
-            ActorMaterialProperty.SetColor("_Color", randomColor);
             
             GroupingAgents = new List<int>();
         }

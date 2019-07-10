@@ -6,6 +6,7 @@ using DefaultNamespace;
 using Newtonsoft.Json;
 using Simulation;
 using UnityEngine;
+using Util;
 using World;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,25 @@ public class SimulationController : MonoBehaviour
 	public GroupManager GroupManager;
 	public BuildingManager BuildingManager;
 	public DoorManager DoorManager;
+	
+	public Baker AgentsAndSequencesBaker = new Baker(component =>
+	{
+		var self = component as SimulationController;
+
+		self.BuildingManager.Awake();
+		
+		var mytxtData = (TextAsset) Resources.Load("29092016");
+
+		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(mytxtData.text);
+
+		var agentsAndSequences = new Dictionary<int, List<Sequence>>(agents.Length);
+		foreach (var agent in agents)
+		{
+			self.ConvertAgentDataToSequence(agent, agentsAndSequences);
+		}
+
+		return agentsAndSequences;
+	});
 
 	private void Awake()
 	{
@@ -34,17 +54,17 @@ public class SimulationController : MonoBehaviour
 
 	private void Start()
 	{
-		var mytxtData = (TextAsset) Resources.Load("29092016");
+		var agentsAndSequences =
+			AgentsAndSequencesBaker.LoadBaked<Dictionary<int, List<Sequence>>>();
 
-		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(mytxtData.text);
+		AgentManager.GenerateAgents(
+			agentsAndSequences
+		);
 
-		var agentsAndSequences = new Dictionary<int, List<Sequence>>(agents.Length);
-		foreach (var agent in agents)
+		foreach (var sequences in agentsAndSequences.Values)
 		{
-			ConvertAgentDataToSequence(agent, agentsAndSequences);
+			SequenceManager.InsertSequences(sequences);
 		}
-		
-		AgentManager.GenerateAgents(agentsAndSequences);
 	}
 	
 	private void ConvertAgentDataToSequence(AgentJSONData agent, Dictionary<int, List<Sequence>> agentsAndSequences)
@@ -77,7 +97,6 @@ public class SimulationController : MonoBehaviour
 					sequence.AddGroupingAgent(id);
 				}
 				
-				SequenceManager.InsertSequence(sequence);
 				sequences.Add(sequence);
 			}
 		}

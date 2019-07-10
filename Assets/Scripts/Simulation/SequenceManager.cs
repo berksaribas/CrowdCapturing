@@ -7,9 +7,9 @@ namespace Simulation
 	{
 		private List<Sequence> sequences = new List<Sequence>();
 
-		public void InsertSequence(Sequence sequence)
+		public void InsertSequences(List<Sequence> sequenceList)
 		{
-			sequences.Add(sequence);
+			sequences.AddRange(sequenceList);
 			sequences.Sort();
 		}
 
@@ -41,8 +41,10 @@ namespace Simulation
 				else if (SimulationController.Instance.SimulationManager.WorldTimeSeconds >= sequence.StartTime)
 				{
 					removedSequences.Add(sequence);
-					SimulationController.Instance.AgentManager.ActivateAgent(sequence.AgentId,
-						sequence.ActorMaterialProperty);
+					SimulationController.Instance
+						.AgentManager.ActivateAgent(
+							sequence.AgentId
+						);
 				}
 				else
 				{

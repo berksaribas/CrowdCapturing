@@ -24,7 +24,7 @@ namespace Simulation
         private Dictionary<string, BuildingInfo> buildingInfoMap;
         private List<Agent>[] agentsInBuildings;
 
-        private void Awake()
+        public void Awake()
         {
             var buildings = BuildingsParent.GetComponentsInChildren<Building>();
 

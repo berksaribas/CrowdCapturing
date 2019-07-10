@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
+using Util;
 using World;
 
 namespace Simulation
@@ -59,7 +60,7 @@ namespace Simulation
 			Debug.Log($"Created agents: {i}");
 		}
 
-		public void ActivateAgent(int agentId, MaterialPropertyBlock actorMaterialProperty)
+		public void ActivateAgent(int agentId)
 		{
 			var agent = GetAgentById(agentId);
 			var sequence = agent.GetNextSequence();
@@ -76,6 +77,13 @@ namespace Simulation
 			}
 
 			agent.State = AgentState.WaitingLeavingDoor;
+			
+			var actorMaterialProperty = new MaterialPropertyBlock();
+            var randomColor = SequenceColorHelper.GetColor(
+	            sequence.StartingBuildingId,
+	            sequence.TargetBuildingId
+	        );
+            actorMaterialProperty.SetColor("_Color", randomColor);
 
 			if (SimulationController.Instance.GroupManager.CanCreateAGroup(agent, sequence) ||
 			    SimulationController.Instance.GroupManager.IsMemberOfAGroup(agent))

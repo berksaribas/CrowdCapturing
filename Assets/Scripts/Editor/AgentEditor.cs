@@ -1,10 +1,10 @@
 using Simulation;
 using UnityEditor;
 
-namespace EditorScripts
+namespace Editor
 {
 	[CustomEditor(typeof(Agent))]
-	public class AgentEditor : Editor
+	public class AgentEditor : UnityEditor.Editor
 	{
 		public override void OnInspectorGUI()
 		{
