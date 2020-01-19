@@ -21,15 +21,15 @@ public class SimulationController : MonoBehaviour
 	public BuildingManager BuildingManager;
 	public DoorManager DoorManager;
 	
-	public Baker AgentsAndSequencesBaker = new Baker(component =>
+	public Baker AgentsAndSequencesBaker = new Baker(async component =>
 	{
 		var self = component as SimulationController;
 
 		self.BuildingManager.Awake();
 		
-		var mytxtData = (TextAsset) Resources.Load("29092016");
+		var jsonData = Resources.Load("29092016") as TextAsset;
 
-		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(mytxtData.text);
+		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(jsonData.text);
 
 		var agentsAndSequences = new Dictionary<int, List<Sequence>>(agents.Length);
 		foreach (var agent in agents)
