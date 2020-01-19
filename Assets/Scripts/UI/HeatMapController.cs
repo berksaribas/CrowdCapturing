@@ -1,4 +1,3 @@
-using System;
 using Simulation;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,46 +7,70 @@ namespace UI
     public class HeatMapController : MonoBehaviour
     {
         public AgentManager AgentManager;
-        public Vector3 TopLeft, BottomRight;
-        private const int HeatMapGranularity = 32;
-        private Vector3 poolDimensions;
-        private readonly float[] agentHeatMap = new float[HeatMapGranularity * HeatMapGranularity];
+        public Vector3 BottomLeftCorner;
+        public float CaptureArea;
+        private const int HeatMapResolution = 31;
+        private readonly float[] agentPositionGrid = new float[HeatMapResolution * HeatMapResolution];
+        public float AgentPersistenceDecrease;
+        
+        private Material material;
 
         private void Awake()
         {
-            GetComponent<Image>().material.SetInt("_HeatMapGranularity", HeatMapGranularity);
+            material = GetComponent<Image>().material;
         }
 
         private void OnGUI()
         {
-            poolDimensions = (TopLeft - BottomRight) / HeatMapGranularity;
-
-            Array.Clear(agentHeatMap, 0, agentHeatMap.Length);
-            
-            AgentManager.GetAgents().ForEach(agent =>
+            //    Slowly decrease the agent counts
+            for (var i = 0; i < agentPositionGrid.Length; i++)
             {
-                Vector3 pos = agent.transform.position;
-                if (pos.x >= TopLeft.x && pos.x <= BottomRight.x && pos.z <= TopLeft.z && pos.z >= BottomRight.z)
+                agentPositionGrid[i] *= AgentPersistenceDecrease;
+            }
+            
+            //    Put each agent's position into the position grid
+            var captureArea = new Vector3(CaptureArea, 0, CaptureArea);
+            var poolDimensions = captureArea / (HeatMapResolution - 1);
+            var topRightCorner = BottomLeftCorner + captureArea;
+            foreach (var agent in AgentManager.GetAgents())
+            {
+                var pos = agent.transform.position;
+                if (pos.x >= BottomLeftCorner.x &&
+                    pos.x <= topRightCorner.x &&
+                    pos.z >= BottomLeftCorner.z &&
+                    pos.z <= topRightCorner.z)
                 {
-                    Vector3 relativePosition = (TopLeft - agent.transform.position);
-                
-                    int x = Mathf.FloorToInt(relativePosition.x / poolDimensions.x);
-                    int z = Mathf.FloorToInt(relativePosition.z / poolDimensions.z);
+                    var relativePosition = topRightCorner - agent.transform.position;
+                    //    These are between 0 and (HeatMapResolution - 1)
+                    var x = relativePosition.x / poolDimensions.x;
+                    var z = relativePosition.z / poolDimensions.z;
+                    
+                    var xfrac = x - Mathf.Floor(x);
+                    var zfrac = z - Mathf.Floor(z);
 
-                    agentHeatMap[x + z * HeatMapGranularity]++;
+                    var xfloor = Mathf.FloorToInt(x);
+                    var zfloor = Mathf.FloorToInt(z);
+                    
+                    agentPositionGrid[xfloor +       zfloor * HeatMapResolution]       += (1f - xfrac) * (1f - zfrac);
+                    agentPositionGrid[xfloor +       (zfloor + 1) * HeatMapResolution] += (1f - xfrac) * zfrac;
+                    agentPositionGrid[(xfloor + 1) + zfloor * HeatMapResolution]       += xfrac        * (1f - zfrac);
+                    agentPositionGrid[(xfloor + 1) + (zfloor + 1) * HeatMapResolution] += xfrac        * zfrac;
                 }
-            });
+            }
 
-            GetComponent<Image>().material.SetFloatArray("_AgentHeatMap", agentHeatMap);
+            //    Update shader uniform
+            material.SetFloatArray("_AgentPositionGrid", agentPositionGrid);
         }
 
         private void OnDrawGizmosSelected()
         {
             //  Visualize the area
             Gizmos.color = new Color(1, 0, 0, 0.7f);
+            var captureArea = new Vector3(CaptureArea, 0, CaptureArea);
+            var topRightCorner = BottomLeftCorner + captureArea;
             Gizmos.DrawCube(
-                (TopLeft + BottomRight) / 2 + Vector3.up * 30,
-                TopLeft - BottomRight
+                (BottomLeftCorner + topRightCorner) / 2 + Vector3.up * 30,
+                captureArea
             );
         }
     }

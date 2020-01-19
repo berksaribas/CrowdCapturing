@@ -1077,16 +1077,6 @@ PrefabInstance:
       propertyPath: AgentAndGroupSelector
       value: 
       objectReference: {fileID: 1692343557163925114}
-    - target: {fileID: 5561896462611078014, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 5561896462611078014, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 500
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf, type: 3}
 --- !u!114 &6369236199193344336 stripped
