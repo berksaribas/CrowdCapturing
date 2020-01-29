@@ -1077,7 +1077,18 @@ PrefabInstance:
       propertyPath: AgentAndGroupSelector
       value: 
       objectReference: {fileID: 1692343557163925114}
-    m_RemovedComponents: []
+    - target: {fileID: 1401376984138461622, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1401376984138461623, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: f5754bc2fe6e8aa4e8bb0079e1064cbf, type: 3}
 --- !u!114 &6369236199193344336 stripped
 MonoBehaviour:
