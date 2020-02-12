@@ -39,20 +39,6 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
---- !u!114 &2665236649885038706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4951017492411243576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 1
-  m_AspectRatio: 1
 --- !u!1001 &2303045983228188140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -88,12 +74,12 @@ PrefabInstance:
     - target: {fileID: 3409298067307620957, guid: 989d480e0374c734682420537c40e287,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3409298067307620957, guid: 989d480e0374c734682420537c40e287,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3409298067307620957, guid: 989d480e0374c734682420537c40e287,
         type: 3}
@@ -103,7 +89,7 @@ PrefabInstance:
     - target: {fileID: 3409298067307620957, guid: 989d480e0374c734682420537c40e287,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -234.7
       objectReference: {fileID: 0}
     - target: {fileID: 3409298067307620957, guid: 989d480e0374c734682420537c40e287,
         type: 3}
@@ -377,9 +363,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b640a788cbd3b794380abaec35f8b6f6, type: 3}
---- !u!1 &4951017492411243576 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1491865455056572, guid: b640a788cbd3b794380abaec35f8b6f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 4949668172625775236}
-  m_PrefabAsset: {fileID: 0}

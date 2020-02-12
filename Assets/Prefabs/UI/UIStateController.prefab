@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4551645149903196590}
   - component: {fileID: 1692343557163925114}
   - component: {fileID: 6369236199193344336}
-  - component: {fileID: 2538276818708619682}
   - component: {fileID: 3838645185709282461}
   - component: {fileID: 5239381675430799708}
   m_Layer: 0
@@ -48,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraHandler: {fileID: 3838645185709282461}
+  GroupManager: {fileID: 0}
 --- !u!114 &6369236199193344336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,20 +61,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraHandler: {fileID: 3838645185709282461}
---- !u!114 &2538276818708619682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5239381675430799707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ffac2c8cb2e4ea992a64b783a9d882c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GroupManager: {fileID: 0}
-  AgentSelector: {fileID: 1692343557163925114}
 --- !u!114 &3838645185709282461
 MonoBehaviour:
   m_ObjectHideFlags: 0
