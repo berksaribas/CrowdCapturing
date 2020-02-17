@@ -1,27 +1,24 @@
-﻿using UnityEngine;
+﻿using Control;
+using UnityEngine;
 
-namespace Control
+namespace UI.State
 {
-    public class CursorHandler : MonoBehaviour
+    public class CursorHider : MonoBehaviour
     {
-        [SerializeField] public KeyCode ToggleKey = KeyCode.Tab;
-
         public CameraHandler CameraHandler;
 
         private bool isCursorLocked;
+        [SerializeField] public KeyCode ToggleKey = KeyCode.Tab;
 
-        void Start()
+        private void Start()
         {
-            CameraHandler.Observe(activeCamera =>
-            {
-                SetMode();
-            });
+            CameraHandler.Observe(activeCamera => SetMode());
 
             isCursorLocked = true;
             SetMode();
         }
 
-        void Update()
+        private void Update()
         {
             if (Input.GetKeyDown(ToggleKey))
             {

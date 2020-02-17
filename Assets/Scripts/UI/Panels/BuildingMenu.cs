@@ -1,17 +1,15 @@
 using System;
-using System.Linq;
 using System.Text;
 using Control;
-using Simulation;
+using UI.State;
 using UnityEngine;
 using UnityEngine.UI;
 using World;
 
-namespace UI
+namespace UI.Panels
 {
     public class BuildingMenu : MonoBehaviour
     {
-        public BuildingSelector BuildingSelector;
         private Building focusedBuilding;
 
         public Text IdleText, StaticText, DynamicText;
@@ -23,7 +21,7 @@ namespace UI
         
         void Start()
         {
-            BuildingSelector.Observe(newFocus =>
+            FocusedBuilding.Observe(newFocus =>
             {
                 if((focusedBuilding = newFocus) != null)
                 {

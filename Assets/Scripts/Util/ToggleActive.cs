@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UI
+namespace Util
 {
     public class ToggleActive : MonoBehaviour
     {

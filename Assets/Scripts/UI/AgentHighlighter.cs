@@ -1,12 +1,12 @@
 ﻿using Control;
 using Simulation;
+using UI.State;
 using UnityEngine;
 
 namespace UI
 {
     public class AgentHighlighter : MonoBehaviour
     {
-        public AgentAndGroupSelector AgentAndGroupSelector;
         private Agent focusedAgent;
 
         public MeshRenderer HighlighterObject;
@@ -15,7 +15,7 @@ namespace UI
     
         void Start()
         {
-            AgentAndGroupSelector.ObserveAgent(newFocus =>
+            FocusedAgent.Observe(newFocus =>
             {
                 highlighter.Disable();
 

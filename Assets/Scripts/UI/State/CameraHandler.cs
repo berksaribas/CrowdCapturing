@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Net.WebSockets;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Control
+namespace UI.State
 {
     public class CameraHandler : MonoBehaviour
     {

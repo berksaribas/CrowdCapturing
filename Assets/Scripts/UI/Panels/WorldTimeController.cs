@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Util;
 
-namespace UI
+namespace UI.Panels
 {
 	public class WorldTimeController : MonoBehaviour
 	{

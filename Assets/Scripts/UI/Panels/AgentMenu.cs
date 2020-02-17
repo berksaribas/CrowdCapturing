@@ -1,15 +1,14 @@
 ﻿using System.Text;
-using Control;
 using Simulation;
+using UI.State;
 using UnityEngine;
 using UnityEngine.UI;
 using Util;
 
-namespace UI
+namespace UI.Panels
 {
     public class AgentMenu : MonoBehaviour
     {
-        public AgentAndGroupSelector AgentAndGroupSelector;
         private Agent focusedAgent;
         
         public Text IdleText, StaticText, DynamicText;
@@ -21,7 +20,7 @@ namespace UI
 
         void Start()
         {
-            AgentAndGroupSelector.ObserveAgent(newFocus =>
+            FocusedAgent.Observe(newFocus =>
             {
                 if ((focusedAgent = newFocus) != null)
                 {

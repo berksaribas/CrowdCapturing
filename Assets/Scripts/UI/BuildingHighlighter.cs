@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Control;
+using UI.State;
 using UnityEngine;
 using World;
 
@@ -8,7 +9,6 @@ namespace UI
 {
     public class BuildingHighlighter : MonoBehaviour
     {
-        public BuildingSelector BuildingSelector;
         private Building focusedBuilding;
 
         public MeshRenderer HighlighterObject;
@@ -17,7 +17,7 @@ namespace UI
 
         void Start()
         {
-            BuildingSelector.Observe(newFocus =>
+            FocusedBuilding.Observe(newFocus =>
             {
                 ClearHighlighters();
                 
