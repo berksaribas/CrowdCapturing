@@ -69,7 +69,7 @@ namespace DefaultNamespace
 		
 		private void Update()
 		{
-			var time = (int) SimulationController.Instance.SimulationManager.WorldTimeSeconds;
+			var time = (int) SimulationController.Instance.SimulationTime.TimeInSeconds;
 			var agentCount = FindObjectsOfType<Agent>().Length;
 			ActivityByTime[time] = agentCount;
 			

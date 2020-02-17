@@ -32,8 +32,8 @@ namespace Simulation
             agent = GetComponent<NavMeshAgent>();
             agent.acceleration = 150000f;
             originalSpeed = Random.Range(6f, 11f);
-            agent.speed = originalSpeed / 10f * SimulationController.Instance.SimulationManager.WorldSpeed;
-            agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationManager.WorldSpeed;
+            agent.speed = originalSpeed / 10f * SimulationController.Instance.SimulationTime.Speed;
+            agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationTime.Speed;
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
             agent.autoBraking = true;
             State = AgentState.Idling;
@@ -41,8 +41,8 @@ namespace Simulation
 
         private void Update()
         {
-            agent.speed = originalSpeed / 10f  * SimulationController.Instance.SimulationManager.WorldSpeed;
-            agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationManager.WorldSpeed;
+            agent.speed = originalSpeed / 10f  * SimulationController.Instance.SimulationTime.Speed;
+            agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationTime.Speed;
         }
 
         public void SetSequences(List<Sequence> sequences)

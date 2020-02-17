@@ -30,7 +30,7 @@ namespace Editor
 			EditorGUILayout.LabelField("Agent ID: ", $"{agent.GetAgentId()}");
 			if(agent.GetNextSequence() != null)
 			{
-				EditorGUILayout.LabelField("Next sequence start time: ", $"{agent.GetNextSequence().StartTime} / ${SimulationController.Instance.SimulationManager.WorldTimeSeconds}");
+				EditorGUILayout.LabelField("Next sequence start time: ", $"{agent.GetNextSequence().StartTime} / ${SimulationController.Instance.SimulationTime.TimeInSeconds}");
 			}
 		}	
 	}

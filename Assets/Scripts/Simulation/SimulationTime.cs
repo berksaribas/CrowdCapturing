@@ -3,10 +3,10 @@ using Util;
 
 namespace Simulation
 {
-    public class SimulationManager : MonoBehaviour
+    public class SimulationTime : MonoBehaviour
     {
-        public float WorldSpeed = 10f;
-        public float WorldTimeSeconds = 0;
+        public float Speed = 10f;
+        public float TimeInSeconds = 0;
 
         private float lastRecordedTime = 0f;
 
@@ -17,7 +17,7 @@ namespace Simulation
 
         private void Update()
         {
-            WorldTimeSeconds += (Time.realtimeSinceStartup - lastRecordedTime) * WorldSpeed;
+            TimeInSeconds += (Time.realtimeSinceStartup - lastRecordedTime) * Speed;
             lastRecordedTime = Time.realtimeSinceStartup;
         }
     }

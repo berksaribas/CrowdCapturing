@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SequenceManager: {fileID: 9195756893765442425}
   AgentManager: {fileID: 9195655031541110497}
-  SimulationManager: {fileID: 9195671620696652592}
+  SimulationTime: {fileID: 9195671620696652592}
   GroupManager: {fileID: 9195436902876451284}
   BuildingManager: {fileID: 3903502971701431115}
   DoorManager: {fileID: 1506119400052368781}
@@ -65,11 +65,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9082529787875989341}
     m_Modifications:
-    - target: {fileID: 4505618736267889258, guid: ac0f7b53a71204e419f24d620204258c,
-        type: 3}
-      propertyPath: m_Name
-      value: DoorManager
-      objectReference: {fileID: 0}
     - target: {fileID: 1567908149902950388, guid: ac0f7b53a71204e419f24d620204258c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -125,6 +120,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4505618736267889258, guid: ac0f7b53a71204e419f24d620204258c,
+        type: 3}
+      propertyPath: m_Name
+      value: DoorManager
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac0f7b53a71204e419f24d620204258c, type: 3}
 --- !u!4 &2818610874500596272 stripped
@@ -152,11 +152,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9082529787875989341}
     m_Modifications:
-    - target: {fileID: 4502137989807251828, guid: 473a68e281a34cb49b9e568e557ac311,
-        type: 3}
-      propertyPath: m_Name
-      value: BuildingManager
-      objectReference: {fileID: 0}
     - target: {fileID: 2342489278163140872, guid: 473a68e281a34cb49b9e568e557ac311,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -212,6 +207,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4502137989807251828, guid: 473a68e281a34cb49b9e568e557ac311,
+        type: 3}
+      propertyPath: m_Name
+      value: BuildingManager
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 473a68e281a34cb49b9e568e557ac311, type: 3}
 --- !u!4 &9136128371564086690 stripped
@@ -241,7 +241,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1813507470291062, guid: afc418a58826c65468c59fd8b291d4ac, type: 3}
       propertyPath: m_Name
-      value: SimulationManager
+      value: SimulationTime
       objectReference: {fileID: 0}
     - target: {fileID: 4669337245611504, guid: afc418a58826c65468c59fd8b291d4ac, type: 3}
       propertyPath: m_LocalPosition.x
