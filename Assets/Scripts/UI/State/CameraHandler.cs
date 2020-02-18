@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI.State
 {
     public class CameraHandler : MonoBehaviour
     {
-        [System.Serializable]
+        [Serializable]
         public struct CameraKeyPair
         {
             public Camera Camera;
@@ -15,29 +14,10 @@ namespace UI.State
         
         public CameraKeyPair[] Cameras;
 
-        private int activeCameraIndex;
-        private readonly List<Action<Camera>> listeners = new List<Action<Camera>>();
-
-        public int ActiveCameraIndex
+        private void Awake()
         {
-            get => activeCameraIndex;
-            set
-            {
-                activeCameraIndex = value;
-                for (var i = 0; i < Cameras.Length; i++)
-                {
-                    Cameras[i].Camera.gameObject.SetActive(i == activeCameraIndex);
-                }
-                
-                listeners.ForEach(action => action.Invoke(ActiveCamera));
-            }
-        }
-
-        public Camera ActiveCamera => Cameras[activeCameraIndex].Camera;
-
-        private void Start()
-        {
-            ActiveCameraIndex = 0;
+            FocusedCamera.Observe(SetActiveCamera);
+            FocusedCamera.Set(Cameras[0].Camera);
         }
 
         private void Update()
@@ -46,15 +26,18 @@ namespace UI.State
             {
                 if (Input.GetKeyDown(Cameras[i].ActivationKey))
                 {
-                    ActiveCameraIndex = i;
+                    FocusedCamera.Set(Cameras[i].Camera);
                     break;
                 }
             }
         }
 
-        public void Observe(Action<Camera> listener)
+        private void SetActiveCamera(Camera activeCamera)
         {
-            listeners.Add(listener);
+            for (var i = 0; i < Cameras.Length; i++)
+            {
+                Cameras[i].Camera.gameObject.SetActive(Cameras[i].Camera == activeCamera);
+            }
         }
     }
 }

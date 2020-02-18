@@ -30,7 +30,7 @@ namespace UI.State
             if (!Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            var ray = CameraHandler.ActiveCamera.ScreenPointToRay(Input.mousePosition);
+            var ray = FocusedCamera.Get().ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, agentLayer))
             {
@@ -55,7 +55,7 @@ namespace UI.State
             if (!Input.GetMouseButtonDown(1) || EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            var ray = CameraHandler.ActiveCamera.ScreenPointToRay(Input.mousePosition);
+            var ray = FocusedCamera.Get().ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, buildingLayer))
             {

@@ -5,14 +5,12 @@ namespace UI.State
 {
     public class CursorHider : MonoBehaviour
     {
-        public CameraHandler CameraHandler;
-
         private bool isCursorLocked;
         [SerializeField] public KeyCode ToggleKey = KeyCode.Tab;
 
         private void Start()
         {
-            CameraHandler.Observe(activeCamera => SetMode());
+            FocusedCamera.Observe(newFocus => SetMode());
 
             isCursorLocked = true;
             SetMode();
@@ -34,13 +32,13 @@ namespace UI.State
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                CameraHandler.ActiveCamera.GetComponent<CameraMovement>().enabled = false;
+                FocusedCamera.Get().GetComponent<CameraMovement>().enabled = false;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                CameraHandler.ActiveCamera.GetComponent<CameraMovement>().enabled = true;
+                FocusedCamera.Get().GetComponent<CameraMovement>().enabled = true;
             }
         }
     }
