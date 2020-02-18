@@ -246,7 +246,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1922523976622342, guid: a67bec989dafdce499e6d790b032ad89, type: 3}
       propertyPath: m_Name
-      value: WorldSpeed
+      value: Simulation Speed
       objectReference: {fileID: 0}
     - target: {fileID: 224137885771517528, guid: a67bec989dafdce499e6d790b032ad89,
         type: 3}
@@ -484,7 +484,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1791987156526720, guid: 14db83da97bbb73438c2a0e8c59a6c3e, type: 3}
       propertyPath: m_Name
-      value: WorldTime
+      value: Simulation Time
       objectReference: {fileID: 0}
     - target: {fileID: 224568533852666870, guid: 14db83da97bbb73438c2a0e8c59a6c3e,
         type: 3}

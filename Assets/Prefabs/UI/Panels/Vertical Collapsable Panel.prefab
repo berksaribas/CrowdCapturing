@@ -164,7 +164,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3409298067307620957}
-  - component: {fileID: 4396306309333269419}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -191,18 +190,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4396306309333269419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9043371719687371974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c99b270eed524be4bebdeb268499b1bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9058355224641930398
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +203,7 @@ GameObject:
   - component: {fileID: 3059529109360560278}
   - component: {fileID: 6678565803229096296}
   - component: {fileID: 105751045731058979}
+  - component: {fileID: 3040594686533273888}
   m_Layer: 5
   m_Name: Vertical Collapsable Panel
   m_TagString: Untagged
@@ -319,6 +307,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 1
+--- !u!114 &3040594686533273888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058355224641930398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bad884eac6f4d3e9ab0423bb27c38d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Button: {fileID: 34646125782318902}
+  Content: {fileID: 9043371719687371974}
 --- !u!1 &9123085406339916859
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,15 +438,4 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1331216676281185684}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4396306309333269419}
-        m_MethodName: Toggle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []

@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using Control;
 using UnityEngine;
 using UnityEngine.UI;
 using World;
@@ -16,10 +15,7 @@ namespace UI.Panels
         private void Awake()
         {
             ResetCanvas();
-        }
-        
-        void Start()
-        {
+
             UIState.Building.OnChange += newBuilding =>
             {
                 if((focusedBuilding = newBuilding) != null)
@@ -67,7 +63,7 @@ namespace UI.Panels
                 var buildingInfo = buildingInfos[i];
                 var building = buildingInfo.Building;
 
-                if (buildingInfo.Building != focusedBuilding)
+                if (building != focusedBuilding)
                 {
                     text.Append($"{building.name} [{building.DataAlias}]: \t{weights[buildingInfo.Id]}\n");
                 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5239381675430799708}
   - component: {fileID: 160657970178638529}
   m_Layer: 0
-  m_Name: UIStateController
+  m_Name: Input Handler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322f94e551aa0514f9fb37c2e71e8f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraHandler: {fileID: 3838645185709282461}
   ToggleKey: 9
 --- !u!114 &160657970178638529
 MonoBehaviour:

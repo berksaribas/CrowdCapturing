@@ -15,10 +15,7 @@ namespace UI.Panels
         private void Awake()
         {
             ResetCanvas();
-        }
 
-        void Start()
-        {
             UIState.Agent.OnChange += newFocus =>
             {
                 if ((focusedAgent = newFocus) != null)
@@ -32,7 +29,7 @@ namespace UI.Panels
             };
         }
 
-        void Update()
+        private void Update()
         {
             if (focusedAgent != null)
             {

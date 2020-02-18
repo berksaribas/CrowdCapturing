@@ -256,6 +256,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeatMapImage
       objectReference: {fileID: 0}
+    - target: {fileID: 114020505311711660, guid: b640a788cbd3b794380abaec35f8b6f6,
+        type: 3}
+      propertyPath: AgentManager
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114020505311711660, guid: b640a788cbd3b794380abaec35f8b6f6,
+        type: 3}
+      propertyPath: BottomLeftCorner.x
+      value: -223.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114020505311711660, guid: b640a788cbd3b794380abaec35f8b6f6,
+        type: 3}
+      propertyPath: BottomLeftCorner.z
+      value: -27.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114020505311711660, guid: b640a788cbd3b794380abaec35f8b6f6,
+        type: 3}
+      propertyPath: CaptureArea
+      value: 188.7
+      objectReference: {fileID: 0}
     - target: {fileID: 224967895537545620, guid: b640a788cbd3b794380abaec35f8b6f6,
         type: 3}
       propertyPath: m_LocalPosition.x
