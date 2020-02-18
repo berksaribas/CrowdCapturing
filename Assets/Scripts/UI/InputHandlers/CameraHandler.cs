@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UI.State
+namespace UI.InputHandlers
 {
     public class CameraHandler : MonoBehaviour
     {
@@ -16,8 +16,8 @@ namespace UI.State
 
         private void Awake()
         {
-            FocusedCamera.Observe(SetActiveCamera);
-            FocusedCamera.Set(Cameras[0].Camera);
+            UIState.Camera.OnChange += SetActiveCamera;
+            UIState.Camera.Set(Cameras[0].Camera);
         }
 
         private void Update()
@@ -26,7 +26,7 @@ namespace UI.State
             {
                 if (Input.GetKeyDown(Cameras[i].ActivationKey))
                 {
-                    FocusedCamera.Set(Cameras[i].Camera);
+                    UIState.Camera.Set(Cameras[i].Camera);
                     break;
                 }
             }

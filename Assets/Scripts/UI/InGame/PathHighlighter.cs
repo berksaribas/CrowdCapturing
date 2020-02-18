@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Simulation;
 using UnityEngine;
 
-namespace UI
+namespace UI.InGame
 {
     public class PathHighlighter
     {

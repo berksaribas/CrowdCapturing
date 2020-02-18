@@ -1,7 +1,6 @@
 using System.Text;
 using Control;
 using Simulation;
-using UI.State;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,9 +19,9 @@ namespace UI.Panels
 
         void Start()
         {
-            FocusedGroup.Observe(newFocus =>
+            UIState.Group.OnChange += newGroup =>
             {
-                if ((focusedGroup = newFocus) != null)
+                if ((focusedGroup = newGroup) != null)
                 {
                     SetCanvas();
                 }
@@ -30,7 +29,7 @@ namespace UI.Panels
                 {
                     ResetCanvas();
                 }
-            });
+            };
         }
 
         void Update()

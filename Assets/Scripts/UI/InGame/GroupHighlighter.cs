@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Control;
 using Simulation;
-using UI.State;
 using UnityEngine;
 
-namespace UI
+namespace UI.InGame
 {
     public class GroupHighlighter : MonoBehaviour
     {
@@ -18,11 +16,11 @@ namespace UI
 
         void Start()
         {
-            FocusedGroup.Observe(newFocus =>
+            UIState.Group.OnChange += newGroup =>
             {
                 ClearAllHighlighters();
 
-                if ((focusedGroup = newFocus) != null)
+                if ((focusedGroup = newGroup) != null)
                 {
                     HighlighterObject.enabled = true;
 
@@ -37,7 +35,7 @@ namespace UI
 
                     ConfigurePathHighlighterTo(focusedGroup);
                 }
-            });
+            };
         }
 
         void Update()
@@ -61,7 +59,7 @@ namespace UI
 
         private void ConfigurePathHighlighterTo(GroupSequence group)
         {
-            var agents = group.agents.Where(agent => agent != FocusedAgent.Get()).ToArray();
+            var agents = group.agents.Where(agent => agent != UIState.Agent.Get()).ToArray();
             
             while (agents.Length > pathHighlighters.Count)
             {

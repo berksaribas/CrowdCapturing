@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Simulation;
-using UI.State;
 using UnityEngine;
 using UnityEngine.UI;
 using Util;
@@ -20,7 +19,7 @@ namespace UI.Panels
 
         void Start()
         {
-            FocusedAgent.Observe(newFocus =>
+            UIState.Agent.OnChange += newFocus =>
             {
                 if ((focusedAgent = newFocus) != null)
                 {
@@ -30,7 +29,7 @@ namespace UI.Panels
                 {
                     ResetCanvas();
                 }
-            });
+            };
         }
 
         void Update()

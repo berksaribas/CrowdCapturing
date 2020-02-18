@@ -1,7 +1,7 @@
 ﻿using Control;
 using UnityEngine;
 
-namespace UI.State
+namespace UI.InputHandlers
 {
     public class CursorHider : MonoBehaviour
     {
@@ -10,7 +10,7 @@ namespace UI.State
 
         private void Start()
         {
-            FocusedCamera.Observe(newFocus => SetMode());
+            UIState.Camera.OnChange += newCamera => SetMode();
 
             isCursorLocked = true;
             SetMode();
@@ -32,13 +32,13 @@ namespace UI.State
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                FocusedCamera.Get().GetComponent<CameraMovement>().enabled = false;
+                UIState.Camera.Get().GetComponent<CameraMovement>().enabled = false;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                FocusedCamera.Get().GetComponent<CameraMovement>().enabled = true;
+                UIState.Camera.Get().GetComponent<CameraMovement>().enabled = true;
             }
         }
     }

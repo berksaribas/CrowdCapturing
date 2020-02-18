@@ -1,9 +1,7 @@
-﻿using Control;
-using Simulation;
-using UI.State;
+﻿using Simulation;
 using UnityEngine;
 
-namespace UI
+namespace UI.InGame
 {
     public class AgentHighlighter : MonoBehaviour
     {
@@ -15,11 +13,11 @@ namespace UI
     
         void Start()
         {
-            FocusedAgent.Observe(newFocus =>
+            UIState.Agent.OnChange += newAgent =>
             {
                 highlighter.Disable();
 
-                if ((focusedAgent = newFocus) != null)
+                if ((focusedAgent = newAgent) != null)
                 {
                     highlighter.Initialize(focusedAgent, transform);
                     
@@ -31,7 +29,7 @@ namespace UI
                     HighlighterObject.enabled = false;
                     HighlighterObject.transform.SetParent(transform, false);
                 }
-            });
+            };
         }
 
         private void Update()

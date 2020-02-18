@@ -1,7 +1,6 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace UI
+namespace UI.InGame
 {
 	public static class HighlightLine
 	{

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using World;
 
-namespace UI.State
+namespace UI.InputHandlers
 {
     public class MouseInputHandler : MonoBehaviour
     {
@@ -30,7 +30,7 @@ namespace UI.State
             if (!Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            var ray = FocusedCamera.Get().ScreenPointToRay(Input.mousePosition);
+            var ray = UIState.Camera.Get().ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, agentLayer))
             {
@@ -39,14 +39,14 @@ namespace UI.State
 
                 if (hitLayer == agentLayer)
                 {
-                    FocusedAgent.Set(hit.transform.GetComponent<Agent>());
-                    FocusedGroup.Set(GroupManager.GetActiveGroup(FocusedAgent.Get()));
+                    UIState.Agent.Set(hit.transform.GetComponent<Agent>());
+                    UIState.Group.Set(GroupManager.GetActiveGroup(UIState.Agent.Get()));
                 }
             }
             else
             {
-                FocusedAgent.Set(null);
-                FocusedGroup.Set(null);
+                UIState.Agent.Set(null);
+                UIState.Group.Set(null);
             }
         }
 
@@ -55,7 +55,7 @@ namespace UI.State
             if (!Input.GetMouseButtonDown(1) || EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            var ray = FocusedCamera.Get().ScreenPointToRay(Input.mousePosition);
+            var ray = UIState.Camera.Get().ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, buildingLayer))
             {
@@ -64,12 +64,12 @@ namespace UI.State
 
                 if (hitLayer == buildingLayer)
                 {
-                    FocusedBuilding.Set(hitObject.GetComponent<Building>());
+                    UIState.Building.Set(hitObject.GetComponent<Building>());
                 }
             }
             else
             {
-                FocusedBuilding.Set(null);
+                UIState.Building.Set(null);
             }
         }
     }

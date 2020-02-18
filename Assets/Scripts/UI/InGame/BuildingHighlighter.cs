@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
-using Control;
-using UI.State;
 using UnityEngine;
 using World;
 
-namespace UI
+namespace UI.InGame
 {
     public class BuildingHighlighter : MonoBehaviour
     {
@@ -17,11 +14,11 @@ namespace UI
 
         void Start()
         {
-            FocusedBuilding.Observe(newFocus =>
+            UIState.Building.OnChange += newBuilding =>
             {
                 ClearHighlighters();
                 
-                if ((focusedBuilding = newFocus) != null)
+                if ((focusedBuilding = newBuilding) != null)
                 {
                     HighlighterObject.enabled = true;
                     HighlighterObject.transform.position = focusedBuilding.transform.position;
@@ -52,7 +49,7 @@ namespace UI
                 {
                     HighlighterObject.enabled = false;
                 }
-            });
+            };
         }
 
         private void ClearHighlighters()

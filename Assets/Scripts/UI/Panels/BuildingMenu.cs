@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using Control;
-using UI.State;
 using UnityEngine;
 using UnityEngine.UI;
 using World;
@@ -21,9 +20,9 @@ namespace UI.Panels
         
         void Start()
         {
-            FocusedBuilding.Observe(newFocus =>
+            UIState.Building.OnChange += newBuilding =>
             {
-                if((focusedBuilding = newFocus) != null)
+                if((focusedBuilding = newBuilding) != null)
                 {
                     SetCanvas();
                 }
@@ -31,7 +30,7 @@ namespace UI.Panels
                 {
                     ResetCanvas();
                 }
-            });
+            };
         }
 
         private void Update()
