@@ -10,7 +10,7 @@ namespace Util
 			var minutes = (intSeconds - hours * 3600) / 60;
 			var seconds = intSeconds - hours * 3600 - minutes * 60;
 
-			return hours.ToString("00") + ":" + minutes.ToString("00") + ":" + seconds.ToString("00");
+			return $"{hours:00}:{minutes:00}:{seconds:00}";
 		}
 	}
 }

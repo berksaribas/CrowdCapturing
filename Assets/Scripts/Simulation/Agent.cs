@@ -66,9 +66,10 @@ namespace Simulation
             }
         }
 
-        public void SetAgentId(int agentId)
+        public int GetAgentId() => agentId;
+        public void SetAgentId(int id)
         {
-            this.agentId = agentId;
+            agentId = id;
         }
 
         public void SetTarget(Door door)
@@ -138,49 +139,19 @@ namespace Simulation
             State = AgentState.Idling;
         }
         
-        public float GetSpeed()
-        {
-            return originalSpeed;
-        }
-
+        public float GetSpeed() => originalSpeed;
         public void SetSpeed(float speed)
         {
             originalSpeed = speed;
         }
-
-        public int GetAgentId()
-        {
-            return agentId;
-        }
         
-        public string GetStartingDoorName()
-        {
-            return startingDoor.gameObject.name;
-        }
+        public Door GetStartingDoor() => startingDoor;
+        public string GetStartingDoorName() => startingDoor.name;
 
-        public string GetTargetDoorName()
-        {
-            return targetDoor.gameObject.name;
-        }
+        public Door GetTargetDoor() => targetDoor;
+        public string GetTargetDoorName() => targetDoor.name;
 
-        public Door GetStartingDoor()
-        {
-            return startingDoor;
-        }
-        
-        public Door GetTargetDoor()
-        {
-            return targetDoor;
-        }
-
-        public bool HasPath()
-        {
-            return agent.hasPath;
-        }
-        
-        public Vector3[] GetPathCorners()
-        {
-            return agent.path.corners;
-        }
+        public bool HasPath() => agent.hasPath;
+        public Vector3[] GetPathCorners() => agent.path.corners;
     }
 }

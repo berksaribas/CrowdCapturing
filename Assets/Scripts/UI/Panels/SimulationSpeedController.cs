@@ -9,7 +9,7 @@ namespace UI.Panels
 		public Slider SpeedSlider;
 		public TextMeshProUGUI SpeedValue;
 
-		private void Start()
+		private void Awake()
 		{
 			SpeedSlider.value = SimulationController.Instance.SimulationTime.Speed;
 			SpeedValue.text = SpeedSlider.value.ToString();

@@ -1,17 +1,17 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Util;
 
 namespace UI.Panels
 {
     public class WorldTimeController : MonoBehaviour
     {
-        public Text WorldTime;
+        public TextMeshProUGUI WorldTime;
 
-        private void Update()
+        private void OnGUI()
         {
-            WorldTime.text = "Time: " + TimeHelper.ConvertSecondsToString(
-                                 SimulationController.Instance.SimulationTime.TimeInSeconds);
+            WorldTime.text =
+                $"Time: {TimeHelper.ConvertSecondsToString(SimulationController.Instance.SimulationTime.TimeInSeconds)}";
         }
     }
 }

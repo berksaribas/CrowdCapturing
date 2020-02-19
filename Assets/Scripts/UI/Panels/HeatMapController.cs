@@ -7,7 +7,6 @@ namespace UI.Panels
 {
     public class HeatMapController : MonoBehaviour
     {
-        public AgentManager AgentManager;
         private const int HeatMapResolution = 31;
         private readonly float[] agentPositionGrid = new float[HeatMapResolution * HeatMapResolution];
         public float AgentPersistenceDecrease;
@@ -30,7 +29,7 @@ namespace UI.Panels
             var cam = UIState.Camera.Get();
             float4x4 camTransform = cam.projectionMatrix * cam.worldToCameraMatrix;
             
-            foreach (var agent in AgentManager.GetAgents())
+            foreach (var agent in SimulationController.Instance.AgentManager.GetAgents())
             {
                 var clipSpacePos = math.mul(
                     camTransform,

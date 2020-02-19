@@ -29,7 +29,7 @@ namespace UI.Panels
             };
         }
 
-        private void Update()
+        private void OnGUI()
         {
             if (focusedAgent != null)
             {
