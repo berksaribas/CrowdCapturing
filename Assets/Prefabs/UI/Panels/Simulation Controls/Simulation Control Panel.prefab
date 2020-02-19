@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 621824296828887022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_MinHeight
-      value: 200
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 1489631100453700589, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
@@ -36,11 +36,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1489631100453700589, guid: 26b41e7a985901d408c1d20fb71de301,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 2467135675927571992, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
@@ -77,42 +72,40 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3078240495034036062, guid: 26b41e7a985901d408c1d20fb71de301,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 5064798084030475566, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_Name
       value: Simulation Control Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
+    - target: {fileID: 5079211259478824310, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
-      propertyPath: m_text
-      value: 'Simulation
-
-        Controls'
-      objectReference: {fileID: 0}
-    - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
+      propertyPath: m_text
+      value: Simulation
+      objectReference: {fileID: 0}
+    - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
+        type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
@@ -127,12 +120,12 @@ PrefabInstance:
     - target: {fileID: 7912376107158887930, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7912376107158887930, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 90
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 8272531863557422194, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}

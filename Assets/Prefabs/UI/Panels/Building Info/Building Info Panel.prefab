@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 621824296828887022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_MinHeight
-      value: 200
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 1489631100453700589, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
@@ -75,22 +75,22 @@ PrefabInstance:
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_text
-      value: Building Info
+      value: Building
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 13
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}

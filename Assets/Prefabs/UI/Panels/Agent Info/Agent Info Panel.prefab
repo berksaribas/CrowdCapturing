@@ -37,11 +37,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1489631100453700589, guid: 26b41e7a985901d408c1d20fb71de301,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 390
-      objectReference: {fileID: 0}
     - target: {fileID: 2467135675927571992, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_ChildControlHeight
@@ -77,11 +72,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3078240495034036062, guid: 26b41e7a985901d408c1d20fb71de301,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 5064798084030475566, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_Name
@@ -95,24 +85,22 @@ PrefabInstance:
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_text
-      value: 'Agent
-
-        Info'
+      value: Agent
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
@@ -122,17 +110,17 @@ PrefabInstance:
     - target: {fileID: 5478859426729871022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912376107158887930, guid: 26b41e7a985901d408c1d20fb71de301,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7912376107158887930, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 7912376107158887930, guid: 26b41e7a985901d408c1d20fb71de301,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 8272531863557422194, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
