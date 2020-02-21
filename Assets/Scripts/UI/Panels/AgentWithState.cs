@@ -7,7 +7,8 @@ namespace UI.Panels
 {
     public class AgentWithState : MonoBehaviour
     {
-        public TextMeshProUGUI ID, State;
+        public AgentLink AgentLink;
+        public TextMeshProUGUI /*ID,*/ State;
 
         private Agent agent;
         public Agent Agent
@@ -18,12 +19,14 @@ namespace UI.Panels
                 agent = value;
 
                 gameObject.SetActive(agent != null);
+                
+                AgentLink.Agent = agent;
             }
         }
 
         private void OnGUI()
         {
-            ID.text = Agent.GetAgentId().ToString();
+            // ID.text = Agent.GetAgentId().ToString();
             State.text = AgentStateToText(Agent);
         }
 
@@ -56,6 +59,5 @@ namespace UI.Panels
                     return agent.State.ToString();
             }
         }
-
     }
 }

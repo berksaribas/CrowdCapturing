@@ -9,8 +9,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 621824296828887022, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
-      propertyPath: m_MinHeight
-      value: 140
+      propertyPath: m_PreferredHeight
+      value: 125.51
       objectReference: {fileID: 0}
     - target: {fileID: 1489631100453700589, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
@@ -37,6 +37,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1489631100453700589, guid: 26b41e7a985901d408c1d20fb71de301,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3078240495034036062, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -60,6 +65,11 @@ PrefabInstance:
     - target: {fileID: 3078240495034036062, guid: 26b41e7a985901d408c1d20fb71de301,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3078240495034036062, guid: 26b41e7a985901d408c1d20fb71de301,
+        type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5064798084030475566, guid: 26b41e7a985901d408c1d20fb71de301,

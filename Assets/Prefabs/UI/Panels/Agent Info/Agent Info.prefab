@@ -380,17 +380,17 @@ PrefabInstance:
     - target: {fileID: 2472360738657012011, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
         type: 3}
       propertyPath: m_text
-      value: 'Agent:'
+      value: 'Agent #:'
       objectReference: {fileID: 0}
     - target: {fileID: 2472360738657012011, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2472360738657012011, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2472360738657012011, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
         type: 3}
@@ -647,12 +647,12 @@ PrefabInstance:
     - target: {fileID: 2890048929984833561, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 5
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2890048929984833561, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2890048929984833561, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
         type: 3}
@@ -668,6 +668,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isRichText
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2890048929984833561, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
+        type: 3}
+      propertyPath: m_text
+      value: <door-name>
       objectReference: {fileID: 0}
     - target: {fileID: 7396222863069836999, guid: 6bb691e16caecc240ae97bb3b6c1cddf,
         type: 3}

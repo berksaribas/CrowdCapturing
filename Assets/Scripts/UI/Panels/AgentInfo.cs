@@ -1,4 +1,3 @@
-using System;
 using Simulation;
 using TMPro;
 using UnityEngine;
@@ -9,13 +8,36 @@ namespace UI.Panels
     {
         public TextMeshProUGUI ID, Exited, State;
 
+        private Agent agent;
+        public Agent Agent
+        {
+            get => agent;
+            set
+            {
+                agent = value;
+                
+                gameObject.SetActive(agent != null);
+            }
+        }
+        
+        private void Awake()
+        {
+            UIState.Agent.OnChange += agent => Agent = agent;
+            Agent = UIState.Agent.Get();
+        }
+
         private void OnGUI()
         {
-            var agent = UIState.Agent.Get();
-            if (agent == null) return;
-            
             ID.text = agent.GetAgentId().ToString();
-            Exited.text = agent.GetStartingDoorName();
+            if (agent.State == AgentState.Idling)
+            {
+                Exited.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                Exited.transform.parent.gameObject.SetActive(true);
+                Exited.text = agent.GetStartingDoorName();
+            }
             State.text = AgentStateToText(agent);
         }
 

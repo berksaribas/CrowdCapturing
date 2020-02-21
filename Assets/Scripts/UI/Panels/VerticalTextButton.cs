@@ -1,32 +1,25 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UI.Panels
 {
-    [RequireComponent(typeof(RectTransform))]
-    [ExecuteInEditMode]
-    public class VerticalTextButton : MonoBehaviour, ILayoutGroup
+    [RequireComponent(typeof(LayoutElement))]
+    [ExecuteAlways]
+    public class VerticalTextButton : UIBehaviour, ILayoutGroup, ILayoutSelfController
     {
-        private RectTransform rectT, childRectT;
-
-        private void Awake()
-        {
-            rectT = transform as RectTransform;
-            childRectT = transform.GetChild(0) as RectTransform;
-        }
+        public TextMeshProUGUI Text;
+        public LayoutElement LayoutElement;
 
         public void SetLayoutHorizontal()
         {
-            var size = childRectT.sizeDelta;
-            size.y = rectT.sizeDelta.x;
-            childRectT.sizeDelta = size;
+            LayoutElement.preferredWidth = Text.preferredHeight;
         }
 
         public void SetLayoutVertical()
         {
-            var size = childRectT.sizeDelta;
-            size.x = rectT.sizeDelta.y;
-            childRectT.sizeDelta = size;
+            LayoutElement.preferredHeight = Text.preferredWidth;
         }
     }
 }

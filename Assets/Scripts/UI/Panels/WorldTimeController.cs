@@ -10,8 +10,12 @@ namespace UI.Panels
 
         private void OnGUI()
         {
+            var timeInSeconds = TimeHelper.ConvertSecondsToString(
+                SimulationController.Instance.SimulationTime.TimeInSeconds
+            );
+
             WorldTime.text =
-                $"Time: {TimeHelper.ConvertSecondsToString(SimulationController.Instance.SimulationTime.TimeInSeconds)}";
+                $"Date: <mspace=0.6em>26/09/2016</mspace>  Time: <mspace=0.6em>{timeInSeconds}</mspace>";
         }
     }
 }
