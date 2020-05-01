@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Data;
 using DefaultNamespace;
 using UnityEngine;
 using World;
@@ -70,7 +71,7 @@ namespace Simulation
 			}
 			else
 			{
-				arrivalTimes.Add((int)SimulationController.Instance.SimulationManager.WorldTimeSeconds);
+				arrivalTimes.Add((int)SimulationController.Instance.SimulationTime.TimeInSeconds);
 			}
 		}
 
@@ -108,7 +109,7 @@ namespace Simulation
 			{
 				foreach (var arrivalTime in arrivalTimes)
 				{
-					var time = (int) SimulationController.Instance.SimulationManager.WorldTimeSeconds;
+					var time = (int) SimulationController.Instance.SimulationTime.TimeInSeconds;
 					OverallData.Instance.AddWaitTime(agentCount, time - arrivalTime);
 				}
 			}

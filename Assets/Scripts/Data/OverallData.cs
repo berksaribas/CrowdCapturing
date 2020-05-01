@@ -3,7 +3,7 @@ using System.IO;
 using Simulation;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Data
 {
 	public class OverallData : MonoBehaviour
 	{
@@ -40,7 +40,7 @@ namespace DefaultNamespace
 		public void AddParentGroup(int groupCount)
 		{
 			if (!ParentGroups.ContainsKey(groupCount))
-		{		
+			{
 				ParentGroups[groupCount] = 0;
 			}
 			
@@ -69,8 +69,9 @@ namespace DefaultNamespace
 		
 		private void Update()
 		{
-			var time = (int) SimulationController.Instance.SimulationManager.WorldTimeSeconds;
-			var agentCount = FindObjectsOfType<Agent>().Length;
+			var time = (int) SimulationController.Instance.SimulationTime.TimeInSeconds;
+			// var agentCount = FindObjectsOfType<Agent>().Length;
+			var agentCount = SimulationController.Instance.AgentManager.GetAgents().Count;
 			ActivityByTime[time] = agentCount;
 			
 			if (Input.GetKeyDown(KeyCode.T) || time > 86000)

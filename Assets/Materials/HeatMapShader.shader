@@ -77,7 +77,7 @@
 			uint getDensity(uint2 gridCoordinate)
 			{
 			    return _AgentPositionGrid[
-			        gridCoordinate.x * _HeatMapResolution + gridCoordinate.y
+			        gridCoordinate.x + gridCoordinate.y * _HeatMapResolution
 			    ];
 			}
 			

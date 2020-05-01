@@ -16,7 +16,7 @@ public class SimulationController : MonoBehaviour
 
 	public SequenceManager SequenceManager;
 	public AgentManager AgentManager;
-	public SimulationManager SimulationManager;
+	public SimulationTime SimulationTime;
 	public GroupManager GroupManager;
 	public BuildingManager BuildingManager;
 	public DoorManager DoorManager;

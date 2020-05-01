@@ -114,3 +114,17 @@ sysinfo.txt
 .Assets/UMA
 
 # End of https://www.gitignore.io/api/unity,rider
+/.idea/.idea.CrowdCapturing/.idea/
+/activity_data.csv
+/door_exit_group_sizes.csv
+/group_sizes.csv
+/.idea/.idea.CrowdCapturing Active/.idea/indexLayout.xml
+/.idea/.idea.CrowdCapturing Active/.idea/modules.xml
+/.idea/.idea.CrowdCapturing Active/.idea/projectSettingsUpdater.xml
+/.idea/.idea.CrowdCapturing Active/riderModule.iml
+/subgroups_2.csv
+/subgroups_3.csv
+/subgroups_4.csv
+/subgroups_5.csv
+/.idea/.idea.CrowdCapturing Active/.idea/vcs.xml
+/wait_times.csv

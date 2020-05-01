@@ -28,7 +28,7 @@ namespace Simulation
 				{
 					removedSequences.Add(sequence);
 				}
-				else if (SimulationController.Instance.SimulationManager.WorldTimeSeconds - 0.2f * SimulationController.Instance.SimulationManager.WorldSpeed>= sequence.StartTime)
+				else if (SimulationController.Instance.SimulationTime.TimeInSeconds - 0.2f * SimulationController.Instance.SimulationTime.Speed>= sequence.StartTime)
 				{
 					removedSequences.Add(sequence);
 					var agent = SimulationController.Instance.AgentManager.GetAgentById(sequence.AgentId);
@@ -38,7 +38,7 @@ namespace Simulation
 					);
 					agent.EndSequence();
 				}
-				else if (SimulationController.Instance.SimulationManager.WorldTimeSeconds >= sequence.StartTime)
+				else if (SimulationController.Instance.SimulationTime.TimeInSeconds >= sequence.StartTime)
 				{
 					removedSequences.Add(sequence);
 					SimulationController.Instance
