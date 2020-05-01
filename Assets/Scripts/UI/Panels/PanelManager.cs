@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI.Panels
 {
@@ -27,8 +25,6 @@ namespace UI.Panels
             AgentPanel.Close();
             GroupPanel.Close();
             HeatmapPanel.Open();
-            
-            //    TODO: Somehow trigger the layout builder at start
         }
     }
 }
