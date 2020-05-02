@@ -18,94 +18,85 @@ namespace Simulation
     
     public class Agent : MonoBehaviour
     {
-        public AgentState State;
+        //    TODO: These fields should be private
+        [HideInInspector] public Renderer MeshRenderer;
+        [HideInInspector] public NavMeshAgent NavMeshAgent;
 
-        private NavMeshAgent agent;
+        public int Id;
+        public AgentState State;
         private Door startingDoor, targetDoor;
         private Queue<Sequence> sequences;
-        private int agentId;
-
-        public float originalSpeed = 0f;
+        private float originalSpeed;
         
         private void Awake()
         {
-            agent = GetComponent<NavMeshAgent>();
-            agent.acceleration = 150000f;
+            MeshRenderer = GetComponent<MeshRenderer>();
+            
+            NavMeshAgent = GetComponent<NavMeshAgent>();
+            NavMeshAgent.acceleration = 150000f;
             originalSpeed = Random.Range(6f, 11f);
-            agent.speed = originalSpeed / 10f * SimulationController.Instance.SimulationTime.Speed;
-            agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationTime.Speed;
-            agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-            agent.autoBraking = true;
+            NavMeshAgent.speed = originalSpeed / 10f * SimulationController.Instance.SimulationTime.Speed;
+            NavMeshAgent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationTime.Speed;
+            NavMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+            NavMeshAgent.autoBraking = true;
+            
             State = AgentState.Idling;
+            sequences = new Queue<Sequence>();
         }
 
         private void Update()
         {
-            agent.speed = originalSpeed / 10f  * SimulationController.Instance.SimulationTime.Speed;
-            agent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationTime.Speed;
+            NavMeshAgent.speed = originalSpeed / 10f  * SimulationController.Instance.SimulationTime.Speed;
+            NavMeshAgent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationTime.Speed;
         }
 
-        public void SetSequences(List<Sequence> sequences)
+        public void InitializeSequences(List<Sequence> initialSequences)
         {
-            if (this.sequences == null)
+            foreach (var sequence in initialSequences)
             {
-                this.sequences = new Queue<Sequence>();
+                sequences.Enqueue(sequence);
             }
             
-            foreach (var sequence in sequences)
-            {
-                this.sequences.Enqueue(sequence);
-            }
-            
-            if(sequences.Count > 0)
+            if(initialSequences.Count > 0)
             {
                 SimulationController.Instance.BuildingManager.RegisterAgent(
-                    sequences[0].StartingBuildingId,
+                    sequences.Peek().StartingBuildingId,
                     this
                 );
             }
         }
 
-        public int GetAgentId() => agentId;
-        public void SetAgentId(int id)
-        {
-            agentId = id;
-        }
-
         public void SetTarget(Door door)
         {
-            GetComponent<NavMeshAgent>().enabled = true;
+            NavMeshAgent.enabled = true;
 
             targetDoor = door;
 
-            NavMeshHit closestHit;
-            if (NavMesh.SamplePosition(door.gameObject.transform.position, out closestHit, 100f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(door.gameObject.transform.position, out var closestHit, 100f, NavMesh.AllAreas))
             {
-                agent.SetDestination(closestHit.position);
+                NavMeshAgent.SetDestination(closestHit.position);
             }
 
-            agent.isStopped = false;
+            NavMeshAgent.isStopped = false;
         }
 
         public void SetTarget(Vector3 targetPosition)
         {
-            GetComponent<NavMeshAgent>().enabled = true;
+            NavMeshAgent.enabled = true;
 
-            NavMeshHit closestHit;
-            if (NavMesh.SamplePosition(targetPosition, out closestHit, 100f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(targetPosition, out var closestHit, 100f, NavMesh.AllAreas))
             {
-                agent.SetDestination(closestHit.position);
+                NavMeshAgent.SetDestination(closestHit.position);
             }
             
-            agent.isStopped = false;
+            NavMeshAgent.isStopped = false;
         }
 
         public void SetStartingPosition(Door door)
         {
             startingDoor = door;
 
-            NavMeshHit closestHit;
-            if (NavMesh.SamplePosition(door.gameObject.transform.position, out closestHit, 100f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(door.transform.position, out var closestHit, 100f, NavMesh.AllAreas))
             {
                 transform.position = closestHit.position;
             }
@@ -123,7 +114,7 @@ namespace Simulation
                 this
             );
             
-            GetComponent<Renderer>().enabled = true;
+            MeshRenderer.enabled = true;
             State = state;
         }
 
@@ -134,8 +125,8 @@ namespace Simulation
                 this
             );
             
-            GetComponent<Renderer>().enabled = false;
-            GetComponent<NavMeshAgent>().enabled= false;
+            MeshRenderer.enabled = false;
+            NavMeshAgent.enabled= false;
             State = AgentState.Idling;
         }
         
@@ -146,12 +137,7 @@ namespace Simulation
         }
         
         public Door GetStartingDoor() => startingDoor;
-        public string GetStartingDoorName() => startingDoor.name;
 
         public Door GetTargetDoor() => targetDoor;
-        public string GetTargetDoorName() => targetDoor.name;
-
-        public bool HasPath() => agent.hasPath;
-        public Vector3[] GetPathCorners() => agent.path.corners;
     }
 }

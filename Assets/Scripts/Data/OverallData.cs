@@ -71,7 +71,7 @@ namespace Data
 		{
 			var time = (int) SimulationController.Instance.SimulationTime.TimeInSeconds;
 			// var agentCount = FindObjectsOfType<Agent>().Length;
-			var agentCount = SimulationController.Instance.AgentManager.GetAgents().Count;
+			var agentCount = SimulationController.Instance.AgentManager.GetActiveAgents().Count;
 			ActivityByTime[time] = agentCount;
 			
 			if (Input.GetKeyDown(KeyCode.T) || time > 86000)

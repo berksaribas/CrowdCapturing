@@ -9,7 +9,7 @@ namespace UI.Panels
 
         private void OnGUI()
         {
-            var count = SimulationController.Instance.AgentManager.GetAgents().Count.ToString();
+            var count = SimulationController.Instance.AgentManager.GetActiveAgents().Count.ToString();
             AgentCount.text = $"<mspace=0.6em>{count}</mspace>";
         }
     }

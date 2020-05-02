@@ -22,9 +22,9 @@ namespace UI.InGame
 
         public void Update()
         {
-            if (!agent.HasPath()) return;
+            if (!agent.NavMeshAgent.hasPath) return;
             
-            var corners = agent.GetPathCorners();
+            var corners = agent.NavMeshAgent.path.corners;
             var requiredHighlighterCount = corners.Length - 1;
 
             while (requiredHighlighterCount > enabledHighlighterCount && enabledHighlighterCount < pathHighlighters.Count)

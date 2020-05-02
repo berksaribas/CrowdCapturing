@@ -1,5 +1,6 @@
 using Simulation;
 using UnityEditor;
+using UnityEngine;
 
 namespace Editor
 {
@@ -8,6 +9,12 @@ namespace Editor
 	{
 		public override void OnInspectorGUI()
 		{
+			if (!Application.isPlaying)
+			{
+				DrawDefaultInspector();
+				return;
+			}
+			
 			var agent = (Agent) target;
 			var groupManager = SimulationController.Instance.GroupManager;
 			EditorGUILayout.LabelField("Agent State: ", $"{agent.State}");
@@ -15,8 +22,8 @@ namespace Editor
 			if (groupManager.IsMemberOfAGroup(agent))
 			{
 				var group = groupManager.GetActiveGroup(agent);
-				EditorGUILayout.LabelField("Arrived Members: ", $"{group.ArrivedAgents}");
-				EditorGUILayout.LabelField("Total Members: ", $"{group.agents.Count}");
+				EditorGUILayout.LabelField("Arrived Members: ", group.ArrivedAgents.ToString());
+				EditorGUILayout.LabelField("Total Members: ", group.agents.Count.ToString());
 				foreach (var groupAgent in group.agents)
 				{
 					EditorGUILayout.ObjectField(groupAgent, typeof(Agent));
@@ -24,13 +31,16 @@ namespace Editor
 			}
 			else
 			{
-				EditorGUILayout.LabelField("Agent Starting Door: ", agent.GetStartingDoorName());
-				EditorGUILayout.LabelField("Agent Target Door: ", agent.GetTargetDoorName());
+				EditorGUILayout.LabelField("Agent Starting Door: ", agent.GetStartingDoor().name);
+				EditorGUILayout.LabelField("Agent Target Door: ", agent.GetTargetDoor().name);
 			}
-			EditorGUILayout.LabelField("Agent ID: ", $"{agent.GetAgentId()}");
+			EditorGUILayout.LabelField("Agent ID: ", agent.Id.ToString());
 			if(agent.GetNextSequence() != null)
 			{
-				EditorGUILayout.LabelField("Next sequence start time: ", $"{agent.GetNextSequence().StartTime} / ${SimulationController.Instance.SimulationTime.TimeInSeconds}");
+				EditorGUILayout.LabelField(
+					"Next sequence start time: ",
+					$"{agent.GetNextSequence().StartTime.ToString()} / {SimulationController.Instance.SimulationTime.TimeInSeconds.ToString()}"
+				);
 			}
 		}	
 	}

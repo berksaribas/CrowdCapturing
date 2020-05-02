@@ -31,7 +31,7 @@ namespace UI.Panels
 
         private void OnGUI()
         {
-            ID.text = $"A#<mspace=0.6em>{agent.GetAgentId().ToString()}</mspace>";
+            ID.text = $"A#<mspace=0.6em>{agent.Id.ToString()}</mspace>";
         }
     }
 }

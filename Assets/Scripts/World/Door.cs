@@ -22,7 +22,7 @@ namespace World
             }
         }
 
-        public bool IsDoorAvailable()
+        public bool TryToPass()
         {
             var currentTime = SimulationController.Instance.SimulationTime.TimeInSeconds;
 

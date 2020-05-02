@@ -1,4 +1,3 @@
-using Simulation;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,7 +28,7 @@ namespace UI.Panels
             var cam = UIState.Camera.Get();
             float4x4 camTransform = cam.projectionMatrix * cam.worldToCameraMatrix;
             
-            foreach (var agent in SimulationController.Instance.AgentManager.GetAgents())
+            foreach (var agent in SimulationController.Instance.AgentManager.GetActiveAgents())
             {
                 var clipSpacePos = math.mul(
                     camTransform,

@@ -57,7 +57,7 @@ public class SimulationController : MonoBehaviour
 		var agentsAndSequences =
 			AgentsAndSequencesBaker.LoadBaked<Dictionary<int, List<Sequence>>>();
 
-		AgentManager.GenerateAgents(
+		AgentManager.InstantiateAgents(
 			agentsAndSequences
 		);
 

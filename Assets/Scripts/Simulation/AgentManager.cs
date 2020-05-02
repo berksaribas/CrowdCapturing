@@ -1,11 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Data;
-using DefaultNamespace;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Serialization;
 using Util;
 using World;
 
@@ -15,20 +11,17 @@ namespace Simulation
 	{
 		public GameObject AgentPrefab;
 
-		private List<Agent> agents;
-		private List<Agent> activeAgents;
+		private HashSet<Agent> allAgents;
+		private HashSet<Agent> activeAgents;
 		private Dictionary<Door, Queue<AgentData>> doorAgentQueue;
 		private Dictionary<int, Agent> agentIdMap;
 
-		public List<Agent> GetAgents()
-		{
-			return activeAgents;
-		}
+		public HashSet<Agent> GetActiveAgents() => activeAgents;
 
 		private void Awake()
 		{
-			agents = new List<Agent>();
-			activeAgents = new List<Agent>();
+			allAgents = new HashSet<Agent>();
+			activeAgents = new HashSet<Agent>();
 			agentIdMap = new Dictionary<int, Agent>();
 			doorAgentQueue = new Dictionary<Door, Queue<AgentData>>();
 		}
@@ -38,27 +31,30 @@ namespace Simulation
 			return agentIdMap.ContainsKey(agentId) ? agentIdMap[agentId] : null;
 		}
 
-		public void GenerateAgents(Dictionary<int, List<Sequence>> agents)
+		public void InstantiateAgents(Dictionary<int, List<Sequence>> agents)
 		{
-			int i = 0;
+			var agentCounter = 0;
 			foreach (var keyValuePair in agents)
 			{
-				if (keyValuePair.Value.Count > 0)
-				{
-					i++;
+				var id = keyValuePair.Key;
+				var sequences = keyValuePair.Value;
 				
-					var agent = Instantiate(AgentPrefab, transform);
-					agent.GetComponent<NavMeshAgent>().enabled = false;
-					var agentComponent = agent.AddComponent<Agent>();
-					agentComponent.SetAgentId(keyValuePair.Key);
-					agentComponent.SetSequences(keyValuePair.Value);
-					agentIdMap.Add(keyValuePair.Key, agentComponent);
-					this.agents.Add(agentComponent);
+				if (sequences.Count > 0)
+				{
+					agentCounter++;
+				
+					var agentGameObject = Instantiate(AgentPrefab, transform);
+					agentGameObject.SetActive(false);
+
+					var agent = agentGameObject.GetComponent<Agent>();
+					agent.Id = id;
+					agent.InitializeSequences(sequences);
 					
-					agent.SetActive(false);
+					agentIdMap.Add(id, agent);
+					allAgents.Add(agent);
 				}
 			}
-			Debug.Log($"Created agents: {i}");
+			Debug.Log($"Created agents: {agentCounter}");
 		}
 
 		public void ActivateAgent(int agentId)
@@ -103,26 +99,23 @@ namespace Simulation
 		{
 			foreach (var keyValuePair in doorAgentQueue)
 			{
-				while (keyValuePair.Key.IsDoorAvailable() && keyValuePair.Value.Any())
+				var door = keyValuePair.Key;
+				var allAgentData = keyValuePair.Value;
+				
+				while (door.TryToPass() && allAgentData.Any())
 				{
-					var agentData = keyValuePair.Value.Dequeue();
+					var agentData = allAgentData.Dequeue();
 					var agent = agentData.Agent;
 
 					switch (agentData.Type)
 					{
 						case AgentData.DataType.IndividualMove:
 							ProcessIndividualMoveAgent(agentData);
-							if (!activeAgents.Contains(agent))
-							{
-								activeAgents.Add(agent);
-							}
+							activeAgents.Add(agent);
 							break;
 						case AgentData.DataType.GroupMoveBeforeMeet:
 							ProcessGroupMoveBeforeMeet(agentData);
-							if (!activeAgents.Contains(agent))
-							{
-								activeAgents.Add(agent);
-							}
+							activeAgents.Add(agent);
 							break;
 						case AgentData.DataType.FinishSequence:
 							ProcessFinishSequenceAgent(agentData);
@@ -140,7 +133,7 @@ namespace Simulation
 			agent.gameObject.SetActive(true);
 			var sequence = agent.GetNextSequence();
 
-			agent.gameObject.GetComponent<NavMeshAgent>().enabled = false;
+			agent.NavMeshAgent.enabled = false;
 
 			var startingDoor = agentData.StartingDoor;
 			
@@ -153,7 +146,7 @@ namespace Simulation
 			agent.SetStartingPosition(startingDoor);
 			agent.SetTarget(targetDoor);
 
-			agent.gameObject.GetComponent<MeshRenderer>().SetPropertyBlock(agentData.MaterialPropertyBlock);
+			agent.MeshRenderer.SetPropertyBlock(agentData.MaterialPropertyBlock);
 
 			agent.StartSequence(AgentState.WalkingToTargetDoor);
 			
@@ -164,12 +157,10 @@ namespace Simulation
 		private void ProcessGroupMoveBeforeMeet(AgentData agentData)
 		{
 			var agent = agentData.Agent;
-			GroupSequence groupSequence = null;
 
 			if (SimulationController.Instance.GroupManager.IsMemberOfAGroup(agent))
 			{
 				Debug.Log("Already a member of a group!");
-				SimulationController.Instance.GroupManager.GetActiveGroup(agent);
 			}
 			else if(SimulationController.Instance.GroupManager.CanCreateAGroup(agent, agent.GetNextSequence()))
 			{
@@ -183,36 +174,34 @@ namespace Simulation
 				return;
 			}
 
-			groupSequence = SimulationController.Instance.GroupManager.GetActiveGroup(agent);
+			var groupSequence = SimulationController.Instance.GroupManager.GetActiveGroup(agent);
 
 			if (groupSequence.LeaveDoorTogether)
 			{
-				for (var index = 0; index < groupSequence.agents.Count; index++)
+				foreach (var agentInGroup in groupSequence.agents)
 				{
-					var groupSequenceAgent = groupSequence.agents[index];
-
-					groupSequenceAgent.gameObject.SetActive(true);
-					groupSequenceAgent.gameObject.GetComponent<NavMeshAgent>().enabled = false;
-					groupSequenceAgent.SetStartingPosition(agentData.StartingDoor);
-					groupSequenceAgent.gameObject.GetComponent<MeshRenderer>()
-						.SetPropertyBlock(agentData.MaterialPropertyBlock);
-					groupSequenceAgent.StartSequence(AgentState.WalkingToMeetingPosition);
-					groupSequenceAgent.GetNextSequence().disabled = true;
+					agentInGroup.gameObject.SetActive(true);
+					agentInGroup.NavMeshAgent.enabled = false;
+					agentInGroup.SetStartingPosition(agentData.StartingDoor);
+					agentInGroup.MeshRenderer.SetPropertyBlock(agentData.MaterialPropertyBlock);
+					agentInGroup.StartSequence(AgentState.WalkingToMeetingPosition);
+					agentInGroup.GetNextSequence().disabled = true;
 					groupSequence.MarkAgentArrived();
-					if (!activeAgents.Contains(groupSequenceAgent))
+					if (!activeAgents.Contains(agentInGroup))
 					{
-						activeAgents.Add(groupSequenceAgent);
+						activeAgents.Add(agentInGroup);
 					}
 				}
+
 				OverallData.Instance.AddAgentsLeavingBuilding(groupSequence.agents.Count);
 			}
 			else
 			{
 				agent.gameObject.SetActive(true);
-				agent.gameObject.GetComponent<NavMeshAgent>().enabled = false;
+				agent.NavMeshAgent.enabled = false;
 				agent.SetStartingPosition(agentData.StartingDoor);
 				agent.SetTarget(groupSequence.MeetingPoint);
-				agent.gameObject.GetComponent<MeshRenderer>().SetPropertyBlock(agentData.MaterialPropertyBlock);
+				agent.MeshRenderer.SetPropertyBlock(agentData.MaterialPropertyBlock);
 				agent.StartSequence(AgentState.WalkingToMeetingPosition);
 				
 				//Data only
@@ -237,36 +226,41 @@ namespace Simulation
 		{
 			foreach (var agent in activeAgents)
 			{
-				var navMeshAgent = agent.GetComponent<NavMeshAgent>();
-				if(agent.State == AgentState.WalkingToTargetDoor)
+				var navMeshAgent = agent.NavMeshAgent;
+				switch (agent.State)
 				{
-					if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= 1f)
+					case AgentState.WalkingToTargetDoor:
 					{
-						agent.State = AgentState.WaitingEnteringDoor;
-
-						if (!doorAgentQueue.ContainsKey(agent.GetTargetDoor()))
+						if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= 1f)
 						{
-							doorAgentQueue.Add(agent.GetTargetDoor(), new Queue<AgentData>());
+							agent.State = AgentState.WaitingEnteringDoor;
+
+							if (!doorAgentQueue.ContainsKey(agent.GetTargetDoor()))
+							{
+								doorAgentQueue.Add(agent.GetTargetDoor(), new Queue<AgentData>());
+							}
+
+							doorAgentQueue[agent.GetTargetDoor()].Enqueue(new AgentData(agent));
 						}
 
-						doorAgentQueue[agent.GetTargetDoor()].Enqueue(new AgentData(agent));
+						break;
 					}
-				}
-				else if (agent.State == AgentState.WalkingToMeetingPosition)
-				{
-					if (!navMeshAgent.pathPending && navMeshAgent.isActiveAndEnabled && navMeshAgent.remainingDistance <= Random.Range(1f, 2.5f))
+					case AgentState.WalkingToMeetingPosition:
 					{
-						var group = SimulationController.Instance.GroupManager.GetActiveGroup(agent);
-
-						if (group.LeaveDoorTogether)
+						if (!navMeshAgent.pathPending && navMeshAgent.isActiveAndEnabled && navMeshAgent.remainingDistance <= Random.Range(1f, 2.5f))
 						{
-							continue;
-						}
-						
-						navMeshAgent.isStopped = true;
-						agent.State = AgentState.WaitingGroupMembers;
+							var group = SimulationController.Instance.GroupManager.GetActiveGroup(agent);
 
-						group.MarkAgentArrived();
+							if (group.LeaveDoorTogether)
+								continue;
+						
+							navMeshAgent.isStopped = true;
+							agent.State = AgentState.WaitingGroupMembers;
+
+							group.MarkAgentArrived();
+						}
+
+						break;
 					}
 				}
 			}

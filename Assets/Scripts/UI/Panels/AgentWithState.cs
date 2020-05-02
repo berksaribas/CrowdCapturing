@@ -26,7 +26,7 @@ namespace UI.Panels
 
         private void OnGUI()
         {
-            // ID.text = Agent.GetAgentId().ToString();
+            // ID.text = Agent.Id.ToString();
             State.text = AgentStateToText(Agent);
         }
 
@@ -49,7 +49,7 @@ namespace UI.Panels
                     return "<color=purple>Walking to meeting</color>";
 
                 case AgentState.WalkingToTargetDoor:
-                    return $"<color=green>Walking to {agent.GetTargetDoorName()}</color>";
+                    return $"<color=green>Walking to {agent.GetTargetDoor().name}</color>";
 
                 case AgentState.WaitingLeavingDoor:
                 case AgentState.WaitingEnteringDoor:
