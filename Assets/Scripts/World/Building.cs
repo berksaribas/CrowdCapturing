@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace World
@@ -5,11 +6,12 @@ namespace World
 	public class Building : MonoBehaviour
 	{
 		public string DataAlias;
-		public Door[] Doors;
+		[NonSerialized] public Door[] Doors;
 		[HideInInspector] public Vector3 AveragePosition;
 
 		private void Awake()
-		{			
+		{
+			Doors = GetComponentsInChildren<Door>();
 			foreach (var door in Doors)
 			{
 				AveragePosition += door.transform.position;
