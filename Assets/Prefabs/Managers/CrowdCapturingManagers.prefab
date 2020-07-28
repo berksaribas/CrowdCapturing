@@ -56,8 +56,8 @@ MonoBehaviour:
   BuildingManager: {fileID: 3903502971701431115}
   DoorManager: {fileID: 1506119400052368781}
   AgentsAndSequencesBaker:
-    SaveTo: Baked
-    FileName: agents_and_sequences
+    SavePath: Baked
+    SaveName: agents_and_sequences
 --- !u!1001 &3665898827804507588
 PrefabInstance:
   m_ObjectHideFlags: 0

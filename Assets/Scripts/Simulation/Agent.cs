@@ -69,10 +69,9 @@ namespace Simulation
         public void SetTarget(Door door)
         {
             NavMeshAgent.enabled = true;
-
             targetDoor = door;
 
-            if (NavMesh.SamplePosition(door.gameObject.transform.position, out var closestHit, 100f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(door.transform.position, out var closestHit, 100f, NavMeshAgent.areaMask))
             {
                 NavMeshAgent.SetDestination(closestHit.position);
             }
@@ -84,7 +83,7 @@ namespace Simulation
         {
             NavMeshAgent.enabled = true;
 
-            if (NavMesh.SamplePosition(targetPosition, out var closestHit, 100f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(targetPosition, out var closestHit, 100f, NavMeshAgent.areaMask))
             {
                 NavMeshAgent.SetDestination(closestHit.position);
             }
@@ -96,7 +95,7 @@ namespace Simulation
         {
             startingDoor = door;
 
-            if (NavMesh.SamplePosition(door.transform.position, out var closestHit, 100f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(door.transform.position, out var closestHit, 100f, NavMeshAgent.areaMask))
             {
                 transform.position = closestHit.position;
             }

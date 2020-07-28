@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace Util
@@ -7,94 +7,47 @@ namespace Util
     [Serializable]
     public class Baker
     {
-        public float Progress => progress / progressMax;
-        public bool Baking => Progress >= 0f;
-        public bool Baked => IOHelper.DoesBinaryExist(SaveTo, FileName);
+        public string SavePath = "Baked";
+        public string SaveName = "save";
 
-        public string SaveTo = "Baked";
-        public string FileName = "save";
+        private readonly Func<MonoBehaviour, object> bakeOperation;
+        public Action BakeAction;
 
-        protected readonly Func<MonoBehaviour, Task<object>> bake;
-        protected float progress = -1f;
-        protected float progressMax = 100f;
-        protected string canceled = null;
-        protected string failed = null;
+        public bool IsBaking => BakeAction != null;
+        public bool IsBaked => IOHelper.DoesFileExist(SavePath, SaveName);
 
-        public Baker(Func<MonoBehaviour, Task<object>> bake)
+        public Baker(Func<MonoBehaviour, object> operation)
         {
-            this.bake = bake;
+            bakeOperation = operation;
         }
 
-        public async Task Bake(MonoBehaviour component)
+        public void CreateBakeAction(MonoBehaviour component)
         {
-            if (Baking)
+            BakeAction = () =>
             {
-                Debug.Log("Already baking :S");
-                return;
-            }
+                Debug.Log("@BakeAction: starting baking");
 
-            Debug.Log("Starting bake coroutine :d");
+                var baked = bakeOperation(component);
+                IOHelper.SaveAsBinary(baked, SavePath, SaveName);
 
-            ResetProgress();
-
-            progress = 0f;
-
-            try
-            {
-                var baked = bake.Invoke(component).Result;
-                IOHelper.SaveAsBinary(baked, SaveTo, FileName);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                ResetProgress();
-
-                throw;
-            }
-
-            if (canceled != null)
-            {
-                Debug.Log("Canceled bake coroutine :|");
-                Debug.Log($"Reason => {canceled}");
-            }
-            else if (failed != null)
-            {
-                Debug.Log("Failed bake coroutine :|");
-                Debug.Log($"Reason => {failed}");
-            }
-            else
-            {
-                Debug.Log("Finished bake coroutine :P");
-            }
-
-            ResetProgress();
-        }
-
-        public void ResetProgress()
-        {
-            progress = -1f;
-            canceled = null;
-            failed = null;
+                AssetDatabase.ImportAsset(
+                    IOHelper.GetAssetPath(SavePath, SaveName)
+                );
+                
+                BakeAction = null;
+            };
         }
 
         public virtual void Clear()
         {
-            IOHelper.DeleteBinary(SaveTo, FileName);
-        }
-
-        public void Cancel(string message = "Baking Canceled")
-        {
-            canceled = message;
-        }
-
-        protected void Fail(string message = "Baking Failed")
-        {
-            failed = message;
+            AssetDatabase.DeleteAsset(
+                IOHelper.GetAssetPath(SavePath, SaveName)
+            );
         }
 
         public T LoadBaked<T>() where T : class
         {
-            return IOHelper.LoadFromBinary<T>(SaveTo, FileName);
+            return IOHelper.LoadFromBinary<T>(SavePath, SaveName);
         }
     }
 }

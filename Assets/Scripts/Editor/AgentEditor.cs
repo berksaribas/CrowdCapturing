@@ -26,7 +26,7 @@ namespace Editor
 				EditorGUILayout.LabelField("Total Members: ", group.agents.Count.ToString());
 				foreach (var groupAgent in group.agents)
 				{
-					EditorGUILayout.ObjectField(groupAgent, typeof(Agent));
+					EditorGUILayout.ObjectField(groupAgent, typeof(Agent), true);
 				}
 			}
 			else

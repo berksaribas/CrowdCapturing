@@ -21,7 +21,7 @@ public class SimulationController : MonoBehaviour
 	public BuildingManager BuildingManager;
 	public DoorManager DoorManager;
 	
-	public Baker AgentsAndSequencesBaker = new Baker(async component =>
+	public Baker AgentsAndSequencesBaker = new Baker(component =>
 	{
 		var self = component as SimulationController;
 

@@ -7,10 +7,12 @@ namespace Util
 {
     public static class IOHelper
     {
+        ///    File System API
+
         public static readonly string PathToAssets = Application.dataPath;
 
         [Serializable]
-        private class Wrapper<T>
+        private struct Wrapper<T>
         {
             public T[] Items;
         }
@@ -19,16 +21,19 @@ namespace Util
         {
             return JsonUtility.FromJson<Wrapper<T>>($"{{\"Items\": {asset.text}}}").Items;
         }
-
-        public static void SaveAsBinary(object o, string path, string name)
+        
+        public static string GetFullPath(string path, string name, string extension = "bytes")
         {
-            var finalPath = Path.Combine(
+            return Path.Combine(
                 PathToAssets,
                 path,
-                $"{name}.bytes"
+                $"{name}.{extension}"
             );
-        
-            using (var file = File.Open(finalPath, FileMode.OpenOrCreate, FileAccess.Write))
+        }
+
+        public static void SaveAsBinary<T>(T o, string path, string name)
+        {
+            using (var file = File.Open(GetFullPath(path, name), FileMode.OpenOrCreate, FileAccess.Write))
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(file, o);
@@ -37,17 +42,32 @@ namespace Util
 
         public static T LoadFromBinary<T>(string path, string name) where T : class
         {
-            var finalPath = Path.Combine(
-                PathToAssets,
-                path,
-                $"{name}.bytes"
-            );
-        
-            using (var file = File.Open(finalPath, FileMode.OpenOrCreate, FileAccess.Read))
+            using (var file = File.Open(GetFullPath(path, name), FileMode.OpenOrCreate, FileAccess.Read))
             {
                 var formatter = new BinaryFormatter();
                 return formatter.Deserialize(file) as T;
             }
+        }
+
+        public static void DeleteFile(string path, string name)
+        {
+            File.Delete(GetFullPath(path, name));
+        }
+
+        public static bool DoesFileExist(string path, string name, string extension = "bytes")
+        {
+            return File.Exists(GetFullPath(path, name, extension));
+        }
+
+        ///    Unity Asset System API
+        
+        public static string GetAssetPath(string path, string name, string extension = "bytes")
+        {
+            return Path.Combine(
+                "Assets",
+                path,
+                $"{name}.{extension}"
+            );
         }
 
         public static T LoadFromBinaryAsset<T>(TextAsset asset) where T : class
@@ -61,28 +81,6 @@ namespace Util
 
                 return formatter.Deserialize(ms) as T;
             }
-        }
-
-        public static void DeleteBinary(string path, string name)
-        {
-            var finalPath = Path.Combine(
-                PathToAssets,
-                path,
-                $"{name}.bytes"
-            );
-        
-            File.Delete(finalPath);
-        }
-
-        public static bool DoesBinaryExist(string path, string name)
-        {
-            var finalPath = Path.Combine(
-                PathToAssets,
-                path,
-                $"{name}.bytes"
-            );
-
-            return File.Exists(finalPath);
         }
     }
 }
