@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -10,17 +9,6 @@ namespace Util
         ///    File System API
 
         public static readonly string PathToAssets = Application.dataPath;
-
-        [Serializable]
-        private struct Wrapper<T>
-        {
-            public T[] Items;
-        }
-
-        public static T[] FromJsonArrayOf<T>(TextAsset asset)
-        {
-            return JsonUtility.FromJson<Wrapper<T>>($"{{\"Items\": {asset.text}}}").Items;
-        }
         
         public static string GetFullPath(string path, string name, string extension = "bytes")
         {
@@ -31,9 +19,14 @@ namespace Util
             );
         }
 
+        public static FileStream OpenOrCreateFile(string path, string name, string extension = "bytes")
+        {
+            return File.Open(GetFullPath(path, name), FileMode.OpenOrCreate, FileAccess.ReadWrite);
+        }
+        
         public static void SaveAsBinary<T>(T o, string path, string name)
         {
-            using (var file = File.Open(GetFullPath(path, name), FileMode.OpenOrCreate, FileAccess.Write))
+            using (var file = OpenOrCreateFile(path, name))
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(file, o);
@@ -42,7 +35,7 @@ namespace Util
 
         public static T LoadFromBinary<T>(string path, string name) where T : class
         {
-            using (var file = File.Open(GetFullPath(path, name), FileMode.OpenOrCreate, FileAccess.Read))
+            using (var file = OpenOrCreateFile(path, name))
             {
                 var formatter = new BinaryFormatter();
                 return formatter.Deserialize(file) as T;
@@ -61,7 +54,7 @@ namespace Util
 
         ///    Unity Asset System API
         
-        public static string GetAssetPath(string path, string name, string extension = "bytes")
+        public static string GetAssetsRelativePath(string path, string name, string extension = "bytes")
         {
             return Path.Combine(
                 "Assets",

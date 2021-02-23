@@ -1,142 +1,169 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.AI;
-using World;
+using Random = UnityEngine.Random;
 
 namespace Simulation
 {
     public enum AgentState
     {
         Idling,
-        WaitingEnteringDoor,
-        WaitingLeavingDoor,
-        WaitingGroupMembers,
-        WalkingToTargetDoor,
-        WalkingToMeetingPosition
+        Walking,
     }
-    
+
+    [RequireComponent(
+        typeof(PathTraverser),
+        typeof(MeshRenderer),
+        typeof(Collider)
+    )]
     public class Agent : MonoBehaviour
     {
-        //    TODO: These fields should be private
-        [HideInInspector] public Renderer MeshRenderer;
-        [HideInInspector] public NavMeshAgent NavMeshAgent;
+        public static readonly Dictionary<AgentState, HashSet<Agent>> AgentsInStates =
+            new Dictionary<AgentState, HashSet<Agent>>
+            {
+                {AgentState.Idling, new HashSet<Agent>()},
+                {AgentState.Walking, new HashSet<Agent>()},
+            };
+        
+        private Renderer meshRenderer;
+        private static readonly int ColorId = Shader.PropertyToID("_BaseColor");
+        private MaterialPropertyBlock materialPropertyBlock;
+        private PathTraverser pathTraverser;
+        private new Collider collider;
 
         public int Id;
-        public AgentState State;
-        private Door startingDoor, targetDoor;
-        private Queue<Sequence> sequences;
-        private float originalSpeed;
-        
+
+        private AgentState state;
+        public AgentState State
+        {
+            get => state;
+            set
+            {
+                AgentsInStates[state].Remove(this);
+                state = value;
+                AgentsInStates[state].Add(this);
+            }
+        }
+
+        private readonly Queue<Sequence> sequences = new Queue<Sequence>();
+        [NonSerialized] public Sequence CurrentSequence;
+        [CanBeNull] public Sequence NextSequence => sequences.Count == 0 ? null : sequences.Peek();
+
+        [CanBeNull] private Meeting meeting;
+        [CanBeNull] public Meeting CurrentMeeting
+        {
+            get => meeting;
+            set
+            {
+                meeting = value;
+
+                if (meeting == null)
+                    // TODO: this should be Door.NavMeshPosition
+                    pathTraverser.SetTarget(CurrentSequence.TargetDoor.transform.position);
+                else
+                    pathTraverser.SetTarget(CurrentMeeting.Position);
+            }
+        }
+
+        public float Speed;
+        public float MinSpeed, MaxSpeed;
+
         private void Awake()
         {
-            MeshRenderer = GetComponent<MeshRenderer>();
-            
-            NavMeshAgent = GetComponent<NavMeshAgent>();
-            NavMeshAgent.acceleration = 150000f;
-            originalSpeed = Random.Range(6f, 11f);
-            NavMeshAgent.speed = originalSpeed / 10f * SimulationController.Instance.SimulationTime.Speed;
-            NavMeshAgent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationTime.Speed;
-            NavMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-            NavMeshAgent.autoBraking = true;
-            
+            pathTraverser = GetComponent<PathTraverser>();
+            meshRenderer = GetComponent<MeshRenderer>();
+            materialPropertyBlock = new MaterialPropertyBlock();
+            collider = GetComponent<Collider>();
+
+            Speed = Random.Range(MinSpeed, MaxSpeed);
+
             State = AgentState.Idling;
-            sequences = new Queue<Sequence>();
+        }
+
+        public void Initialize(int id, IEnumerable<Sequence> initialSequences)
+        {
+            Id = id;
+
+            foreach (var sequence in initialSequences)
+                sequences.Enqueue(sequence);
+
+            sequences.Peek().StartingBuilding.AgentsInside.Add(this);
+
+            // Debug purposed only
+            gameObject.name = $"Agent#{id.ToString()}";
         }
 
         private void Update()
         {
-            NavMeshAgent.speed = originalSpeed / 10f  * SimulationController.Instance.SimulationTime.Speed;
-            NavMeshAgent.angularSpeed = 3600f / 10f * SimulationController.Instance.SimulationTime.Speed;
+            if (CurrentSequence == null)
+            {
+                // Check if the next sequence should start
+                var nextSequence = sequences.Peek();
+                if (SimulationController.Instance.TimeManager.TimeInSeconds >= nextSequence.StartTimeInSeconds)
+                {
+                    // TODO: Enable meetings
+                    //SimulationController.Instance.MeetingManager.RegisterForMeeting(this, nextSequence);
+                    
+                    nextSequence.StartingDoor.WaitingAgents.Enqueue(this);
+                }
+            }
         }
 
-        public void InitializeSequences(List<Sequence> initialSequences)
+        private void StartSequence()
         {
-            foreach (var sequence in initialSequences)
-            {
-                sequences.Enqueue(sequence);
-            }
+            State = AgentState.Walking;
             
-            if(initialSequences.Count > 0)
-            {
-                SimulationController.Instance.BuildingManager.RegisterAgent(
-                    sequences.Peek().StartingBuildingId,
-                    this
-                );
-            }
-        }
-
-        public void SetTarget(Door door)
-        {
-            NavMeshAgent.enabled = true;
-            targetDoor = door;
-
-            if (NavMesh.SamplePosition(door.transform.position, out var closestHit, 100f, NavMeshAgent.areaMask))
-            {
-                NavMeshAgent.SetDestination(closestHit.position);
-            }
-
-            NavMeshAgent.isStopped = false;
-        }
-
-        public void SetTarget(Vector3 targetPosition)
-        {
-            NavMeshAgent.enabled = true;
-
-            if (NavMesh.SamplePosition(targetPosition, out var closestHit, 100f, NavMeshAgent.areaMask))
-            {
-                NavMeshAgent.SetDestination(closestHit.position);
-            }
+            CurrentSequence = sequences.Dequeue();
             
-            NavMeshAgent.isStopped = false;
-        }
+            // Set starting position
+            transform.position = CurrentSequence.StartingDoor.NavMeshPosition;
+            // Also sets the PathTraverser
+            CurrentMeeting = CurrentSequence.Meeting;
 
-        public void SetStartingPosition(Door door)
-        {
-            startingDoor = door;
+            CurrentSequence.StartingBuilding.AgentsInside.Remove(this);
 
-            if (NavMesh.SamplePosition(door.transform.position, out var closestHit, 100f, NavMeshAgent.areaMask))
-            {
-                transform.position = closestHit.position;
-            }
-        }
-        
-        public Sequence GetNextSequence()
-        {
-            return sequences.Any() ? sequences.Peek() : null;
-        }
-
-        public void StartSequence(AgentState state)
-        {
-            SimulationController.Instance.BuildingManager.UnregisterAgent(
-                GetNextSequence().StartingBuildingId,
-                this
+            meshRenderer.enabled = true;
+            materialPropertyBlock.SetColor(
+                ColorId,
+                SimulationController.Instance.BuildingManager.GetColor(CurrentSequence)
             );
-            
-            MeshRenderer.enabled = true;
-            State = state;
+            meshRenderer.SetPropertyBlock(materialPropertyBlock);
+
+            collider.enabled = true;
         }
 
-        public void EndSequence()
-        {            
-            SimulationController.Instance.BuildingManager.RegisterAgent(
-                sequences.Dequeue().TargetBuildingId,
-                this
-            );
-            
-            MeshRenderer.enabled = false;
-            NavMeshAgent.enabled= false;
+        private void EndSequence()
+        {
             State = AgentState.Idling;
-        }
-        
-        public float GetSpeed() => originalSpeed;
-        public void SetSpeed(float speed)
-        {
-            originalSpeed = speed;
-        }
-        
-        public Door GetStartingDoor() => startingDoor;
 
-        public Door GetTargetDoor() => targetDoor;
+            CurrentSequence.TargetBuilding.AgentsInside.Add(this);
+
+            CurrentSequence = null;
+            
+            meshRenderer.enabled = false;
+            collider.enabled = false;
+
+            if (sequences.Count == 0)
+                gameObject.SetActive(false);
+        }
+
+        // This is only called by the Door component (== observer.update)
+        public void PassTheDoor()
+        {
+            if (CurrentSequence == null)
+                StartSequence();
+            else
+                EndSequence();
+        }
+
+        // This is only called by the PathTraverser component (== observer.update)
+        public void PathTraverseFinished()
+        {
+            if (CurrentMeeting != null)
+                CurrentMeeting.Arrived();
+            else
+                CurrentSequence.TargetDoor.WaitingAgents.Enqueue(this);
+        }
     }
 }

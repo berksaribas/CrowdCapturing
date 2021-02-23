@@ -1,41 +1,40 @@
+using System;
+using System.Collections.Generic;
+using Simulation;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace World
 {
     public class Door : MonoBehaviour
     {
-        public int Capacity = 3;
-        public float EnterDurationInSeconds = 1.5f;
+        private const int Capacity = 3;
+        private const float EnterDurationInSeconds = 0.5f;
+        private readonly float[] lastEnterTimes = new float[Capacity];
 
-        public float[] LastEnterTimes;
+        public readonly Queue<Agent> WaitingAgents = new Queue<Agent>(16);
+
+        [NonSerialized]
+        public Vector3 NavMeshPosition;
 
         private void Awake()
         {
-            Capacity = 3;
-            EnterDurationInSeconds = 0.5f;
-
-            LastEnterTimes = new float[Capacity];
-
-            for (var i = 0; i < LastEnterTimes.Length; i++)
-            {
-                LastEnterTimes[i] = 0f;
-            }
+            if (NavMesh.SamplePosition(transform.position, out var closestHit, 100f, NavMesh.AllAreas))
+                NavMeshPosition = closestHit.position;
+            else
+                Debug.LogAssertion($"The Door \"{gameObject.name}\" has no NavMesh position available!!");
         }
 
-        public bool TryToPass()
+        private void LateUpdate()
         {
-            var currentTime = SimulationController.Instance.SimulationTime.TimeInSeconds;
+            var currentTime = Simulation.SimulationController.Instance.TimeManager.TimeInSeconds;
 
-            for (var i = 0; i < LastEnterTimes.Length; i++)
-            {
-                if (LastEnterTimes[i] + EnterDurationInSeconds <= currentTime)
+            for (var i = 0; i < lastEnterTimes.Length && WaitingAgents.Count != 0; i++)
+                if (lastEnterTimes[i] + EnterDurationInSeconds <= currentTime)
                 {
-                    LastEnterTimes[i] = currentTime;
-                    return true;
+                    lastEnterTimes[i] = currentTime;
+                    WaitingAgents.Dequeue().PassTheDoor();
                 }
-            }
-
-            return false;
         }
     }
 }

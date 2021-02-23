@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using World;
@@ -33,6 +32,7 @@ namespace UI.Panels
             Name.text = building.name;
             ID.text = building.DataAlias;
             
+            // TODO: decide to use or not
             // text.Append($"Weights with other buildings:\n");
             // var weights = SimulationController.Instance.BuildingManager.GetBuildingWeights(building.DataAlias);
             // var buildingInfos = SimulationController.Instance.BuildingManager.GetBuildingInfos();
@@ -50,11 +50,7 @@ namespace UI.Panels
             //
             // StaticText.text = text.ToString();
             
-            var agentCount = SimulationController.Instance
-                .BuildingManager.GetCountOfAgentsInBuilding(
-                    building.DataAlias
-                );
-            AgentCount.text = $"<mspace=0.6em>{agentCount}</mspace>";
+            AgentCount.text = $"<mspace=0.6em>{building.AgentsInside.Count.ToString()}</mspace>";
         }
     }
 }

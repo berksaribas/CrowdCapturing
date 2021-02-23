@@ -34,26 +34,19 @@ namespace UI.Panels
         {
             switch (agent.State)
             {
-                // "black, blue, green, orange, purple, red, white, and yellow."
+                // default colors are "black, blue, green, orange, purple, red, white, and yellow."
                 case AgentState.Idling:
-                    var buildingName = SimulationController.Instance
-                        .BuildingManager.GetBuilding(
-                            agent.GetNextSequence().StartingBuildingId
-                        ).name;
-                    return $"<color=red>Waiting inside {buildingName}</color>";
+                    //var buildingName = agent.PeekNextSequence().StartingBuilding.name;
+                    return $"<color=red>Waiting inside a building</color>";
 
-                case AgentState.WaitingGroupMembers:
-                    return "<color=orange>Waiting</color>";
+                case AgentState.Walking:
+                    return $"<color=orange>Walking to {agent.CurrentSequence.TargetBuilding.name}</color>";
 
-                case AgentState.WalkingToMeetingPosition:
-                    return "<color=purple>Walking to meeting</color>";
-
-                case AgentState.WalkingToTargetDoor:
-                    return $"<color=green>Walking to {agent.GetTargetDoor().name}</color>";
-
-                case AgentState.WaitingLeavingDoor:
-                case AgentState.WaitingEnteringDoor:
-                    return "Passing through a door.";
+                // case AgentState.WalkingToMeetingPosition:
+                //     return "<color=purple>Walking to meeting</color>";
+                //
+                // case AgentState.WalkingToTargetDoor:
+                //     return $"<color=green>Walking to {agent.TargetDoor.name}</color>";
 
                 default:
                     return agent.State.ToString();

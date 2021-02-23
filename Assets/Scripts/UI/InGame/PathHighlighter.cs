@@ -4,27 +4,43 @@ using UnityEngine;
 
 namespace UI.InGame
 {
-    public class PathHighlighter
+    public class PathHighlighter : MonoBehaviour
     {
-        private Agent agent;
-        private Transform parent;
+        private PathTraverser[] focusedPathTraversers;
+        private readonly List<SinglePathHighlighter> pathHighlighters = new List<SinglePathHighlighter>(20);
+
+        private void Start()
+        {
+            UIState.PathTraversers.OnChange += newPathTraversers =>
+            {
+                if ((focusedPathTraversers = newPathTraversers) != null)
+                {
+                    for (var i = pathHighlighters.Count; i < focusedPathTraversers.Length; i++)
+                        pathHighlighters.Add(new SinglePathHighlighter());
+                    
+                    for (var i = 0; i < focusedPathTraversers.Length; i++)
+                        pathHighlighters[i].Initialize(focusedPathTraversers[i], transform);
+
+                    for (var i = focusedPathTraversers.Length; i < pathHighlighters.Count; i++)
+                        pathHighlighters[i].Disable();
+                }
+                else
+                {
+                    foreach (var pathHighlighter in pathHighlighters)
+                        pathHighlighter.Disable();
+                }
+            };
+        }
+    }
+
+    internal class SinglePathHighlighter
+    {
         private readonly List<GameObject> pathHighlighters = new List<GameObject>();
         private int enabledHighlighterCount;
 
-        public void Initialize(Agent agent, Transform parent)
+        public void Initialize(PathTraverser pathTraverser, Transform parent)
         {
-            this.parent = parent;
-            this.agent = agent;
-
-            Disable();
-            Update();
-        }
-
-        public void Update()
-        {
-            if (!agent.NavMeshAgent.hasPath) return;
-            
-            var corners = agent.NavMeshAgent.path.corners;
+            var corners = pathTraverser.Corners;
             var requiredHighlighterCount = corners.Length - 1;
 
             while (requiredHighlighterCount > enabledHighlighterCount && enabledHighlighterCount < pathHighlighters.Count)
@@ -39,7 +55,8 @@ namespace UI.InGame
                     HighlightLine.CreateLine(
                         Vector3.zero,
                         Vector3.zero,
-                        parent
+                        parent,
+                        0.6f
                     )
                 );
 
@@ -61,7 +78,7 @@ namespace UI.InGame
                 enabledHighlighterCount--;
             }
         }
-
+        
         public void Disable()
         {
             pathHighlighters.ForEach(o => o.SetActive(false));

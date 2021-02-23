@@ -63,6 +63,8 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.05, g: 0.05, b: 0.05, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -114,6 +116,7 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1001 &3316906831284938261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149,7 +152,7 @@ PrefabInstance:
     - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}
       propertyPath: m_text
-      value: 'Date: <mspace=0.6em>26/09/2016</mspace>  Time: <mspace=0.6em><time></mspace>'
+      value: 'Date: <mspace=0.6em><date></mspace>  Time: <mspace=0.6em><time></mspace>'
       objectReference: {fileID: 0}
     - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}

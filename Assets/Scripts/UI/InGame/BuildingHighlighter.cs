@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Simulation;
 using UnityEngine;
 using World;
 
@@ -28,10 +29,7 @@ namespace UI.InGame
                     var weights = SimulationController.Instance.BuildingManager.GetBuildingWeights(focusedBuilding.DataAlias);
                     var buildingInfos = SimulationController.Instance.BuildingManager.GetBuildingInfos();
 
-                    for (var i = 0; i < buildingInfos.Length; i++)
-                    {
-                        var buildingInfo = buildingInfos[i];
-
+                    foreach (var buildingInfo in buildingInfos)
                         if (buildingInfo.Building != focusedBuilding)
                         {
                             highlighters.Add(
@@ -43,7 +41,6 @@ namespace UI.InGame
                                 )
                             );
                         }
-                    }
                 }
                 else
                 {

@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7423250539469859971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7423250539469859975}
+  - component: {fileID: 7423250539469859974}
+  - component: {fileID: 7423250539469859968}
+  - component: {fileID: 7423250539469859972}
+  - component: {fileID: 7423250539469859969}
+  - component: {fileID: 6797841753905559133}
+  - component: {fileID: 7526719865453591483}
+  m_Layer: 0
+  m_Name: Simulation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7423250539469859975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423250539469859971}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -224.27162, y: 7.6294537, z: 8.114104}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7423250539469859974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423250539469859971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c004c06760145fcb0c23e292df368b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentPrefab: {fileID: 132103726528155441, guid: e1a26bda0b6ed2343a0ef3487aced1d2,
+    type: 3}
+  TimeManager: {fileID: 7423250539469859972}
+  BuildingManager: {fileID: 7423250539469859968}
+  MeetingManager: {fileID: 7423250539469859969}
+  DailyData: {fileID: 4900000, guid: 00150c0838894c340b28be676aec9657, type: 3}
+--- !u!114 &7423250539469859968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423250539469859971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2ac023e0fb346b7b73703f652885426, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SequenceCountsMatrix: {fileID: 4900000, guid: 22c224c5e5477f24b864374d0661069c,
+    type: 3}
+--- !u!114 &7423250539469859972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423250539469859971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50ee461037cc48b5a819249831e6f498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartHour: 8
+  StartMinute: 25
+  Speed: 1
+--- !u!114 &7423250539469859969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423250539469859971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6975264224904261bb021cb3f6dfb7eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MeetAtDoorThreshold: 80
+  MaxWaitTimeForGroupMembers: 600
+--- !u!114 &6797841753905559133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423250539469859971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771fe943fca1404f84102ca30bb79100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Export: 0
+--- !u!114 &7526719865453591483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423250539469859971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a3c32f45b44396bd34836c38970bc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Export: 0

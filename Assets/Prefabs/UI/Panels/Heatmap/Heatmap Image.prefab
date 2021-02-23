@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 224967895537545620}
   - component: {fileID: 222476838333102194}
-  - component: {fileID: 114445878424679100}
-  - component: {fileID: 114020505311711660}
   - component: {fileID: 5300947575991706951}
+  - component: {fileID: 4916205230990707771}
+  - component: {fileID: 114020505311711660}
   m_Layer: 5
   m_Name: Heatmap Image
   m_TagString: Untagged
@@ -47,50 +47,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491865455056572}
   m_CullTransparentMesh: 0
---- !u!114 &114445878424679100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1491865455056572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 64d14522cb2292f45818406f373a56fa, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!114 &114020505311711660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1491865455056572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3817c4716cdf4ea48f4558dc30f366a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AgentManager: {fileID: 0}
-  BottomLeftCorner: {x: 0, y: 0, z: 0}
-  CaptureArea: 0
-  AgentPersistenceDecrease: 0.7
 --- !u!114 &5300947575991706951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,3 +61,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 1
   m_AspectRatio: 1
+--- !u!114 &4916205230990707771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491865455056572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 490c393bff75fbe4e9bc690c4c356ad0, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 8400000, guid: f32a3dd7f3a517d4bb06f928481b8961, type: 2}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!114 &114020505311711660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491865455056572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3817c4716cdf4ea48f4558dc30f366a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentPositionRenderTexture: {fileID: 8400000, guid: f32a3dd7f3a517d4bb06f928481b8961,
+    type: 2}
+  AgentPositionMaterial: {fileID: 2100000, guid: a70acde1c832e5843b9b390173dbfc04,
+    type: 2}
+  HeatMapColorBandMaterial: {fileID: 2100000, guid: 490c393bff75fbe4e9bc690c4c356ad0,
+    type: 2}
+  RoadsRenderer: {fileID: 0}
+  RoadsMaterial: {fileID: 2100000, guid: 9d54635c60871044b8a3a231d7fb31be, type: 2}

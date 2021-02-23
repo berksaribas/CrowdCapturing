@@ -6,10 +6,11 @@ namespace Util
 {
 	public class WeightedItem<T>
 	{
+		private static readonly Random rndInst = new Random();
+		
 		private T value;
 		private float weight;
 		private float cumulativeSum;
-		private static Random rndInst = new Random();
 
 		public WeightedItem(T value, float weight)
 		{
@@ -17,20 +18,23 @@ namespace Util
 			this.weight = weight;
 		}
 
-		public static T Choose(List<WeightedItem<T>> items)
+		public static T PickWeightedRandom(List<WeightedItem<T>> items)
 		{
-			float cumulSum = 0;
-			int cnt = items.Count();
+			float cumulativeSum = 0;
+			var count = items.Count();
 
-			for (int slot = 0; slot < cnt; slot++)
+			for (var slot = 0; slot < count; slot++)
 			{
-				cumulSum += items[slot].weight;
-				items[slot].cumulativeSum = cumulSum;
+				cumulativeSum += items[slot].weight;
+				items[slot].cumulativeSum = cumulativeSum;
 			}
 
-			double divSpot = rndInst.NextDouble() * cumulSum;
-			WeightedItem<T> chosen =  items.FirstOrDefault(i => i.cumulativeSum >= divSpot);
-			if (chosen == null) throw new Exception("No item chosen - there seems to be a problem with the probability distribution.");
+			var divSpot = rndInst.NextDouble() * cumulativeSum;
+			var chosen =  items.FirstOrDefault(i => i.cumulativeSum >= divSpot);
+			
+			if (chosen == null)
+				throw new Exception("No item chosen - there seems to be a problem with the probability distribution.");
+			
 			return chosen.value;
 		}
 	}

@@ -1,106 +1,164 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using DefaultNamespace;
+using JSONDataClasses;
 using Newtonsoft.Json;
-using Simulation;
+using UI;
+using UI.Popup;
 using UnityEngine;
-using Util;
-using World;
+using BuildingManager = World.BuildingManager;
 using Random = UnityEngine.Random;
 
-public class SimulationController : MonoBehaviour
+namespace Simulation
 {
-	public static SimulationController Instance { get; private set; }
+    public class SimulationController : MonoBehaviour
+    {
+        public static SimulationController Instance { get; private set; }
 
-	public SequenceManager SequenceManager;
-	public AgentManager AgentManager;
-	public SimulationTime SimulationTime;
-	public GroupManager GroupManager;
-	public BuildingManager BuildingManager;
-	public DoorManager DoorManager;
-	
-	public Baker AgentsAndSequencesBaker = new Baker(component =>
-	{
-		var self = component as SimulationController;
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+                Destroy(gameObject);
+            else
+                Instance = this;
+        }
 
-		self.BuildingManager.Awake();
-		
-		var jsonData = Resources.Load("29092016") as TextAsset;
+        public GameObject AgentPrefab;
 
-		AgentJSONData[] agents = JsonConvert.DeserializeObject<AgentJSONData[]>(jsonData.text);
+        public TimeManager TimeManager;
+        public BuildingManager BuildingManager;
+        public MeetingManager MeetingManager;
 
-		var agentsAndSequences = new Dictionary<int, List<Sequence>>(agents.Length);
-		foreach (var agent in agents)
-		{
-			self.ConvertAgentDataToSequence(agent, agentsAndSequences);
-		}
+        public TextAsset DailyData;
+        
+        private void Start()
+        {
+            UIState.Popup.Set(new Popup.Data("Loading Agent Data", "Please wait..."));
+            
+            var agentsData = JsonConvert.DeserializeObject<AgentData[]>(DailyData.text);
 
-		return agentsAndSequences;
-	});
+            ValidateData(ref agentsData);
+            
+            CreateSequencesAndInitializeAgents(agentsData);
+            
+            UIState.Popup.Set(null);
+        }
 
-	private void Awake()
-	{
-		if (Instance != null && Instance != this)
-		{
-			Destroy(this.gameObject);
-		}
-		else
-		{
-			Instance = this;
-		}
-	}
+        private void ValidateData(ref AgentData[] agentsData)
+        {
+            // Remove agents without enough connections
+            agentsData = agentsData.Where(agent => agent.Connections.Length > 1).ToArray();
+            
+            // Sort connections with respect to their time
+            foreach (var agent in agentsData)
+                Array.Sort(agent.Connections);
 
-	private void Start()
-	{
-		var agentsAndSequences =
-			AgentsAndSequencesBaker.LoadBaked<Dictionary<int, List<Sequence>>>();
+            // Merge concurrent connections with the same building
+            foreach (var agent in agentsData)
+            {
+                var connections = new List<ConnectionData>(agent.Connections.Length);
 
-		AgentManager.InstantiateAgents(
-			agentsAndSequences
-		);
+                connections.Add(agent.Connections[0]);
 
-		foreach (var sequences in agentsAndSequences.Values)
-		{
-			SequenceManager.InsertSequences(sequences);
-		}
-	}
-	
-	private void ConvertAgentDataToSequence(AgentJSONData agent, Dictionary<int, List<Sequence>> agentsAndSequences)
-	{
-		var sequences = new List<Sequence>();
-		agent.sequences.Sort();
+                foreach (var connection in agent.Connections)
+                {
+                    var latestConnection = connections.Last();
+                    
+                    if (connection.BuildingAlias == latestConnection.BuildingAlias)
+                    { // Merge with the latest
+                        latestConnection.EndTime = connection.EndTime;
+                        latestConnection.GroupsWith = latestConnection.GroupsWith
+                            .Intersect(connection.GroupsWith).ToArray();
+                    }
+                    else
+                    { // Add as a new connection
+                        connections.Add(connection);
+                    }
+                }
 
-		for (var index = 0; index < agent.sequences.Count - 1; index++)
-		{
-			var agentSequence = agent.sequences[index];
-			var nextAgentSequence = agent.sequences[index + 1];
+                agent.Connections = connections.ToArray();
+            }
+            
+            // Remove connections that start before the starting time
+            var startTime = $"{TimeManager.StartHour:D2}:{TimeManager.StartMinute:D2}:00";
+            foreach (var agent in agentsData)
+            {
+                // Find the index of first connection that ends after the startTime 
+                var i = 0;
+                for (; i < agent.Connections.Length; i++)
+                    if (string.CompareOrdinal(agent.Connections[i].EndTime, startTime) >= 0)
+                        break;
 
-			var startTime = agentSequence.endDate.Split(' ')[1].Split(':');
-			var startTimeSeconds = int.Parse(startTime[0]) * 3600 + int.Parse(startTime[1]) * 60 + Random.Range(0, 60);
+                // if all connections occur after start time
+                if (i == agent.Connections.Length)
+                    continue;
 
-			var startBuildingAlias = agentSequence.alias;
-			var targetBuildingAlias = nextAgentSequence.alias;
+                // Connections before i should be removed and ith connection should be modified
+                if (string.CompareOrdinal(agent.Connections[i].StartTime, startTime) < 0)
+                    agent.Connections[i].StartTime = startTime;
 
-			if (BuildingManager.HasBuilding(startBuildingAlias) && BuildingManager.HasBuilding(targetBuildingAlias))
-			{
-				var sequence = new Sequence(
-					int.Parse(agent.deviceId),
-					BuildingManager.GetBuildingId(startBuildingAlias),
-					BuildingManager.GetBuildingId(targetBuildingAlias),
-					startTimeSeconds
-				);
-				
-				foreach (var id in nextAgentSequence.groupsWith)
-				{
-					sequence.AddGroupingAgent(id);
-				}
-				
-				sequences.Add(sequence);
-			}
-		}
+                agent.Connections = agent.Connections.Skip(i).ToArray();
+            }
+            
+            // Validate connections' building aliases
+            foreach (var agent in agentsData)
+            {
+                var validConnections = new List<ConnectionData>(agent.Connections.Length);
 
-		agentsAndSequences.Add(int.Parse(agent.deviceId), sequences);
-	}
+                for (var i = 0; i < agent.Connections.Length - 1; i++)
+                {
+                    var startBuildingAlias = agent.Connections[i].BuildingAlias;
+                    var targetBuildingAlias = agent.Connections[i + 1].BuildingAlias;
+
+                    if (BuildingManager.HasBuilding(startBuildingAlias) &&
+                        BuildingManager.HasBuilding(targetBuildingAlias))
+                        validConnections.Add(agent.Connections[i]);
+                }
+
+                agent.Connections = validConnections.ToArray();
+            }
+
+            // Remove agents without enough connections
+            agentsData = agentsData.Where(agent => agent.Connections.Length > 1).ToArray();
+        }
+
+        private void CreateSequencesAndInitializeAgents(in AgentData[] agentsData)
+        {
+            var idAgentMap = new Dictionary<int, Agent>(agentsData.Length);
+
+            foreach (var agentData in agentsData)
+                idAgentMap[agentData.Id] = Instantiate(AgentPrefab, transform).GetComponent<Agent>();
+
+            foreach (var agentData in agentsData)
+            {
+                var sequences = new Sequence[agentData.Connections.Length - 1];
+
+                for (var i = 0; i < agentData.Connections.Length - 1; i++)
+                {
+                    var connectionData = agentData.Connections[i];
+                    var nextConnectionData = agentData.Connections[i + 1];
+
+                    var startTime = connectionData.EndTime.Split(':');
+                    var startTimeInSeconds = int.Parse(startTime[0]) * 3600    // Hour
+                                           + int.Parse(startTime[1]) * 60        // Minute
+                                           + Random.Range(0, 60);                // Noise
+
+                    sequences[i] = new Sequence(
+                        BuildingManager.GetBuilding(connectionData.BuildingAlias),
+                        BuildingManager.GetBuilding(nextConnectionData.BuildingAlias),
+                        startTimeInSeconds,
+                        connectionData.GroupsWith
+                            .Intersect(nextConnectionData.GroupsWith)
+                            .Where(idAgentMap.ContainsKey)
+                            .Select(id => idAgentMap[id])
+                            .ToArray()
+                    );
+                }
+                
+                idAgentMap[agentData.Id].Initialize(agentData.Id, sequences);
+            }
+
+            Debug.Log($"Initialized {agentsData.Length} agents");
+        }
+    }
 }

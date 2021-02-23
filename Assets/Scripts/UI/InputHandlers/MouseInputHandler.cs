@@ -1,3 +1,4 @@
+using System.Linq;
 using Simulation;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +9,6 @@ namespace UI.InputHandlers
     public class MouseInputHandler : MonoBehaviour
     {
         public CameraHandler CameraHandler;
-        public GroupManager GroupManager;
 
         private int agentLayer;
         private int buildingLayer;
@@ -39,14 +39,32 @@ namespace UI.InputHandlers
 
                 if (hitLayer == agentLayer)
                 {
-                    UIState.Agent.Set(hit.transform.GetComponent<Agent>());
-                    UIState.Group.Set(GroupManager.GetActiveGroup(UIState.Agent.Get()));
+                    var focusedAgent = hit.transform.GetComponent<Agent>();
+                    UIState.Agent.Set(focusedAgent);
+
+                    var focusedGroup = focusedAgent.CurrentMeeting?.GetWholeGroup();
+                    UIState.Group.Set(focusedGroup);
+                    
+                    PathTraverser[] paths;
+                    if (focusedGroup != null)
+                        paths = focusedGroup
+                            .Select(agent => agent.gameObject.GetComponent<PathTraverser>())
+                            .ToArray();
+                    else
+                        paths = new[] {focusedAgent.gameObject.GetComponent<PathTraverser>()};
+                    UIState.PathTraversers.Set(paths);
+                }
+                else
+                {
+                    // TODO: delete if clause when sure it is redundant
+                    Debug.LogWarning("Raycast returned something out of its LayerMask parameter");
                 }
             }
             else
             {
                 UIState.Agent.Set(null);
                 UIState.Group.Set(null);
+                UIState.PathTraversers.Set(null);
             }
         }
 

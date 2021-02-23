@@ -1,3 +1,4 @@
+using Simulation;
 using TMPro;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace UI.Panels
 
         private void OnGUI()
         {
-            var count = SimulationController.Instance.AgentManager.GetActiveAgents().Count.ToString();
+            var count = Agent.AgentsInStates[AgentState.Walking].Count.ToString();
             AgentCount.text = $"<mspace=0.6em>{count}</mspace>";
         }
     }

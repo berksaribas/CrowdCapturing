@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4551645149903196590
 Transform:
@@ -76,4 +76,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraHandler: {fileID: 3838645185709282461}
-  GroupManager: {fileID: 0}

@@ -4,7 +4,7 @@ namespace UI.InGame
 {
 	public static class HighlightLine
 	{
-		private static GameObject  highlightLinePrefab;
+		private static readonly GameObject HighlightLinePrefab = Resources.Load<GameObject>("HighlighterLine");
 		
 		public static GameObject CreateLine(Vector3 from, Vector3 to, Transform parent, float thickness = 1f)
 		{
@@ -12,13 +12,8 @@ namespace UI.InGame
 
 			var center = from - difference / 2f;
 			var rotation = Quaternion.Euler(90f, Mathf.Rad2Deg * Mathf.Atan2(difference.x, difference.z), 0);
-
-			if (highlightLinePrefab == null)
-			{
-				highlightLinePrefab = Resources.Load<GameObject>("HighlighterLine");
-			}
 			
-			var highlighter = Object.Instantiate(highlightLinePrefab, center, rotation, parent);
+			var highlighter = Object.Instantiate(HighlightLinePrefab, center, rotation, parent);
 			highlighter.transform.localScale = new Vector3(thickness, difference.magnitude / 2f, thickness);
 
 			return highlighter;

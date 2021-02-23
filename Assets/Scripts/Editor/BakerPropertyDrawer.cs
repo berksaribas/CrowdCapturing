@@ -1,6 +1,8 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using Util;
+using Object = UnityEngine.Object;
 
 namespace Editor
 {
@@ -57,7 +59,7 @@ namespace Editor
                 if (baker.IsBaked)
                 {
                     var bakedAsset = AssetDatabase.LoadAssetAtPath<Object>(
-                        IOHelper.GetAssetPath(baker.SavePath, baker.SaveName)
+                        IOHelper.GetAssetsRelativePath(baker.SavePath, baker.SaveName)
                     );
                     EditorGUI.BeginDisabledGroup(true);
                     EditorGUI.ObjectField(leftSide, bakedAsset, typeof(Object), false);
@@ -102,15 +104,28 @@ namespace Editor
         private void Cancel()
         {
             Debug.Log("Canceled Baking!");
+            
+            baker.CancelBakeAction();
+            
             EditorApplication.update -= BakeOnUpdate;
         }
 
         private void BakeOnUpdate()
         {
             Debug.Log("Calling baking action");
-            baker.BakeAction();
-            
-            EditorApplication.update -= BakeOnUpdate;
+            try
+            {
+                baker.BakeAction();
+            }
+            catch
+            {
+                baker.CancelBakeAction();
+                throw;
+            }
+            finally
+            {
+                EditorApplication.update -= BakeOnUpdate;
+            }
         }
     }
 }

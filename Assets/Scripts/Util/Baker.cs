@@ -31,17 +31,22 @@ namespace Util
                 IOHelper.SaveAsBinary(baked, SavePath, SaveName);
 
                 AssetDatabase.ImportAsset(
-                    IOHelper.GetAssetPath(SavePath, SaveName)
+                    IOHelper.GetAssetsRelativePath(SavePath, SaveName)
                 );
                 
                 BakeAction = null;
             };
         }
 
+        public void CancelBakeAction()
+        {
+            BakeAction = null;
+        }
+
         public virtual void Clear()
         {
             AssetDatabase.DeleteAsset(
-                IOHelper.GetAssetPath(SavePath, SaveName)
+                IOHelper.GetAssetsRelativePath(SavePath, SaveName)
             );
         }
 

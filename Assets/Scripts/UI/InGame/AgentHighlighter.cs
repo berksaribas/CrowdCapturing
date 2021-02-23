@@ -9,18 +9,12 @@ namespace UI.InGame
 
         public MeshRenderer HighlighterObject;
 
-        private readonly PathHighlighter highlighter = new PathHighlighter();
-    
         void Start()
         {
             UIState.Agent.OnChange += newAgent =>
             {
-                highlighter.Disable();
-
                 if ((focusedAgent = newAgent) != null)
                 {
-                    highlighter.Initialize(focusedAgent, transform);
-                    
                     HighlighterObject.enabled = true;
                     HighlighterObject.transform.SetParent(focusedAgent.transform, false);
                 }
@@ -30,14 +24,6 @@ namespace UI.InGame
                     HighlighterObject.transform.SetParent(transform, false);
                 }
             };
-        }
-
-        private void Update()
-        {
-            if (focusedAgent != null)
-            {
-                highlighter.Update();
-            }
         }
     }
 }

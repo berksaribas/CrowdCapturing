@@ -1,60 +1,34 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
-using Util;
+using JetBrains.Annotations;
 using World;
-using Random = UnityEngine.Random;
 
 namespace Simulation
 {
     [Serializable]
     public class Sequence : IComparable<Sequence>
     {
-        public readonly int AgentId;
-        public readonly int StartingBuildingId, TargetBuildingId;
-        public readonly int StartTime;
-        public readonly List<int> GroupingAgents;
-        public bool disabled = false;
+        public readonly Building StartingBuilding, TargetBuilding;
+        public readonly Door StartingDoor, TargetDoor;
+        public readonly int StartTimeInSeconds;
+        public readonly Agent[] PossibleGroupingAgents;
+        [CanBeNull] public Meeting Meeting;
 
-        public Sequence(int agentId, int startingBuildingId, int targetBuildingId, int startTime)
+        public Sequence(Building startingBuilding, Building targetBuilding, int startTimeInSeconds, Agent[] possibleGroupingAgents)
         {
-            AgentId = agentId;
-            StartingBuildingId = startingBuildingId;
-            TargetBuildingId = targetBuildingId;
-            StartTime = startTime;
+            StartingBuilding = startingBuilding;
+            TargetBuilding = targetBuilding;
             
-            GroupingAgents = new List<int>();
-        }
+            StartTimeInSeconds = startTimeInSeconds;
 
-        public void AddGroupingAgent(int id)
-        {
-            GroupingAgents.Add(id);
+            (StartingDoor, TargetDoor) = SimulationController.Instance.BuildingManager
+                .FindDoorsFor(startingBuilding, targetBuilding);
+
+            PossibleGroupingAgents = possibleGroupingAgents;
         }
         
         public int CompareTo(Sequence other)
         {
-            return StartTime.CompareTo(other.StartTime);
-        }
-
-        protected bool Equals(Sequence other)
-        {
-            return AgentId == other.AgentId && StartTime == other.StartTime;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Sequence) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (AgentId * 397) ^ StartTime;
-            }
+            return StartTimeInSeconds.CompareTo(other.StartTimeInSeconds);
         }
     }
 }
