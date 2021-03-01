@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 224568533852666870}
   - component: {fileID: 222300896221783960}
   - component: {fileID: 8204925839686188476}
-  - component: {fileID: 114728091191363888}
   - component: {fileID: 7454521919817008034}
+  - component: {fileID: 114728091191363888}
   m_Layer: 5
-  m_Name: Simulation Time
+  m_Name: Simulation Date
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,19 +78,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114728091191363888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1791987156526720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f64ebd29cce6463fb744351988541fe4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WorldTime: {fileID: 3506419829347618586}
 --- !u!114 &7454521919817008034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +104,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &114728091191363888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791987156526720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64ebd29cce6463fb744351988541fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Date: {fileID: 3506419829347618586}
 --- !u!1001 &3316906831284938261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -147,12 +147,12 @@ PrefabInstance:
     - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}
       propertyPath: m_textAlignment
-      value: 514
+      value: 65535
       objectReference: {fileID: 0}
     - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}
       propertyPath: m_text
-      value: 'Date: <mspace=0.6em><date></mspace>  Time: <mspace=0.6em><time></mspace>'
+      value: 'Date: <mspace=0.6em><date></mspace>'
       objectReference: {fileID: 0}
     - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}
@@ -174,10 +174,25 @@ PrefabInstance:
       propertyPath: m_enableWordWrapping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 3727590206112571073, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}
       propertyPath: m_Name
-      value: Time
+      value: Date
       objectReference: {fileID: 0}
     - target: {fileID: 5773164750941763537, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}
@@ -237,7 +252,7 @@ PrefabInstance:
     - target: {fileID: 5773164750941763537, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 214.355
       objectReference: {fileID: 0}
     - target: {fileID: 5773164750941763537, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}

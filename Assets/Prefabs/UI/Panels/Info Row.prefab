@@ -63,6 +63,7 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1001 &3943692302623883542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -94,6 +95,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: Value
+      objectReference: {fileID: 0}
+    - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 3727590206112571073, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}
@@ -249,6 +255,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294309365
+      objectReference: {fileID: 0}
+    - target: {fileID: 2207128244286171407, guid: 937ee4f95714b2140b3a591e4b689b78,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 3727590206112571073, guid: 937ee4f95714b2140b3a591e4b689b78,
         type: 3}

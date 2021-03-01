@@ -29,7 +29,7 @@ namespace Simulation
         private void LateUpdate()
         {
             var currentTimeInSeconds = SimulationController.Instance
-                .TimeManager.TimeInSeconds.ToString("0.0", CultureInfo.InvariantCulture);
+                .TimeManager.Time.ToString("0.0", CultureInfo.InvariantCulture);
 
             foreach (var agent in Agent.AgentsInStates[AgentState.Walking])
             {

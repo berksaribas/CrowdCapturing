@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,19 +25,9 @@ namespace Simulation
         private void Update()
         {
             var distance = agent.Speed * SimulationController.Instance.TimeManager.DeltaTime;
-
-            // TODO: clean the comments
-            // try
-            // {
-                Traverse(distance);
-                
-                transform.position = currentPathPosition + Vector3.up * HeightOffset;
-            // }
-            // catch (IndexOutOfRangeException)
-            // {
-            //     Debug.LogAssertion($"Agent Path is broken, id = {agent.Id.ToString()}");
-            //     throw;
-            // }
+            Traverse(distance);
+            
+            transform.position = currentPathPosition + Vector3.up * HeightOffset;
 
             if (IsArrived)
             {

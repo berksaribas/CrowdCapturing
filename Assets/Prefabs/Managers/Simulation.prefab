@@ -20,7 +20,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7423250539469859975
 Transform:
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c004c06760145fcb0c23e292df368b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AgentPrefab: {fileID: 132103726528155441, guid: e1a26bda0b6ed2343a0ef3487aced1d2,
+  AgentPrefab: {fileID: 997916235983501992, guid: e1a26bda0b6ed2343a0ef3487aced1d2,
     type: 3}
   TimeManager: {fileID: 7423250539469859972}
   BuildingManager: {fileID: 7423250539469859968}
@@ -80,8 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ee461037cc48b5a819249831e6f498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHour: 8
-  StartMinute: 25
+  Playing: 0
   Speed: 1
 --- !u!114 &7423250539469859969
 MonoBehaviour:
@@ -109,7 +108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771fe943fca1404f84102ca30bb79100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Export: 0
 --- !u!114 &7526719865453591483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,4 +120,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a3c32f45b44396bd34836c38970bc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Export: 0

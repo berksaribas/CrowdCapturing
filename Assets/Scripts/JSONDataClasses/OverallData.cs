@@ -57,7 +57,7 @@ namespace JSONDataClasses
 
         private void Update()
         {
-            var time = (int) SimulationController.Instance.TimeManager.TimeInSeconds;
+            var time = (int) SimulationController.Instance.TimeManager.Time;
             var agentCount = Agent.AgentsInStates[AgentState.Walking].Count;
             ActivityByTime[time] = agentCount;
 

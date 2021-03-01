@@ -36,7 +36,7 @@ namespace Simulation
                     var s = possibleGroupingAgent.NextSequence;
                     var agentCanGroup =
                         s != null
-                        && s.StartTimeInSeconds - sequence.StartTimeInSeconds <= 600
+                        && s.StartTime - sequence.StartTime <= 600
                         && s.StartingBuilding == sequence.StartingBuilding
                         && s.PossibleGroupingAgents.Contains(agent);
                     

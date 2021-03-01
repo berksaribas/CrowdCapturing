@@ -100,7 +100,7 @@ namespace Simulation
             {
                 // Check if the next sequence should start
                 var nextSequence = sequences.Peek();
-                if (SimulationController.Instance.TimeManager.TimeInSeconds >= nextSequence.StartTimeInSeconds)
+                if (SimulationController.Instance.TimeManager.Time >= nextSequence.StartTime)
                 {
                     // TODO: Enable meetings
                     //SimulationController.Instance.MeetingManager.RegisterForMeeting(this, nextSequence);
@@ -163,6 +163,7 @@ namespace Simulation
             if (CurrentMeeting != null)
                 CurrentMeeting.Arrived();
             else
+                // TODO: Handle NullReferenceException :C
                 CurrentSequence.TargetDoor.WaitingAgents.Enqueue(this);
         }
     }

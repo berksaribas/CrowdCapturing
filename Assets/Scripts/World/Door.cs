@@ -9,8 +9,8 @@ namespace World
     public class Door : MonoBehaviour
     {
         private const int Capacity = 3;
-        private const float EnterDurationInSeconds = 0.5f;
-        private readonly float[] lastEnterTimes = new float[Capacity];
+        private const double EnterDurationInSeconds = 0.5;
+        private readonly double[] lastEnterTimes = new double[Capacity];
 
         public readonly Queue<Agent> WaitingAgents = new Queue<Agent>(16);
 
@@ -27,7 +27,7 @@ namespace World
 
         private void LateUpdate()
         {
-            var currentTime = Simulation.SimulationController.Instance.TimeManager.TimeInSeconds;
+            var currentTime = Simulation.SimulationController.Instance.TimeManager.Time;
 
             for (var i = 0; i < lastEnterTimes.Length && WaitingAgents.Count != 0; i++)
                 if (lastEnterTimes[i] + EnterDurationInSeconds <= currentTime)

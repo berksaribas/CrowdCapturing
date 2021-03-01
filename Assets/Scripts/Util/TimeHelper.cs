@@ -2,7 +2,7 @@ namespace Util
 {
 	public static class TimeHelper
 	{
-		public static string ConvertSecondsToString(float sec)
+		public static string ConvertSecondsToString(double sec)
 		{
 			var intSeconds = (int) sec;
 			

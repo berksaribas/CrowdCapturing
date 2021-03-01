@@ -1,24 +1,51 @@
+using System;
+using JSONDataClasses;
 using UnityEngine;
 
 namespace Simulation
 {
     public class TimeManager : MonoBehaviour
     {
-        public int StartHour = 6, StartMinute = 0;
+        //public int StartHour = 6, StartMinute = 0;
 
+        public bool Playing = false;
         public float Speed = 10f;
-        public float TimeInSeconds { get; private set; }
+
+        public double Time { get; private set; }
         public float DeltaTime { get; private set; }
-        
-        private void Awake()
+
+        [NonSerialized]
+        public double DataRangeStart, DataRangeEnd;
+
+        public void Initialize(AgentData[] agentsData)
         {
-            TimeInSeconds = (StartHour * 60 + StartMinute) * 60;
+            var start = TimeSpan.MaxValue;
+            var end = TimeSpan.MinValue;
+
+            foreach (var agent in agentsData)
+            foreach (var connection in agent.Connections)
+            {
+                if (connection.StartTime < start)
+                    start = connection.StartTime;
+
+                if (connection.EndTime > end)
+                    end = connection.EndTime;
+            }
+
+            DataRangeStart = start.TotalSeconds;
+            DataRangeEnd = end.TotalSeconds;
+
+            Time = DataRangeStart;
         }
 
         private void Update()
         {
-            DeltaTime = Time.deltaTime * Speed;
-            TimeInSeconds += DeltaTime;
+            if (Playing)
+                DeltaTime = UnityEngine.Time.deltaTime * Speed;
+            else
+                DeltaTime = 0;
+
+            Time += DeltaTime;
         }
     }
 }

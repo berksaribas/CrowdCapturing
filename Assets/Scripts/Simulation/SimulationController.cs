@@ -18,29 +18,36 @@ namespace Simulation
         private void Awake()
         {
             if (Instance != null && Instance != this)
+            {
                 Destroy(gameObject);
+            }
             else
+            {
                 Instance = this;
+                Initialize();
+            }
         }
 
-        public GameObject AgentPrefab;
+        public Agent AgentPrefab;
 
         public TimeManager TimeManager;
         public BuildingManager BuildingManager;
         public MeetingManager MeetingManager;
 
         public TextAsset DailyData;
-        
-        private void Start()
+
+        private void Initialize()
         {
             UIState.Popup.Set(new Popup.Data("Loading Agent Data", "Please wait..."));
-            
+
             var agentsData = JsonConvert.DeserializeObject<AgentData[]>(DailyData.text);
 
             ValidateData(ref agentsData);
-            
+
+            TimeManager.Initialize(agentsData);
+
             CreateSequencesAndInitializeAgents(agentsData);
-            
+
             UIState.Popup.Set(null);
         }
 
@@ -48,7 +55,7 @@ namespace Simulation
         {
             // Remove agents without enough connections
             agentsData = agentsData.Where(agent => agent.Connections.Length > 1).ToArray();
-            
+
             // Sort connections with respect to their time
             foreach (var agent in agentsData)
                 Array.Sort(agent.Connections);
@@ -63,22 +70,25 @@ namespace Simulation
                 foreach (var connection in agent.Connections)
                 {
                     var latestConnection = connections.Last();
-                    
+
                     if (connection.BuildingAlias == latestConnection.BuildingAlias)
-                    { // Merge with the latest
+                    {
+                        // Merge with the latest
                         latestConnection.EndTime = connection.EndTime;
                         latestConnection.GroupsWith = latestConnection.GroupsWith
                             .Intersect(connection.GroupsWith).ToArray();
                     }
                     else
-                    { // Add as a new connection
+                    {
+                        // Add as a new connection
                         connections.Add(connection);
                     }
                 }
 
                 agent.Connections = connections.ToArray();
             }
-            
+
+            /*
             // Remove connections that start before the starting time
             var startTime = $"{TimeManager.StartHour:D2}:{TimeManager.StartMinute:D2}:00";
             foreach (var agent in agentsData)
@@ -99,7 +109,8 @@ namespace Simulation
 
                 agent.Connections = agent.Connections.Skip(i).ToArray();
             }
-            
+            */
+
             // Validate connections' building aliases
             foreach (var agent in agentsData)
             {
@@ -127,7 +138,7 @@ namespace Simulation
             var idAgentMap = new Dictionary<int, Agent>(agentsData.Length);
 
             foreach (var agentData in agentsData)
-                idAgentMap[agentData.Id] = Instantiate(AgentPrefab, transform).GetComponent<Agent>();
+                idAgentMap[agentData.Id] = Instantiate(AgentPrefab, transform);
 
             foreach (var agentData in agentsData)
             {
@@ -138,15 +149,10 @@ namespace Simulation
                     var connectionData = agentData.Connections[i];
                     var nextConnectionData = agentData.Connections[i + 1];
 
-                    var startTime = connectionData.EndTime.Split(':');
-                    var startTimeInSeconds = int.Parse(startTime[0]) * 3600    // Hour
-                                           + int.Parse(startTime[1]) * 60        // Minute
-                                           + Random.Range(0, 60);                // Noise
-
                     sequences[i] = new Sequence(
                         BuildingManager.GetBuilding(connectionData.BuildingAlias),
                         BuildingManager.GetBuilding(nextConnectionData.BuildingAlias),
-                        startTimeInSeconds,
+                        connectionData.EndTime.TotalSeconds + Random.Range(0f, 60f), // +Noise
                         connectionData.GroupsWith
                             .Intersect(nextConnectionData.GroupsWith)
                             .Where(idAgentMap.ContainsKey)
@@ -154,7 +160,7 @@ namespace Simulation
                             .ToArray()
                     );
                 }
-                
+
                 idAgentMap[agentData.Id].Initialize(agentData.Id, sequences);
             }
 
